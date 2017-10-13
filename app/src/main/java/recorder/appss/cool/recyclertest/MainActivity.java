@@ -67,7 +67,7 @@ private RecyclerView rv;
 
 
 //param en second -> timestamp "temps unix"
-         mService.getCompet("2017-10-12","2017-10-13",RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
+         mService.getCompet(today.getMillis()/1000,tomorrow.getMillis()/1000,RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
 
                 @Override
                 public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
