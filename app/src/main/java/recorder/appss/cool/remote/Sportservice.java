@@ -19,7 +19,7 @@ import retrofit2.http.Query;
 public interface Sportservice {
 
     @GET("matches?")
-    Call<List<Match>> getCompet(@Query("from") long from,@Query("to") long to, @Query("api_key") String key);
+    Call<List<Match>> getCompet(@Query("from") String from,@Query("to") String to, @Query("api_key") String key);
 
 
 }

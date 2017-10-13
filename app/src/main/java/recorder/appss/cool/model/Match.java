@@ -11,13 +11,13 @@ public class Match {
     private Integer awayGoals;
     @SerializedName("currentStateStart")
     @Expose
-    private Integer currentStateStart;
+    private double currentStateStart;
     @SerializedName("nextState")
     @Expose
     private Object nextState;
     @SerializedName("start")
     @Expose
-    private Integer start;
+    private double  start;
     @SerializedName("goToExtraTime")
     @Expose
     private Boolean goToExtraTime;
@@ -78,11 +78,11 @@ public class Match {
         this.awayGoals = awayGoals;
     }
 
-    public Integer getCurrentStateStart() {
+    public double getCurrentStateStart() {
         return currentStateStart;
     }
 
-    public void setCurrentStateStart(Integer currentStateStart) {
+    public void setCurrentStateStart(double currentStateStart) {
         this.currentStateStart = currentStateStart;
     }
 
@@ -94,11 +94,11 @@ public class Match {
         this.nextState = nextState;
     }
 
-    public Integer getStart() {
+    public double  getStart() {
         return start;
     }
 
-    public void setStart(Integer start) {
+    public void setStart(double  start) {
         this.start = start;
     }
 

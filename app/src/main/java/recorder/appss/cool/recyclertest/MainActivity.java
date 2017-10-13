@@ -39,7 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements Interceptor {
+public class MainActivity extends AppCompatActivity  {
     private Sportservice mService;
 private RecyclerView rv;
     List<Match> l= new ArrayList<Match>();
@@ -66,8 +66,8 @@ private RecyclerView rv;
         Log.d("DDDate", "loadAnswers: "+today+"     "+tomorrow);
 
 
-//param en second -> timestamp "temps unix"
-         mService.getCompet(today.getMillis()/1000,tomorrow.getMillis()/1000,RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
+
+         mService.getCompet("2017-10-12","2017-10-13",RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
 
                 @Override
                 public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
@@ -101,13 +101,4 @@ private RecyclerView rv;
 
 
 
-    @Override
-    public okhttp3.Response intercept(Chain chain) throws IOException {
-        Request request = chain.request();
-
-        long t1 = System.nanoTime();
-        Log.d("infooooooo",String.format("Sending request %s on %s%n%s",
-                request.url(), chain.connection(), request.headers()));
-        return null;
-    }
 }
