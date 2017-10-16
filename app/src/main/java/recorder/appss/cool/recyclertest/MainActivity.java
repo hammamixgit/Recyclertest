@@ -12,31 +12,23 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
+
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
+
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
+
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
 
-import okhttp3.Interceptor;
-import okhttp3.Request;
+import java.util.Set;
+
 import recorder.appss.cool.model.Competition;
 import recorder.appss.cool.model.Match;
 import recorder.appss.cool.remote.ApiUtils;
@@ -46,16 +38,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static java.lang.System.in;
 
 public class MainActivity extends AppCompatActivity  {
-    List<Integer> match_states = new ArrayList<Integer>(Arrays.asList(2,3,4,5,6,7,8));
+    List<Integer> match_states = new ArrayList<>(Arrays.asList(2,3,4,5,6,7,8));
     private Sportservice mService;
     private RecyclerView rv;
-    List<Match> list_match= new ArrayList<Match>();
-    List <Competition> list_competition = new ArrayList<Competition>();
-    LinkedHashMap<Competition,String> comp_occur= new LinkedHashMap<Competition,String>();
-    List <Integer> live_match_per_comp = new ArrayList<Integer>();
+    List<Match> list_match= new ArrayList<>();
+    List <Competition> list_competition = new ArrayList<>();
+    LinkedHashMap<Competition,String> comp_occur= new LinkedHashMap<>();
+  //  List <Integer> live_match_per_comp = new ArrayList<>();
     Adapterrv adap ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,8 +129,8 @@ if(result.equals("fifa"))result="world";
         List <Integer> id = new ArrayList<>();
         for(Competition c : comp)
         id.add(c.getDbid());
-        LinkedHashMap<Competition,String> hm= new LinkedHashMap<Competition,String>();
-        Set<Integer> lhs = new LinkedHashSet<Integer>(id);
+        LinkedHashMap<Competition,String> hm= new LinkedHashMap<>();
+        Set<Integer> lhs = new LinkedHashSet<>(id);
         for(Integer c : lhs) {
             int occurrences = Collections.frequency(id, c);
             hm.put(get_comp_by_id(comp,c),occurrences+":x:"+get_live_by_comp(list_match,c));
