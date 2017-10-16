@@ -51,4 +51,13 @@ public class Competition {
         this.flagUrl = flagUrl;
     }
 
+    @Override
+    public String toString() {
+        return getDbid()+"";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.toString().equals(obj.toString());
+    }
 }

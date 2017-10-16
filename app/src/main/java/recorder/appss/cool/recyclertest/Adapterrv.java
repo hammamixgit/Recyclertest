@@ -14,8 +14,13 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import recorder.appss.cool.model.Competition;
 import recorder.appss.cool.model.Match;
 
 /**
@@ -23,11 +28,11 @@ import recorder.appss.cool.model.Match;
  */
 
 public class Adapterrv  extends RecyclerView.Adapter<Adapterrv.Myviewholder> {
-    List<Match> ks= new ArrayList<Match>();
+    LinkedHashMap<Competition,String> ks= new LinkedHashMap<Competition,String>();
     ImageLoader imageLoader;
-    public  Adapterrv(List<Match> k, ImageLoader imageLoader1)
+    public  Adapterrv(LinkedHashMap<Competition,String> k, ImageLoader imageLoader1)
     {
-ks.addAll(k);
+ks.putAll(k);
          imageLoader=imageLoader1;
     }
 
@@ -41,26 +46,33 @@ Myviewholder mvh= new Myviewholder(v);
     @Override
     public void onBindViewHolder(Myviewholder holder, int position) {
     //   imageLoader.displayImage(ks.get(position).getCompetition().getFlagUrl(), holder.im);
-        holder.tx.setText(ks.get(position).getCompetition().getName());
+        Set<Map.Entry<Competition, String>> mapSet = ks.entrySet();
+        Map.Entry<Competition, String> element = (Map.Entry<Competition, String>) mapSet.toArray()[position];
+
+
+     Competition c=element.getKey();
+        holder.tx.setText(c.getName()+"   "+element.getValue());
         Transformation transformation = new RoundedTransformationBuilder()
                 .cornerRadiusDp(40)
                 .oval(true)
                 .build();
 
         Picasso.with( holder.im.getContext())
-                .load(ks.get(position).getCompetition().getFlagUrl())
+                .load(c.getFlagUrl())
                 .fit()
                 .transform(transformation)
                 .into(holder.im);
 
     }
-
+    public Object getElementByIndex(LinkedHashMap map,int index){
+        return map.get( (map.entrySet().toArray())[ index ] );
+    }
     @Override
     public int getItemCount() {
         return ks.size();
     }
 
-    public void updateAnswers(List<Match> items) {
+    public void updateAnswers(LinkedHashMap<Competition,String>items) {
         ks = items;
         Log.d("siiiiiiiiize",""+ks.size());
         notifyDataSetChanged();
