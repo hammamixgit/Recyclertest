@@ -57,7 +57,7 @@ public class MainActivitytemplete extends AppCompatActivity {
 
         FragmentPagerItems pages = new FragmentPagerItems(this);
         for (int titleResId : configtemplete.tabs()) {
-            pages.add(FragmentPagerItem.of(getString(titleResId), FragmentMainTemplete.class));
+            pages.add(FragmentPagerItem.of(getString(titleResId), FragmentCompetitionList.class));
         }
 
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(

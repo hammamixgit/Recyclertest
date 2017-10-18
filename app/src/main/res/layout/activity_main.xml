@@ -10,10 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="recorder.appss.cool.recyclertest.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
 <android.support.v7.widget.RecyclerView
     android:id="@+id/rv"
     android:layout_width="match_parent"
