@@ -48,5 +48,6 @@ dependencies {
     compile 'net.danlew:android.joda:2.9.9'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:support-v4:24.2.1'
     testCompile 'junit:junit:4.12'
 }

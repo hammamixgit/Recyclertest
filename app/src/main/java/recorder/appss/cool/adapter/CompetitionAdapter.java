@@ -1,5 +1,8 @@
 package recorder.appss.cool.adapter;
 
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +21,8 @@ import java.util.Map;
 import java.util.Set;
 
 import recorder.appss.cool.model.Competition;
+import recorder.appss.cool.recyclertest.FragmentCompetitionList;
+import recorder.appss.cool.recyclertest.FragmentMatchsCompet;
 import recorder.appss.cool.recyclertest.R;
 
 /**
@@ -27,13 +32,15 @@ import recorder.appss.cool.recyclertest.R;
 public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     LinkedHashMap<Competition, String> ks = new LinkedHashMap<Competition, String>();
     ImageLoader imageLoader;
+    FragmentCompetitionList ff;
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_FOOTER = 2;
 private int nbmatch_total,nbmatch_live;
-    public CompetitionAdapter(LinkedHashMap<Competition, String> k, ImageLoader imageLoader1) {
+    public CompetitionAdapter(LinkedHashMap<Competition, String> k, ImageLoader imageLoader1,FragmentCompetitionList f) {
         ks.putAll(k);
         imageLoader = imageLoader1;
+        ff=f;
     }
     @Override
     public int getItemViewType(int position) {
@@ -105,6 +112,7 @@ private int nbmatch_total,nbmatch_live;
                     .fit()
                     .transform(transformation)
                     .into( ((Myviewholder)  holder).im);
+
         }
         else if(holder instanceof HeaderViewHolder){
             ((HeaderViewHolder)  holder).all.setText(nbmatch_total+"");
@@ -142,7 +150,22 @@ private int nbmatch_total,nbmatch_live;
             tcountry = (TextView) itemView.findViewById(R.id.txtcardcountry);
             tx = (TextView) itemView.findViewById(R.id.txtcardcompt);
             im = (ImageView) itemView.findViewById(R.id.imgcard);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Fragment fragment = new FragmentMatchsCompet();
+                    Bundle args = new Bundle();
+                    args.putString("data", "This data has sent to FragmentTwo");
+                    fragment.setArguments(args);
+                    FragmentTransaction transaction =     ff.getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.activity_main, fragment);
+                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    //ff.getActivity().getSupportFragmentManager().popBackStack();
+                }
+            });
         }
     }
    public class HeaderViewHolder extends RecyclerView.ViewHolder {

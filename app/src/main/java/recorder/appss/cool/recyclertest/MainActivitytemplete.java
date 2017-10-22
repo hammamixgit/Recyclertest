@@ -2,7 +2,9 @@ package recorder.appss.cool.recyclertest;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +19,7 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
-public class MainActivitytemplete extends AppCompatActivity {
+public class MainActivitytemplete extends AppCompatActivity implements F1.OnFragmentInteractionListener,F2.OnFragmentInteractionListener,F3.OnFragmentInteractionListener,FragmentMatchsCompet.OnFragmentInteractionListener {
 
     private static final String KEY_DEMO = "main";
 
@@ -46,7 +48,7 @@ public class MainActivitytemplete extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(configtemplete.titleResId);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         ViewGroup tab = (ViewGroup) findViewById(R.id.tab);
         tab.addView(LayoutInflater.from(this).inflate(configtemplete.layoutResId, tab, false));
@@ -56,10 +58,12 @@ public class MainActivitytemplete extends AppCompatActivity {
         configtemplete.setup(viewPagerTab);
 
         FragmentPagerItems pages = new FragmentPagerItems(this);
-        for (int titleResId : configtemplete.tabs()) {
-            pages.add(FragmentPagerItem.of(getString(titleResId), FragmentCompetitionList.class));
-        }
 
+
+        pages.add(FragmentPagerItem.of("1", FragmentCompetitionList.class));
+        pages.add(FragmentPagerItem.of("2", F1.class));
+        pages.add(FragmentPagerItem.of("3", F2.class));
+        pages.add(FragmentPagerItem.of("4", F3.class));
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), pages);
 
@@ -74,7 +78,18 @@ public class MainActivitytemplete extends AppCompatActivity {
 //////////////////////////to see
     @Override
     public void onBackPressed() {
-       finish();
+super.onBackPressed();
+     /*
+     Intent a = new Intent(Intent.ACTION_MAIN);
+a.addCategory(Intent.CATEGORY_HOME);
+a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+startActivity(a);
+      */
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }

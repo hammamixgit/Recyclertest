@@ -73,6 +73,9 @@ public enum Configtemplete {
         MainActivitytemplete.startActivity(context, this);
     }
 
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
     public void setup(final SmartTabLayout layout) {
         //Do nothing.
     }
@@ -81,7 +84,9 @@ public enum Configtemplete {
     }
     public static int[] tab3() {
         return new int[] {
-
+                R.string.demo_tab_no_title,
+                R.string.demo_tab_no_title,
+                R.string.demo_tab_no_title,
                 R.string.demo_tab_no_title
         };
     }

@@ -1,11 +1,15 @@
 package recorder.appss.cool.recyclertest;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,18 +56,24 @@ public class FragmentCompetitionList extends Fragment {
     LinkedHashMap<Competition, String> comp_occur ;
     //  List <Integer> live_match_per_comp = new ArrayList<>();
     CompetitionAdapter adap;
-private int matchs_live=0;
+private int matchs_live;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        Toolbar  toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
+        AppCompatActivity  appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
         return inflater.inflate(R.layout.activity_main, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        matchs_live=0;
         list_match = new ArrayList<>();
         list_competition = new ArrayList<>();
         comp_occur = new LinkedHashMap<>();
@@ -78,7 +88,7 @@ private int matchs_live=0;
         rv.addItemDecoration(new ItemOffsetDecoration(25));
       final LinearLayoutManager l=  new LinearLayoutManager(view.getContext());
         rv.setLayoutManager(l);
-        adap = new CompetitionAdapter(comp_occur, ImageLoader.getInstance());
+        adap = new CompetitionAdapter(comp_occur, ImageLoader.getInstance(),this);
         rv.setAdapter(adap);
 
         loadAnswers();
@@ -179,6 +189,31 @@ private int matchs_live=0;
         }
 
         return count_live;
+    }
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+                    Intent a = new Intent(Intent.ACTION_MAIN);
+                    a.addCategory(Intent.CATEGORY_HOME);
+                    a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(a);
+
+                    return true;
+
+                }
+
+                return false;
+            }
+        });
     }
 
 }
