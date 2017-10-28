@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        app:srcCompat="@mipmap/ic_launcher"
+        android:id="@+id/compet_flag_h" />
+
+    <TextView
+        android:paddingLeft="5dp"
+        android:text="All Game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+android:layout_centerVertical="true"
+        android:id="@+id/compet_name_h"
+  android:layout_toRightOf="@id/compet_flag_h"/>
+
+</RelativeLayout>

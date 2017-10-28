@@ -18,7 +18,8 @@ public interface Sportservice {
 
     @GET("matches?")
     Call<List<Match>> getCompet(@Query("from") String from,@Query("to") String to, @Query("api_key") String key);
-
+    @GET("matches?")
+    Call<List<Match>> getMatchCompet(@Query("competition_id") String competition,@Query("from") String from,@Query("to") String to, @Query("api_key") String key);
 
 }
 

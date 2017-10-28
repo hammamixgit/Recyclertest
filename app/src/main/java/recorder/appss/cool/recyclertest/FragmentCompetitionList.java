@@ -48,7 +48,7 @@ import retrofit2.Response;
 public class FragmentCompetitionList extends Fragment {
 
     //Declaration var
-    List<Integer> match_states = new ArrayList<>(Arrays.asList(2, 3, 4, 5, 6, 7, 8));
+    List<Integer> match_states = new ArrayList<>(Arrays.asList(1,2, 3, 4, 5, 6, 7, 8));
     private Sportservice mService;
     private RecyclerView rv;
     List<Match> list_match ;
@@ -79,8 +79,8 @@ private int matchs_live;
         comp_occur = new LinkedHashMap<>();
         int position = FragmentPagerItem.getPosition(getArguments());
         JodaTimeAndroid.init(view.getContext());
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(view.getContext()).build();
-        ImageLoader.getInstance().init(config);
+     //   ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(view.getContext()).build();
+      //  ImageLoader.getInstance().init(config);
         mService = ApiUtils.getSOService();
         rv = (RecyclerView) view.findViewById(R.id.rv);
         // set true if your RecyclerView is finite and has fixed size
@@ -88,7 +88,7 @@ private int matchs_live;
         rv.addItemDecoration(new ItemOffsetDecoration(25));
       final LinearLayoutManager l=  new LinearLayoutManager(view.getContext());
         rv.setLayoutManager(l);
-        adap = new CompetitionAdapter(comp_occur, ImageLoader.getInstance(),this);
+        adap = new CompetitionAdapter(comp_occur,this);
         rv.setAdapter(adap);
 
         loadAnswers();
@@ -98,8 +98,8 @@ private int matchs_live;
         DateTime today = new DateTime().withTimeAtStartOfDay().toDateTimeISO();
         DateTime tomorrow = today.plusDays(1).withTimeAtStartOfDay().toDateTimeISO();
         DateTimeFormatter fmt = DateTimeFormat.forPattern("YYYY-MM-dd");
-        // Log.d("DDDate", "loadAnswers: "+fmt.print(today)+"     "+tomorrow);
-        mService.getCompet(fmt.print(today), fmt.print(today), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
+        //  Log.d("DDDate", "loadAnswers: "+fmt.print(today)+"     "+tomorrow);
+        mService.getCompet(fmt.print(today)+"T00:00:00+"+today.getEra(), fmt.print(tomorrow)+"T00:00:00+"+today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
 
             @Override
             public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
@@ -182,10 +182,12 @@ private int matchs_live;
     }
 
     private Integer get_live_by_comp(List<Match> matchs, Integer id_comp) {
+
         int count_live = 0;
         for (int count = 0; count < matchs.size(); count++) {
-            if ((matchs.get(count).getCompetition().getDbid() == id_comp) && (match_states.contains(matchs.get(count).getCurrentState())))
-                count_live++;
+            if(id_comp==139 && match_states.contains(matchs.get(count).getCurrentState())) Log.d("", "get_live_by_comp: "+matchs.get(count).getCurrentState()+":"+matchs.get(count).getCompetition().getDbid()+":"+id_comp);
+            if ((matchs.get(count).getCompetition().getDbid() .equals( id_comp) )&& (match_states.contains(matchs.get(count).getCurrentState())))
+            { count_live++;}
         }
 
         return count_live;

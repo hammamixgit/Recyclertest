@@ -1,10 +1,8 @@
 package recorder.appss.cool.adapter;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,16 +29,17 @@ import recorder.appss.cool.recyclertest.R;
  */
 
 public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    List<Competition> list_compt = new ArrayList<>();
     LinkedHashMap<Competition, String> ks = new LinkedHashMap<Competition, String>();
-    ImageLoader imageLoader;
+
     FragmentCompetitionList ff;
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_FOOTER = 2;
 private int nbmatch_total,nbmatch_live;
-    public CompetitionAdapter(LinkedHashMap<Competition, String> k, ImageLoader imageLoader1,FragmentCompetitionList f) {
+    public CompetitionAdapter(LinkedHashMap<Competition, String> k, FragmentCompetitionList f) {
         ks.putAll(k);
-        imageLoader = imageLoader1;
+
         ff=f;
     }
     @Override
@@ -69,7 +69,7 @@ private int nbmatch_total,nbmatch_live;
             return mvh;
 
         } else if (viewType == TYPE_HEADER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_layout, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_layout_competetion, parent, false);
             return new HeaderViewHolder(view);
 
         } else if (viewType == TYPE_FOOTER) {
@@ -92,10 +92,11 @@ private int nbmatch_total,nbmatch_live;
         //   imageLoader.displayImage(ks.get(position).getCompetition().getFlagUrl(), holder.im);
         if (holder instanceof Myviewholder) {
             Set<Map.Entry<Competition, String>> mapSet = ks.entrySet();
-            Map.Entry<Competition, String> element = (Map.Entry<Competition, String>) mapSet.toArray()[position];
+            Map.Entry<Competition, String> element = (Map.Entry<Competition, String>) mapSet.toArray()[position-1];
 
 
             Competition c = element.getKey();
+            list_compt.add(c);
             String[] str_array_nbmatch_nblive = element.getValue().split(":");
             ((Myviewholder)  holder).txtmatch.setText(str_array_nbmatch_nblive[0]);
             ((Myviewholder)  holder).txtnblive.setText(str_array_nbmatch_nblive[1]);
@@ -122,13 +123,11 @@ private int nbmatch_total,nbmatch_live;
 
     }
 
-    public Object getElementByIndex(LinkedHashMap map, int index) {
-        return map.get((map.entrySet().toArray())[index]);
-    }
+
 
     @Override
     public int getItemCount() {
-        return ks.size();
+        return ks.size()+1;
     }
 
     public void updateAnswers(LinkedHashMap<Competition, String> items,int nbmatch,int nblive) {
@@ -153,10 +152,8 @@ private int nbmatch_total,nbmatch_live;
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Fragment fragment = new FragmentMatchsCompet();
-                    Bundle args = new Bundle();
-                    args.putString("data", "This data has sent to FragmentTwo");
-                    fragment.setArguments(args);
+                    Fragment fragment =  FragmentMatchsCompet.newInstance(list_compt.get(getLayoutPosition()-1));
+
                     FragmentTransaction transaction =     ff.getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.activity_main, fragment);
                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
