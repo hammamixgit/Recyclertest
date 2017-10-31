@@ -16,8 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -25,7 +23,6 @@ import org.joda.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import recorder.appss.cool.adapter.CompetitionAdapter;
 import recorder.appss.cool.adapter.ItemOffsetDecoration;
 import recorder.appss.cool.adapter.MatchCompetitionAdapter;
 import recorder.appss.cool.model.Competition;
@@ -50,13 +47,13 @@ public class FragmentMatchsCompet extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    List<Match> list_match_compet ;
+    List<Match> list_match_compet;
     private Sportservice mService;
     // TODO: Rename and change types of parameters
     private Competition mParam1;
-RecyclerView rv;
+    RecyclerView rv;
     MatchCompetitionAdapter m_comp_adap;
-     Toolbar toolbar;
+    Toolbar toolbar;
     AppCompatActivity appCompatActivity;
     private OnFragmentInteractionListener mListener;
 
@@ -69,7 +66,6 @@ RecyclerView rv;
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     *
      * @return A new instance of fragment FragmentMatchsCompet.
      */
     // TODO: Rename and change types and number of parameters
@@ -85,8 +81,8 @@ RecyclerView rv;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 =getArguments().getParcelable(ARG_PARAM1);
-            Log.d("compid",mParam1+"");
+            mParam1 = getArguments().getParcelable(ARG_PARAM1);
+            Log.d("compid", mParam1 + "");
         }
 
     }
@@ -95,15 +91,15 @@ RecyclerView rv;
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mService = ApiUtils.getSOService();
-        rv= (RecyclerView)view.findViewById(R.id.rv_match_compr);
+        rv = (RecyclerView) view.findViewById(R.id.rv_match_compr);
         rv.setHasFixedSize(true);
         rv.addItemDecoration(new ItemOffsetDecoration(25));
-        final LinearLayoutManager l=  new LinearLayoutManager(view.getContext());
+        final LinearLayoutManager l = new LinearLayoutManager(view.getContext());
         rv.setLayoutManager(l);
-        list_match_compet= new ArrayList<>();
-        m_comp_adap = new MatchCompetitionAdapter(list_match_compet,mParam1);
+        list_match_compet = new ArrayList<>();
+        m_comp_adap = new MatchCompetitionAdapter(list_match_compet, mParam1);
         rv.setAdapter(m_comp_adap);
-        getmatch(mParam1.getDbid()+"");
+        getmatch(mParam1.getDbid() + "");
     }
 
     @Override
@@ -113,18 +109,18 @@ RecyclerView rv;
         if (container != null) {
             container.removeAllViews();
         }
-        toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
-        appCompatActivity = (AppCompatActivity)getActivity();
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        appCompatActivity = (AppCompatActivity) getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-      //  toolbar.setNavigationIcon(R.mipmap.ic_flash_on_white_24dp);
+        //  toolbar.setNavigationIcon(R.mipmap.ic_flash_on_white_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 back();
             }
         });
-        return inflater.inflate(R.layout.fragment_matchs_compet, container, false);
+        return inflater.inflate(R.layout.fragment_matchs_compet_list, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -178,8 +174,8 @@ RecyclerView rv;
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
-                  back();
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    back();
 
                     return true;
 
@@ -190,20 +186,19 @@ RecyclerView rv;
         });
     }
 
-private  void back ()
-{
-   // appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-    Fragment fragment = new FragmentCompetitionList();
-    Bundle args = new Bundle();
-    args.putString("data", "This data has sent to FragmentTwo");
-    fragment.setArguments(args);
-    FragmentTransaction transaction =     getActivity().getSupportFragmentManager().beginTransaction();
-    transaction.replace(R.id.activity_main, fragment);
-    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-    transaction.addToBackStack(null);
-    transaction.commit();
+    private void back() {
+        // appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        Fragment fragment = new TabFragmentCompetitionList();
+        Bundle args = new Bundle();
+        args.putString("data", "This data has sent to FragmentTwo");
+        fragment.setArguments(args);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.activity_main, fragment);
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
-}
+    }
 
     private void getmatch(String id)
 
@@ -211,14 +206,14 @@ private  void back ()
         DateTime today = new DateTime().withTimeAtStartOfDay().toDateTimeISO();
         DateTime tomorrow = today.plusDays(1).withTimeAtStartOfDay().toDateTimeISO();
         DateTimeFormatter fmt = DateTimeFormat.forPattern("YYYY-MM-dd");
-        mService.getMatchCompet(id,fmt.print(today)+"T00:00:00+"+today.getEra(), fmt.print(tomorrow)+"T00:00:00+"+today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
+        mService.getMatchCompet(id, fmt.print(today) + "T00:00:00+" + today.getEra(), fmt.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
 
             @Override
             public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
 
                 if (response.isSuccessful()) {
                     list_match_compet = response.body();
-                    m_comp_adap.updateAnswers(list_match_compet,0,0);
+                    m_comp_adap.updateAnswers(list_match_compet, 0, 0);
 
 
                 } else {

@@ -1,4 +1,3 @@
-
 package recorder.appss.cool.model;
 
 

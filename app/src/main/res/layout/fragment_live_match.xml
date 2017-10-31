@@ -2,12 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="recorder.appss.cool.recyclertest.F1">
+    tools:context="recorder.appss.cool.recyclertest.Tab_fragment_live_match">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_list_live"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="11111111111" />
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

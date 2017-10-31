@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import recorder.appss.cool.model.Competition;
-import recorder.appss.cool.recyclertest.FragmentCompetitionList;
+import recorder.appss.cool.recyclertest.TabFragmentCompetitionList;
 import recorder.appss.cool.recyclertest.FragmentMatchsCompet;
 import recorder.appss.cool.recyclertest.R;
 
@@ -32,16 +32,18 @@ public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     List<Competition> list_compt = new ArrayList<>();
     LinkedHashMap<Competition, String> ks = new LinkedHashMap<Competition, String>();
 
-    FragmentCompetitionList ff;
+    TabFragmentCompetitionList ff;
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_FOOTER = 2;
-private int nbmatch_total,nbmatch_live;
-    public CompetitionAdapter(LinkedHashMap<Competition, String> k, FragmentCompetitionList f) {
+    private int nbmatch_total, nbmatch_live;
+
+    public CompetitionAdapter(LinkedHashMap<Competition, String> k, TabFragmentCompetitionList f) {
         ks.putAll(k);
 
-        ff=f;
+        ff = f;
     }
+
     @Override
     public int getItemViewType(int position) {
         if (isPositionHeader(position)) {
@@ -61,10 +63,11 @@ private int nbmatch_total,nbmatch_live;
     private boolean isPositionFooter(int position) {
         return position > ks.size();
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemrv, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.compet_list_item, parent, false);
             Myviewholder mvh = new Myviewholder(v);
             return mvh;
 
@@ -79,12 +82,6 @@ private int nbmatch_total,nbmatch_live;
         throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
 
 
-
-
-
-
-
-
     }
 
     @Override
@@ -92,47 +89,45 @@ private int nbmatch_total,nbmatch_live;
         //   imageLoader.displayImage(ks.get(position).getCompetition().getFlagUrl(), holder.im);
         if (holder instanceof Myviewholder) {
             Set<Map.Entry<Competition, String>> mapSet = ks.entrySet();
-            Map.Entry<Competition, String> element = (Map.Entry<Competition, String>) mapSet.toArray()[position-1];
+            Map.Entry<Competition, String> element = (Map.Entry<Competition, String>) mapSet.toArray()[position - 1];
 
 
             Competition c = element.getKey();
             list_compt.add(c);
             String[] str_array_nbmatch_nblive = element.getValue().split(":");
-            ((Myviewholder)  holder).txtmatch.setText(str_array_nbmatch_nblive[0]);
-            ((Myviewholder)  holder).txtnblive.setText(str_array_nbmatch_nblive[1]);
+            ((Myviewholder) holder).txtmatch.setText(str_array_nbmatch_nblive[0]);
+            ((Myviewholder) holder).txtnblive.setText(str_array_nbmatch_nblive[1]);
             String[] str_array_compet_country = c.getName().split(":");
-            ((Myviewholder)  holder).tx.setText(str_array_compet_country[1]);
-            ((Myviewholder)  holder).tcountry.setText(str_array_compet_country[0]);
+            ((Myviewholder) holder).tx.setText(str_array_compet_country[1]);
+            ((Myviewholder) holder).tcountry.setText(str_array_compet_country[0]);
             Transformation transformation = new RoundedTransformationBuilder()
                     .cornerRadiusDp(40)
                     .oval(true)
                     .build();
 
-            Picasso.with( ((Myviewholder)  holder).im.getContext())
+            Picasso.with(((Myviewholder) holder).im.getContext())
                     .load(c.getFlagUrl())
                     .fit()
                     .transform(transformation)
-                    .into( ((Myviewholder)  holder).im);
+                    .into(((Myviewholder) holder).im);
 
-        }
-        else if(holder instanceof HeaderViewHolder){
-            ((HeaderViewHolder)  holder).all.setText(nbmatch_total+"");
-            ((HeaderViewHolder)  holder).alllive.setText(nbmatch_live+"");
+        } else if (holder instanceof HeaderViewHolder) {
+            ((HeaderViewHolder) holder).all.setText(nbmatch_total + "");
+            ((HeaderViewHolder) holder).alllive.setText(nbmatch_live + "");
 
         }
 
     }
-
 
 
     @Override
     public int getItemCount() {
-        return ks.size()+1;
+        return ks.size() + 1;
     }
 
-    public void updateAnswers(LinkedHashMap<Competition, String> items,int nbmatch,int nblive) {
-        nbmatch_total=nbmatch;
-                nbmatch_live=nblive;
+    public void updateAnswers(LinkedHashMap<Competition, String> items, int nbmatch, int nblive) {
+        nbmatch_total = nbmatch;
+        nbmatch_live = nblive;
         ks = items;
         notifyDataSetChanged();
     }
@@ -152,9 +147,9 @@ private int nbmatch_total,nbmatch_live;
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Fragment fragment =  FragmentMatchsCompet.newInstance(list_compt.get(getLayoutPosition()-1));
+                    Fragment fragment = FragmentMatchsCompet.newInstance(list_compt.get(getLayoutPosition() - 1));
 
-                    FragmentTransaction transaction =     ff.getActivity().getSupportFragmentManager().beginTransaction();
+                    FragmentTransaction transaction = ff.getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.activity_main, fragment);
                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
@@ -165,9 +160,10 @@ private int nbmatch_total,nbmatch_live;
             });
         }
     }
-   public class HeaderViewHolder extends RecyclerView.ViewHolder {
+
+    public class HeaderViewHolder extends RecyclerView.ViewHolder {
         public View View;
-       TextView all,alllive;
+        TextView all, alllive;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);

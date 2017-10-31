@@ -1,4 +1,3 @@
-
 package recorder.appss.cool.model;
 
 import android.os.Parcel;
@@ -6,8 +5,6 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.ArrayList;
 
 public class Competition implements Parcelable {
 
@@ -61,7 +58,7 @@ public class Competition implements Parcelable {
 
     @Override
     public String toString() {
-        return getDbid()+"";
+        return getDbid() + "";
     }
 
     @Override
@@ -81,6 +78,7 @@ public class Competition implements Parcelable {
         dest.writeString(name);
         dest.writeString(flagUrl);
     }
+
     public static final Parcelable.Creator<Competition> CREATOR = new Parcelable.Creator<Competition>() {
         public Competition createFromParcel(Parcel in) {
             return new Competition(in);
@@ -92,8 +90,10 @@ public class Competition implements Parcelable {
     };
 
     private Competition(Parcel in) {
-        ordering = in.readInt();dbid= in.readInt();
-        name = in.readString();flagUrl=in.readString();
+        ordering = in.readInt();
+        dbid = in.readInt();
+        name = in.readString();
+        flagUrl = in.readString();
 
 
     }

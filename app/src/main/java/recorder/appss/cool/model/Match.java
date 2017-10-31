@@ -1,4 +1,3 @@
-
 package recorder.appss.cool.model;
 
 import com.google.gson.annotations.Expose;
@@ -17,7 +16,7 @@ public class Match {
     private Object nextState;
     @SerializedName("start")
     @Expose
-    private double  start;
+    private double start;
     @SerializedName("goToExtraTime")
     @Expose
     private Boolean goToExtraTime;
@@ -94,11 +93,11 @@ public class Match {
         this.nextState = nextState;
     }
 
-    public double  getStart() {
+    public double getStart() {
         return start;
     }
 
-    public void setStart(double  start) {
+    public void setStart(double start) {
         this.start = start;
     }
 

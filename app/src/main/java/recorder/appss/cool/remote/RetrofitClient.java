@@ -1,17 +1,17 @@
 package recorder.appss.cool.remote;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import okhttp3.logging.HttpLoggingInterceptor;
+
 public class RetrofitClient {
 
     private static Retrofit retrofit = null;
     private static String key = "8924361210ed4d069faa3692aaec130c";
+
     public static Retrofit getClient(String baseUrl) {
-        if (retrofit==null) {
+        if (retrofit == null) {
          /*   Gson gson = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd")
                     .create();
@@ -30,7 +30,6 @@ public class RetrofitClient {
         }
         return retrofit;
     }
-
 
 
     public static String getkey() {

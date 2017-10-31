@@ -13,15 +13,13 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -45,50 +43,50 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FragmentCompetitionList extends Fragment {
+public class TabFragmentCompetitionList extends Fragment {
 
     //Declaration var
-    List<Integer> match_states = new ArrayList<>(Arrays.asList(1,2, 3, 4, 5, 6, 7, 8));
+    List<Integer> match_states = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
     private Sportservice mService;
     private RecyclerView rv;
-    List<Match> list_match ;
-    List<Competition> list_competition ;
-    LinkedHashMap<Competition, String> comp_occur ;
+    List<Match> list_match;
+    List<Competition> list_competition;
+    LinkedHashMap<Competition, String> comp_occur;
     //  List <Integer> live_match_per_comp = new ArrayList<>();
     CompetitionAdapter adap;
-private int matchs_live;
+    private int matchs_live;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        Toolbar  toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
-        AppCompatActivity  appCompatActivity = (AppCompatActivity)getActivity();
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        return inflater.inflate(R.layout.activity_main, container, false);
+        return inflater.inflate(R.layout.compet_list, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        matchs_live=0;
+        matchs_live = 0;
         list_match = new ArrayList<>();
         list_competition = new ArrayList<>();
         comp_occur = new LinkedHashMap<>();
         int position = FragmentPagerItem.getPosition(getArguments());
         JodaTimeAndroid.init(view.getContext());
-     //   ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(view.getContext()).build();
-      //  ImageLoader.getInstance().init(config);
+        //   ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(view.getContext()).build();
+        //  ImageLoader.getInstance().init(config);
         mService = ApiUtils.getSOService();
         rv = (RecyclerView) view.findViewById(R.id.rv);
         // set true if your RecyclerView is finite and has fixed size
         rv.setHasFixedSize(false);
         rv.addItemDecoration(new ItemOffsetDecoration(25));
-      final LinearLayoutManager l=  new LinearLayoutManager(view.getContext());
+        final LinearLayoutManager l = new LinearLayoutManager(view.getContext());
         rv.setLayoutManager(l);
-        adap = new CompetitionAdapter(comp_occur,this);
+        adap = new CompetitionAdapter(comp_occur, this);
         rv.setAdapter(adap);
 
         loadAnswers();
@@ -99,7 +97,7 @@ private int matchs_live;
         DateTime tomorrow = today.plusDays(1).withTimeAtStartOfDay().toDateTimeISO();
         DateTimeFormatter fmt = DateTimeFormat.forPattern("YYYY-MM-dd");
         //  Log.d("DDDate", "loadAnswers: "+fmt.print(today)+"     "+tomorrow);
-        mService.getCompet(fmt.print(today)+"T00:00:00+"+today.getEra(), fmt.print(tomorrow)+"T00:00:00+"+today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
+        mService.getMatch(fmt.print(today) + "T00:00:00+" + today.getEra(), fmt.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
 
             @Override
             public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
@@ -109,7 +107,7 @@ private int matchs_live;
 
                     sort_compet(list_match, list_competition);
 
-                    adap.updateAnswers(count_compet(list_competition),list_match.size(),matchs_live);
+                    adap.updateAnswers(count_compet(list_competition), list_match.size(), matchs_live);
 
                 } else {
                     int statusCode = response.code();
@@ -147,23 +145,24 @@ private int matchs_live;
 
     private String get_country_fromurl(String s) {
         String result = s.substring(s.lastIndexOf("/") + 1, s.lastIndexOf("."));
-        if (result.equals("fifa")||result.equals("uefa")||result.equals("afc")) result = "world";
+        if (result.equals("fifa") || result.equals("uefa") || result.equals("afc"))
+            result = "world";
         return result;
     }
 
 
     private LinkedHashMap count_compet(List<Competition> comp) {
-        int var=0;
+        int var = 0;
         List<Integer> id = new ArrayList<>();
         for (Competition c : comp)
             id.add(c.getDbid());
         LinkedHashMap<Competition, String> hm = new LinkedHashMap<>();
-        Set<Integer> lhs = new LinkedHashSet<>(id);
+        Set<Integer> lhs = new  LinkedHashSet<>(id);
         for (Integer c : lhs) {
             int occurrences = Collections.frequency(id, c);
-            var=get_live_by_comp(list_match, c);
+            var = get_live_by_comp(list_match, c);
             hm.put(get_comp_by_id(comp, c), occurrences + ":" + var);
-            matchs_live=matchs_live+var;
+            matchs_live = matchs_live + var;
         }
         return hm;
     }
@@ -182,16 +181,24 @@ private int matchs_live;
     }
 
     private Integer get_live_by_comp(List<Match> matchs, Integer id_comp) {
+        DateTime d1 = new DateTime();
+
 
         int count_live = 0;
         for (int count = 0; count < matchs.size(); count++) {
-            if(id_comp==139 && match_states.contains(matchs.get(count).getCurrentState())) Log.d("", "get_live_by_comp: "+matchs.get(count).getCurrentState()+":"+matchs.get(count).getCompetition().getDbid()+":"+id_comp);
-            if ((matchs.get(count).getCompetition().getDbid() .equals( id_comp) )&& (match_states.contains(matchs.get(count).getCurrentState())))
-            { count_live++;}
+            DateTime d2 = new DateTime((long)matchs.get(count).getCurrentStateStart());
+            Duration duration = new Duration(d2, d1);
+            long mn= duration.getStandardMinutes();
+          //  if (id_comp == 139 && match_states.contains(matchs.get(count).getCurrentState()))
+             //   Log.d("", "get_live_by_comp: " + matchs.get(count).getCurrentState() + ":" + matchs.get(count).getCompetition().getDbid() + ":" + id_comp);
+            if (mn<60&&(matchs.get(count).getCompetition().getDbid().equals(id_comp)) && (match_states.contains(matchs.get(count).getCurrentState()))) {
+                count_live++;
+            }
         }
 
         return count_live;
     }
+
     @Override
     public void onResume() {
 
@@ -203,7 +210,7 @@ private int matchs_live;
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
                     Intent a = new Intent(Intent.ACTION_MAIN);
                     a.addCategory(Intent.CATEGORY_HOME);
                     a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -16,7 +16,7 @@ public enum Configtemplete {
     CUSTOM_TAB_ICONS2(R.string.demo_title_custom_tab_icons2, R.layout.demo_custom_tab_icons2) {
         @Override
         public int[] tabs() {
-            return new int[] {
+            return new int[]{
                     R.string.demo_tab_no_title,
                     R.string.demo_tab_no_title,
                     R.string.demo_tab_no_title,
@@ -59,7 +59,6 @@ public enum Configtemplete {
     };
 
 
-
     public final int titleResId;
     public final int layoutResId;
 
@@ -74,16 +73,17 @@ public enum Configtemplete {
     }
 
 
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     public void setup(final SmartTabLayout layout) {
         //Do nothing.
     }
+
     public int[] tabs() {
         return tab3();
     }
+
     public static int[] tab3() {
-        return new int[] {
+        return new int[]{
                 R.string.demo_tab_no_title,
                 R.string.demo_tab_no_title,
                 R.string.demo_tab_no_title,
