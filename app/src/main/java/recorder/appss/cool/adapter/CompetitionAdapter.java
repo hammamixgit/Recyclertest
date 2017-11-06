@@ -147,7 +147,7 @@ public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Fragment fragment = FragmentMatchsCompet.newInstance(list_compt.get(getLayoutPosition() - 1));
+                    Fragment fragment = FragmentMatchsCompet.newInstance(list_compt.get(getAdapterPosition() - 1));
 
                     FragmentTransaction transaction = ff.getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.activity_main, fragment);

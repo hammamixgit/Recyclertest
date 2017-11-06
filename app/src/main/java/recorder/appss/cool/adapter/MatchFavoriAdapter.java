@@ -20,12 +20,8 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
-import recorder.appss.cool.model.Competition;
 import recorder.appss.cool.model.Match;
 import recorder.appss.cool.recyclertest.R;
 import recorder.appss.cool.utils.PreferenceUtils;
@@ -34,7 +30,7 @@ import recorder.appss.cool.utils.PreferenceUtils;
  * Created by work on 29/09/2017.
  */
 
-public class MatchLiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MatchFavoriAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     List<String> list_fav = new ArrayList<>();
     List<Match> list_of_matchs_live = new ArrayList<>();
     List<Match> list_of_matchs_live2 = new ArrayList<>();
@@ -45,18 +41,32 @@ public class MatchLiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private int pos=0;
 int current_compet=0;
     public Context ctx;
-    public MatchLiveAdapter(List<Match> list_match,Context c ) {
+    public MatchFavoriAdapter(List<Match> list_match, Context c ) {
           ctx=c;
         list_fav.addAll(PreferenceUtils.getfavPref(ctx));
         list_of_matchs_live.addAll(list_match);
      for(Match m : list_of_matchs_live)
-         if(pos==0)
-         {Match e = new Match();e.setCompetition(m.getCompetition());e.setDbid(-1);list_of_matchs_live2.add(e);list_of_matchs_live2.add(m);current_compet=m.getCompetition().getDbid();pos++;}
-         else
-         {
-         if(current_compet== m.getCompetition().getDbid()){list_of_matchs_live2.add(m);}
-         else{ Match e = null;e.setCompetition(m.getCompetition());e.setDbid(-1);list_of_matchs_live2.add(e);current_compet=m.getCompetition().getDbid();}
+         if(list_fav.contains(m.getDbid()+"")) {
+             if (pos == 0) {
+                 Match e = new Match();
+                 e.setCompetition(m.getCompetition());
+                 e.setDbid(-1);
+                 list_of_matchs_live2.add(e);
+                 list_of_matchs_live2.add(m);
+                 current_compet = m.getCompetition().getDbid();
+                 pos++;
+             } else {
+                 if (current_compet == m.getCompetition().getDbid()) {
+                     list_of_matchs_live2.add(m);
+                 } else {
+                     Match e = null;
+                     e.setCompetition(m.getCompetition());
+                     e.setDbid(-1);
+                     list_of_matchs_live2.add(e);
+                     current_compet = m.getCompetition().getDbid();
+                 }
 
+             }
          }
     }
 
@@ -117,8 +127,16 @@ int current_compet=0;
                     PreferenceUtils.removefavPref( ctx,list_of_matchs_live2.get(position).getDbid().toString());
                     list_fav.clear();
                     list_fav.addAll(PreferenceUtils.getfavPref(ctx));
+                    int resultat= verif_match_for_compet(list_of_matchs_live2.get(position).getCompetition().getDbid());
+                    list_of_matchs_live2.remove(position);
+                    if(resultat==2){list_of_matchs_live2.remove(position-1); }
+                    notifyItemRemoved(position);
 
-                    notifyItemChanged(position);
+                   // if((resultat==1))list_of_matchs_live2.remove(position);
+                    notifyItemRangeChanged(position-1,list_of_matchs_live2.size());//delete from live 2
+
+
+
                    // Log.d("favori",list_of_matchs_live2.get(position).getAwayTeam().getName()+"-"+list_of_matchs_live2.get(position).getHomeTeam().getName()+"- unnliked!!");
 
                 }
@@ -172,7 +190,17 @@ int current_compet=0;
 
     }
 
+private int verif_match_for_compet(Integer id_comp)
 
+{
+int result =0;
+    for(Match m : list_of_matchs_live2)
+    {
+        if(m.getDbid()>-1 && m.getCompetition().getDbid()==id_comp ){result++;}
+    }
+
+    return  result;
+}
     @Override
     public int getItemCount() {
         return list_of_matchs_live2.size() ;
@@ -182,11 +210,18 @@ int current_compet=0;
         pos=0;
         list_of_matchs_live.clear(); list_of_matchs_live2.clear();
         list_of_matchs_live .addAll(items) ;
-        for(Match m : list_of_matchs_live){
-            Log.d("matchdetails", m.getCompetition().getName()+"-"+m.getAwayTeam().getName());
-            if(pos==0)
-            {Match e = new Match();e.setCompetition(m.getCompetition());e.setDbid(-1);list_of_matchs_live2.add(e);list_of_matchs_live2.add(m);current_compet=m.getCompetition().getDbid();pos++;}
-            else {
+        for(Match m : list_of_matchs_live) {
+            Log.d("matchdetails", m.getCompetition().getName() + "-" + m.getAwayTeam().getName());
+            if(list_fav.contains(m.getDbid()+"")) {
+            if (pos == 0) {
+                Match e = new Match();
+                e.setCompetition(m.getCompetition());
+                e.setDbid(-1);
+                list_of_matchs_live2.add(e);
+                list_of_matchs_live2.add(m);
+                current_compet = m.getCompetition().getDbid();
+                pos++;
+            } else {
                 if (current_compet == m.getCompetition().getDbid()) {
                     list_of_matchs_live2.add(m);
                 } else {
@@ -198,6 +233,7 @@ int current_compet=0;
                     current_compet = m.getCompetition().getDbid();
                 }
             }
+        }
             }
         notifyDataSetChanged();
         Log.d("matchssize", list_of_matchs_live2.size()+"");

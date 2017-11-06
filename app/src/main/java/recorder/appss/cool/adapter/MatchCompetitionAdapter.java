@@ -34,16 +34,17 @@ import recorder.appss.cool.utils.PreferenceUtils;
 public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     List<Match> list_of_matchs = new ArrayList<>();
     Competition competition;
-
+    List<String> list_fav = new ArrayList<>();
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_FOOTER = 2;
     private int nbmatch_total, nbmatch_live;
-
-    public MatchCompetitionAdapter(List<Match> list_match, Competition c) {
-
+Context contxt;
+    public MatchCompetitionAdapter(List<Match> list_match, Competition c,Context ctx) {
+contxt=ctx;
         list_of_matchs.addAll(list_match);
         competition = c;
+        list_fav.addAll(PreferenceUtils.getfavPref(ctx));
     }
 
     @Override
@@ -57,7 +58,10 @@ public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         return TYPE_ITEM;
     }
-
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
     private boolean isPositionHeader(int position) {
         return position == 0;
     }
@@ -86,22 +90,38 @@ public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         //   imageLoader.displayImage(ks.get(position).getCompetition().getFlagUrl(), holder.im);
-     final    Context ctx=((Myviewholder) holder).btn_like.getContext();
+   //  final    Context ctx=((Myviewholder) holder).btn_like.getContext();
+        int x=position;
         if (holder instanceof Myviewholder) {
+
+
+            if (list_fav.contains(list_of_matchs.get(position-1).getDbid().toString()))
+               ((Myviewholder) holder).btn_like.setLiked(true);
+            else{ ((Myviewholder) holder).btn_like.setLiked(false);
+                //Log.d("favori",position+"rebind"+list_of_matchs.get(position-1).getAwayTeam().getName()+"-"+list_of_matchs.get(position-1).getDbid());
+                }
             ((Myviewholder) holder).btn_like.setOnLikeListener(new OnLikeListener() {
 
                 @Override
                 public void liked(LikeButton likeButton) {
-                    PreferenceUtils.addfavPref( ctx,list_of_matchs.get(position-1).getDbid().toString());
-                 //   Log.d("favori",list_of_matchs.get(position-1).getAwayTeam().getName()+"-"+list_of_matchs.get(position-1).getHomeTeam().getName()+"- liked!!");
+                    PreferenceUtils.addfavPref( contxt,list_of_matchs.get(position-1).getDbid().toString());
+                    list_fav.clear();
+                    list_fav.addAll(PreferenceUtils.getfavPref(contxt));
+                    notifyItemChanged(position);
+                  //  Log.d("favori",list_of_matchs.get(position-1).getAwayTeam().getName()+"-"+list_of_matchs.get(position-1).getDbid()+"- liked!!");
                 }
 
                 @Override
                 public void unLiked(LikeButton likeButton) {
-                    PreferenceUtils.removefavPref( ctx,list_of_matchs.get(position-1).getDbid().toString());
-                 //   Log.d("unfavori",list_of_matchs.get(position-1).getAwayTeam().getName()+"-"+list_of_matchs.get(position-1).getHomeTeam().getName()+"- unliked!!");
+                    PreferenceUtils.removefavPref( contxt,list_of_matchs.get(position-1).getDbid().toString());
+                    list_fav.clear();
+                    list_fav.addAll(PreferenceUtils.getfavPref(contxt));
+                  //  likeButton.setLiked(false);
+
+                   notifyItemChanged(position);
+                  //  Log.d("unfavori",list_of_matchs.get(position-1).getAwayTeam().getName()+"-"+list_of_matchs.get(position-1).getDbid()+"- unliked!!");
 
                 }
             });

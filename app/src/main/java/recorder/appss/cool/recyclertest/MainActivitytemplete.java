@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -18,7 +19,7 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
-public class MainActivitytemplete extends AppCompatActivity implements Tab_fragment_live_match.OnFragmentInteractionListener, F2.OnFragmentInteractionListener, F3.OnFragmentInteractionListener, FragmentMatchsCompet.OnFragmentInteractionListener {
+public class MainActivitytemplete extends AppCompatActivity implements Tab_fragment_live_match.OnFragmentInteractionListener, Tab_fragment_fav_match.OnFragmentInteractionListener, F3.OnFragmentInteractionListener, FragmentMatchsCompet.OnFragmentInteractionListener {
 
     private static final String KEY_DEMO = "main";
 
@@ -61,7 +62,7 @@ public class MainActivitytemplete extends AppCompatActivity implements Tab_fragm
 
         pages.add(FragmentPagerItem.of("1", TabFragmentCompetitionList.class));
         pages.add(FragmentPagerItem.of("2", Tab_fragment_live_match.class));
-        pages.add(FragmentPagerItem.of("3", F2.class));
+        pages.add(FragmentPagerItem.of("3", Tab_fragment_fav_match.class));
         pages.add(FragmentPagerItem.of("4", F3.class));
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), pages);
@@ -90,6 +91,6 @@ startActivity(a);
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
+        Log.d("adress freaag", uri.toString());
     }
 }

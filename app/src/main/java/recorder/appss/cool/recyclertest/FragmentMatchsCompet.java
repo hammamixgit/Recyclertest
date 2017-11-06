@@ -97,7 +97,7 @@ public class FragmentMatchsCompet extends Fragment {
         final LinearLayoutManager l = new LinearLayoutManager(view.getContext());
         rv.setLayoutManager(l);
         list_match_compet = new ArrayList<>();
-        m_comp_adap = new MatchCompetitionAdapter(list_match_compet, mParam1);
+        m_comp_adap = new MatchCompetitionAdapter(list_match_compet, mParam1,getContext());
         rv.setAdapter(m_comp_adap);
         getmatch(mParam1.getDbid() + "");
     }
