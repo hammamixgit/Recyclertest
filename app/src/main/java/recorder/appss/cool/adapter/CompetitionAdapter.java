@@ -150,7 +150,7 @@ public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     Fragment fragment = FragmentMatchsCompet.newInstance(list_compt.get(getAdapterPosition() - 1));
 
                     FragmentTransaction transaction = ff.getActivity().getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.activity_main, fragment);
+                     transaction.replace(R.id.activity_main, fragment);
                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
                     transaction.addToBackStack(null);
