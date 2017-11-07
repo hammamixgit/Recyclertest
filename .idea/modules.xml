@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Recyclertest.iml" filepath="$PROJECT_DIR$/Recyclertest.iml" />
+      <module fileurl="file://C:\androidApp\Anwar\Recyclertest\Recyclertest.iml" filepath="C:\androidApp\Anwar\Recyclertest\Recyclertest.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\androidApp\Anwar\Recyclertest\app\app.iml" filepath="C:\androidApp\Anwar\Recyclertest\app\app.iml" />
     </modules>
   </component>
 </project>

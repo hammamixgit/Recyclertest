@@ -27,16 +27,16 @@ dependencies {
 
 
     dependencies {
-        compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
+        compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'  //TODO n'est plus utlisable supprime et replace avec les fonctions android
 
         //Optional: see how to use the utility.
-        compile 'com.ogaclejapan.smarttablayout:utils-v4:1.6.1@aar'
+        compile 'com.ogaclejapan.smarttablayout:utils-v4:1.6.1@aar' //TODO supprime si n'est plus utilier
 
         //Optional: see how to use the utility.
         compile 'com.ogaclejapan.smarttablayout:utils-v13:1.6.1@aar'
     }
     compile 'com.github.jd-alexander:LikeButton:0.2.3'
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'  //TODO supprime et change par GLIDE pour charger les images
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.android.support:cardview-v7:24.2.1'
@@ -44,8 +44,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'javax.annotation:javax.annotation-api:1.2'
-    compile 'com.makeramen:roundedimageview:2.2.1'
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.makeramen:roundedimageview:2.2.1'   //TODO les round image sont dans le transformer de GLIDE
+    compile 'com.squareup.picasso:picasso:2.5.2'  //TODO replace with GLIDE
     compile 'net.danlew:android.joda:2.9.9'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.android.support:design:24.2.1'
