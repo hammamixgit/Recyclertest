@@ -63,7 +63,7 @@ public class MainActivitytemplete extends AppCompatActivity implements Tab_fragm
 
 
 
-        FragmentPagerAdap adapter = new FragmentPagerAdap(
+         FragmentPagerAdap adapter = new FragmentPagerAdap(
                 getSupportFragmentManager());
 
         viewPager.setAdapter(adapter);
