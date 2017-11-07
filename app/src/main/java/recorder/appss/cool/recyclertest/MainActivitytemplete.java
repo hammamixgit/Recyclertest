@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,8 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
+
+import recorder.appss.cool.adapter.FragmentPagerAdap;
 
 public class MainActivitytemplete extends AppCompatActivity implements Tab_fragment_live_match.OnFragmentInteractionListener, Tab_fragment_fav_match.OnFragmentInteractionListener, F3.OnFragmentInteractionListener, FragmentMatchsCompet.OnFragmentInteractionListener {
 
@@ -57,19 +60,30 @@ public class MainActivitytemplete extends AppCompatActivity implements Tab_fragm
         SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
         configtemplete.setup(viewPagerTab);
 
-        FragmentPagerItems pages = new FragmentPagerItems(this);
 
 
-        pages.add(FragmentPagerItem.of("1", TabFragmentCompetitionList.class));
-        pages.add(FragmentPagerItem.of("2", Tab_fragment_live_match.class));
-        pages.add(FragmentPagerItem.of("3", Tab_fragment_fav_match.class));
-        pages.add(FragmentPagerItem.of("4", F3.class));
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
-                getSupportFragmentManager(), pages);
+
+        FragmentPagerAdap adapter = new FragmentPagerAdap(
+                getSupportFragmentManager());
 
         viewPager.setAdapter(adapter);
         viewPagerTab.setViewPager(viewPager);
+      viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+          @Override
+          public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+          }
+
+          @Override
+          public void onPageSelected(int position) {
+
+          }
+
+          @Override
+          public void onPageScrollStateChanged(int state) {
+
+          }
+      });
     }
 
     private Configtemplete getDemo() {
