@@ -1,14 +1,12 @@
-package recorder.appss.cool.adapter;
+package recorder.appss.cool.ui.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import recorder.appss.cool.recyclertest.F3;
-import recorder.appss.cool.recyclertest.FragmentMatchsCompet;
-import recorder.appss.cool.recyclertest.TabFragmentCompetitionList;
-import recorder.appss.cool.recyclertest.Tab_fragment_fav_match;
-import recorder.appss.cool.recyclertest.Tab_fragment_live_match;
+import recorder.appss.cool.ui.fragment.F3;
+import recorder.appss.cool.ui.fragment.TabFragmentCompetitionList;
+import recorder.appss.cool.ui.fragment.Tab_fragment_live_match;
 
 /**
  * Created by work on 07/11/2017.
@@ -31,7 +29,7 @@ public class FragmentPagerAdap extends FragmentPagerAdapter {
                 //fragment = new RaggaeMusicFragment();
                 break;
             case 2:
-                fragment = new Tab_fragment_fav_match();
+                fragment = new Tab_fragment_live_match.Tab_fragment_fav_match();
                 //fragment = new RapMusicFragment();
                 break;
             case 3:

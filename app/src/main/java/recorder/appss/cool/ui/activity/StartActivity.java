@@ -1,7 +1,10 @@
-package recorder.appss.cool.recyclertest;
+package recorder.appss.cool.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import recorder.appss.cool.recyclertest.Configtemplete;
+import recorder.appss.cool.recyclertest.R;
 
 public class StartActivity extends AppCompatActivity {
 

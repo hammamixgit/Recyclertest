@@ -5,4 +5,6 @@ package recorder.appss.cool.model;
  */
 
 public class ViewModel {
+    public static ViewModel Current;
+
 }

@@ -1,10 +1,9 @@
-package recorder.appss.cool.recyclertest;
+package recorder.appss.cool.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,13 +15,15 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
-import recorder.appss.cool.adapter.FragmentPagerAdap;
+import recorder.appss.cool.recyclertest.Configtemplete;
+import recorder.appss.cool.recyclertest.R;
+import recorder.appss.cool.ui.adapter.FragmentPagerAdap;
+import recorder.appss.cool.ui.fragment.F3;
+import recorder.appss.cool.ui.fragment.FragmentMatchsCompet;
+import recorder.appss.cool.ui.fragment.Tab_fragment_live_match;
 
-public class MainActivitytemplete extends AppCompatActivity implements Tab_fragment_live_match.OnFragmentInteractionListener, Tab_fragment_fav_match.OnFragmentInteractionListener, F3.OnFragmentInteractionListener, FragmentMatchsCompet.OnFragmentInteractionListener {
+public class MainActivitytemplete extends AppCompatActivity implements Tab_fragment_live_match.OnFragmentInteractionListener, Tab_fragment_live_match.Tab_fragment_fav_match.OnFragmentInteractionListener, F3.OnFragmentInteractionListener, FragmentMatchsCompet.OnFragmentInteractionListener {
 
     private static final String KEY_DEMO = "main";
 
@@ -61,29 +62,27 @@ public class MainActivitytemplete extends AppCompatActivity implements Tab_fragm
         configtemplete.setup(viewPagerTab);
 
 
-
-
-         FragmentPagerAdap adapter = new FragmentPagerAdap(
+        FragmentPagerAdap adapter = new FragmentPagerAdap(
                 getSupportFragmentManager());
 
         viewPager.setAdapter(adapter);
         viewPagerTab.setViewPager(viewPager);
-      viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-          @Override
-          public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-          }
+            }
 
-          @Override
-          public void onPageSelected(int position) {
+            @Override
+            public void onPageSelected(int position) {
 
-          }
+            }
 
-          @Override
-          public void onPageScrollStateChanged(int state) {
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
-          }
-      });
+            }
+        });
     }
 
     private Configtemplete getDemo() {

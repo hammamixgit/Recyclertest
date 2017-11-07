@@ -10,6 +10,8 @@ import android.widget.ImageView;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
+import recorder.appss.cool.ui.activity.MainActivitytemplete;
+
 public enum Configtemplete {
 
 

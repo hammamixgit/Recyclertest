@@ -1,4 +1,4 @@
-package recorder.appss.cool.adapter;
+package recorder.appss.cool.ui.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -20,8 +20,8 @@ import java.util.Map;
 import java.util.Set;
 
 import recorder.appss.cool.model.Competition;
-import recorder.appss.cool.recyclertest.TabFragmentCompetitionList;
-import recorder.appss.cool.recyclertest.FragmentMatchsCompet;
+import recorder.appss.cool.ui.fragment.TabFragmentCompetitionList;
+import recorder.appss.cool.ui.fragment.FragmentMatchsCompet;
 import recorder.appss.cool.recyclertest.R;
 
 /**

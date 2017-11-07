@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="recorder.appss.cool.recyclertest.FragmentMatchsCompet">
+    tools:context="recorder.appss.cool.ui.fragment.FragmentMatchsCompet">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_match_compr"

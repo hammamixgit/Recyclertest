@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".StartActivity"
+            android:name="recorder.appss.cool.ui.activity.StartActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivitytemplete"
+            android:name="recorder.appss.cool.ui.activity.MainActivitytemplete"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>

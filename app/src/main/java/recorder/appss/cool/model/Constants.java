@@ -8,5 +8,7 @@ public class Constants {
 
     public static final String MACONSTANTE1 = "custom";
     public static final String MACONSTANTE2 = "custom";
+    public static final String PREFERENCESNAME = "anwarpref";
+
 
 }

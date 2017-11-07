@@ -1,4 +1,4 @@
-package recorder.appss.cool.recyclertest;
+package recorder.appss.cool.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,8 +32,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import recorder.appss.cool.adapter.CompetitionAdapter;
-import recorder.appss.cool.adapter.ItemOffsetDecoration;
+import recorder.appss.cool.recyclertest.R;
+import recorder.appss.cool.ui.adapter.CompetitionAdapter;
+import recorder.appss.cool.ui.adapter.ItemOffsetDecoration;
 import recorder.appss.cool.model.Competition;
 import recorder.appss.cool.model.Match;
 import recorder.appss.cool.remote.ApiUtils;

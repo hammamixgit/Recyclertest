@@ -5,12 +5,8 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
-/**
- * https://gist.github.com/tylerchesley/5d15d859be4f3ce31213
- */
-public class TintableImageView extends ImageView {
+public class TintableImageView extends android.support.v7.widget.AppCompatImageView { //TODO yassin t
 
     private ColorStateList tint;
 
@@ -29,11 +25,14 @@ public class TintableImageView extends ImageView {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
+        /*
         TypedArray a = context.obtainStyledAttributes(
                 attrs, R.styleable.TintableImageView, defStyle, 0);
         tint = a.getColorStateList(
                 R.styleable.TintableImageView_tint);
         a.recycle();
+        */
+        //TODO yassin ne pas utiliser
     }
 
     @Override

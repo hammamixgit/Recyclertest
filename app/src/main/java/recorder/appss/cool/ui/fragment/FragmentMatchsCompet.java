@@ -1,4 +1,4 @@
-package recorder.appss.cool.recyclertest;
+package recorder.appss.cool.ui.fragment;
 
 import android.content.Context;
 import android.net.Uri;
@@ -23,8 +23,9 @@ import org.joda.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import recorder.appss.cool.adapter.ItemOffsetDecoration;
-import recorder.appss.cool.adapter.MatchCompetitionAdapter;
+import recorder.appss.cool.recyclertest.R;
+import recorder.appss.cool.ui.adapter.ItemOffsetDecoration;
+import recorder.appss.cool.ui.adapter.MatchCompetitionAdapter;
 import recorder.appss.cool.model.Competition;
 import recorder.appss.cool.model.Match;
 import recorder.appss.cool.remote.ApiUtils;

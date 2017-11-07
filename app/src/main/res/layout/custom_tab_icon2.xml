@@ -5,4 +5,4 @@
     android:background="?attr/selectableItemBackground"
     android:padding="6dp"
     android:scaleType="center"
-    app:tint="@color/green_500" />
+    />

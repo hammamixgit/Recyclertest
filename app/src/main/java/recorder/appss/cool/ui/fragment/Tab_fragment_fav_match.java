@@ -1,4 +1,4 @@
-package recorder.appss.cool.recyclertest;
+package recorder.appss.cool.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.joda.time.DateTime;
-import org.joda.time.Duration;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -24,14 +23,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import recorder.appss.cool.adapter.ItemOffsetDecoration;
-import recorder.appss.cool.adapter.MatchFavoriAdapter;
-import recorder.appss.cool.adapter.MatchLiveAdapter;
 import recorder.appss.cool.model.Competition;
 import recorder.appss.cool.model.Match;
+import recorder.appss.cool.recyclertest.R;
 import recorder.appss.cool.remote.ApiUtils;
 import recorder.appss.cool.remote.RetrofitClient;
 import recorder.appss.cool.remote.Sportservice;
+import recorder.appss.cool.ui.adapter.ItemOffsetDecoration;
+import recorder.appss.cool.ui.adapter.MatchFavoriAdapter;
 import recorder.appss.cool.utils.PreferenceUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
