@@ -28,13 +28,6 @@ dependencies {
 
 
     dependencies {
-        compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'  //TODO n'est plus utlisable supprime et replace avec les fonctions android
-
-        //Optional: see how to use the utility.
-        compile 'com.ogaclejapan.smarttablayout:utils-v4:1.6.1@aar' //TODO supprime si n'est plus utilier
-
-        //Optional: see how to use the utility.
-        compile 'com.ogaclejapan.smarttablayout:utils-v13:1.6.1@aar'
     }
     compile 'com.github.jd-alexander:LikeButton:0.2.3'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'  //TODO supprime et change par GLIDE pour charger les images

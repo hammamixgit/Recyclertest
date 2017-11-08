@@ -110,17 +110,17 @@ public class FragmentMatchsCompet extends Fragment {
         if (container != null) {
             container.removeAllViews();
         }
-        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+      /*  toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         appCompatActivity = (AppCompatActivity) getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //  toolbar.setNavigationIcon(R.mipmap.ic_flash_on_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationIcon(R.mipmap.ic_flash_on_white_24dp);
+    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 back();
             }
-        });
+        });*/
         return inflater.inflate(R.layout.fragment_matchs_compet_list, container, false);
     }
 

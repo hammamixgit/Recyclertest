@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -61,10 +60,10 @@ public class TabFragmentCompetitionList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+      /* Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
-        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);*/
 
         return inflater.inflate(R.layout.compet_list, container, false);
     }
@@ -76,7 +75,7 @@ public class TabFragmentCompetitionList extends Fragment {
         list_match = new ArrayList<>();
         list_competition = new ArrayList<>();
         comp_occur = new LinkedHashMap<>();
-        int position = FragmentPagerItem.getPosition(getArguments());
+     //   int position = FragmentPagerItem.getPosition(getArguments());
         JodaTimeAndroid.init(view.getContext());
         //   ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(view.getContext()).build();
         //  ImageLoader.getInstance().init(config);

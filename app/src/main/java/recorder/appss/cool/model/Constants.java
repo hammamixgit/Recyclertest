@@ -6,9 +6,8 @@ package recorder.appss.cool.model;
 
 public class Constants {
 
-    public static final String MACONSTANTE1 = "custom";
-    public static final String MACONSTANTE2 = "custom";
-    public static final String PREFERENCESNAME = "anwarpref";
-
-
+    public static final String BASE_URL = "https://api.crowdscores.com/v1/";
+    public static String key = "1b3534673b9e4b3c84194bb5d097034b";
+    public static String  PREFERENCESNAME="scroreprefs";
+    public static String FAV_PREF = "favoris_match";
 }

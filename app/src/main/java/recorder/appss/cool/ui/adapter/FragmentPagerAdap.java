@@ -6,7 +6,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import recorder.appss.cool.ui.fragment.F3;
 import recorder.appss.cool.ui.fragment.TabFragmentCompetitionList;
+import recorder.appss.cool.ui.fragment.Tab_fragment_fav_match;
 import recorder.appss.cool.ui.fragment.Tab_fragment_live_match;
+
 
 /**
  * Created by work on 07/11/2017.
@@ -16,6 +18,7 @@ public class FragmentPagerAdap extends FragmentPagerAdapter {
     public FragmentPagerAdap(FragmentManager fm) {
         super(fm);
     }
+    private String[] titles= new String[]{"First Fragment", "Second Fragment","Third Fragment","4 Fragment"};
 
     @Override
     public Fragment getItem(int position) {
@@ -29,7 +32,7 @@ public class FragmentPagerAdap extends FragmentPagerAdapter {
                 //fragment = new RaggaeMusicFragment();
                 break;
             case 2:
-                fragment = new Tab_fragment_live_match.Tab_fragment_fav_match();
+                fragment = new Tab_fragment_fav_match();
                 //fragment = new RapMusicFragment();
                 break;
             case 3:
@@ -42,4 +45,9 @@ public class FragmentPagerAdap extends FragmentPagerAdapter {
     public int getCount() {
         return 4;
     }
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return  titles[position];
+    }
+
 }

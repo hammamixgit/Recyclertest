@@ -2,13 +2,14 @@ package recorder.appss.cool.remote;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import recorder.appss.cool.model.Constants;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
     private static Retrofit retrofit = null;
-    private static String key = "1b3534673b9e4b3c84194bb5d097034b";
+
 
     public static Retrofit getClient(String baseUrl) {
         if (retrofit == null) {
@@ -34,6 +35,6 @@ public class RetrofitClient {
 
     public static String getkey() {
 
-        return key;
+        return Constants.key;
     }
 }
