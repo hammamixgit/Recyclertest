@@ -132,7 +132,7 @@ public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         notifyDataSetChanged();
     }
 
-    public class Myviewholder extends RecyclerView.ViewHolder {
+    public class Myviewholder extends RecyclerView.ViewHolder {  //TODO les view Holder toujours dans des classe dans le package Holder
 
         TextView tx, tcountry, txtmatch, txtnblive;
         ImageView im;
@@ -161,7 +161,7 @@ public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public class HeaderViewHolder extends RecyclerView.ViewHolder {
+    public class HeaderViewHolder extends RecyclerView.ViewHolder { //TODO les view Holder toujours dans des classe
         public View View;
         TextView all, alllive;
 

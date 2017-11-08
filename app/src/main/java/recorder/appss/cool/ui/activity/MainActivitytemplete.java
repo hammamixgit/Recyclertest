@@ -17,10 +17,10 @@ import recorder.appss.cool.ui.fragment.FragmentMatchsCompet;
 import recorder.appss.cool.ui.fragment.Tab_fragment_fav_match;
 import recorder.appss.cool.ui.fragment.Tab_fragment_live_match;
 
+//TODO Template T majuscule tjr
 public class MainActivitytemplete extends AppCompatActivity implements Tab_fragment_live_match.OnFragmentInteractionListener, Tab_fragment_fav_match.OnFragmentInteractionListener, F3.OnFragmentInteractionListener, FragmentMatchsCompet.OnFragmentInteractionListener {
 
     private static final String KEY_DEMO = "main";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -35,9 +35,9 @@ public class MatchFavoriAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     List<Match> list_of_matchs_live = new ArrayList<>();
     List<Match> list_of_matchs_live2 = new ArrayList<>();
     int size_compet=0;
-    private static final int TYPE_HEADER = 0;
-    private static final int TYPE_ITEM = 1;
-    private static final int TYPE_FOOTER = 2;
+    private static final int TYPE_HEADER = 0;   //TODO mettre tjr dans le fichier Constante
+    private static final int TYPE_ITEM = 1;      //TODO mettre tjr dans le fichier Constante
+    private static final int TYPE_FOOTER = 2;    //TODO mettre tjr dans le fichier Constante
     private int pos=0;
 int current_compet=0;
     public Context ctx;
