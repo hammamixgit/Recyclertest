@@ -23,15 +23,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import recorder.appss.cool.base.BaseFragment;
 import recorder.appss.cool.model.Competition;
 import recorder.appss.cool.model.Match;
+import recorder.appss.cool.model.ViewModel;
 import recorder.appss.cool.recyclertest.R;
 import recorder.appss.cool.remote.ApiUtils;
 import recorder.appss.cool.remote.RetrofitClient;
 import recorder.appss.cool.remote.Sportservice;
 import recorder.appss.cool.ui.adapter.ItemOffsetDecoration;
 import recorder.appss.cool.ui.adapter.MatchFavoriAdapter;
-import recorder.appss.cool.utils.PreferenceUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,7 +46,7 @@ import retrofit2.Response;
  * Use the {@link Tab_fragment_fav_match#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Tab_fragment_fav_match extends Fragment {
+public class Tab_fragment_fav_match extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -61,7 +62,10 @@ public class Tab_fragment_fav_match extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
+    @Override
+    public int getFragmentId() {
+        return R.layout.fragment_fav_match;
+    }
     public Tab_fragment_fav_match() {
         // Required empty public constructor
     }
@@ -97,7 +101,7 @@ public class Tab_fragment_fav_match extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mService = ApiUtils.getSOService();
-        list_fav_prefs_id.addAll(PreferenceUtils.getfavPref(view.getContext()));
+        list_fav_prefs_id.addAll(ViewModel.Current.dataUtils.getfavPref());
 
         rv_fav = (RecyclerView) view.findViewById(R.id.rv_list_fav);
         rv_fav.setHasFixedSize(true);
@@ -105,17 +109,12 @@ public class Tab_fragment_fav_match extends Fragment {
         final LinearLayoutManager l = new LinearLayoutManager(view.getContext());
         rv_fav.setLayoutManager(l);
         list_match_fav = new ArrayList<>();
-        match_fav_adap = new MatchFavoriAdapter(list_match_fav,getContext());
+        match_fav_adap = new MatchFavoriAdapter(list_match_fav);
         rv_fav.setAdapter(match_fav_adap);
         getlivematchs();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fav_match, container, false);
-    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

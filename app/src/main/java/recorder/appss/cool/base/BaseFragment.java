@@ -9,13 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import recorder.appss.cool.recyclertest.R;
+
 /**
  * Created by yassin baccour on 07/11/2017.
  */
 
 public abstract class BaseFragment extends Fragment {
 
-    public abstract int getFragmentId();  //TODO Methode abstraite tu va la redefinir dans chaque fragment
+    public abstract int getFragmentId();
     protected View rootView;
     protected Activity mActivity;
     protected Context mContext;
@@ -30,8 +32,12 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(getFragmentId(), null);  //TODO maintenant un seul onCreateView et tu supprime oncreate view dans chaque frahment qui etend le base
-        return rootView;   //TODO tu redifini getFragmentId() dans chaque fragment qui donnera " return R.id.nom_du_view"
+
+        if (getFragmentId()== R.layout.fragment_matchs_compet_list && container != null) {
+            container.removeAllViews();
+        }
+        rootView = inflater.inflate(getFragmentId(), null);
+        return rootView;
     }
 
     @Override

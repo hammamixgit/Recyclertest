@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.makeramen.roundedimageview.RoundedTransformationBuilder;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.MultiTransformation;
+
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -19,10 +19,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import recorder.appss.cool.Holder.HeaderViewHolderCompetitionAdap;
+import recorder.appss.cool.Holder.ViewHolderCompetitionAdap;
 import recorder.appss.cool.model.Competition;
+import recorder.appss.cool.model.Constants;
 import recorder.appss.cool.ui.fragment.TabFragmentCompetitionList;
 import recorder.appss.cool.ui.fragment.FragmentMatchsCompet;
 import recorder.appss.cool.recyclertest.R;
+
+import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
 /**
  * Created by work on 29/09/2017.
@@ -33,9 +40,7 @@ public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     LinkedHashMap<Competition, String> ks = new LinkedHashMap<Competition, String>();
 
     TabFragmentCompetitionList ff;
-    private static final int TYPE_HEADER = 0;
-    private static final int TYPE_ITEM = 1;
-    private static final int TYPE_FOOTER = 2;
+
     private int nbmatch_total, nbmatch_live;
 
     public CompetitionAdapter(LinkedHashMap<Competition, String> k, TabFragmentCompetitionList f) {
@@ -47,13 +52,13 @@ public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public int getItemViewType(int position) {
         if (isPositionHeader(position)) {
-            return TYPE_HEADER;
+            return Constants.TYPE_HEADER;
 
         } else if (isPositionFooter(position)) {
-            return TYPE_FOOTER;
+            return Constants.TYPE_FOOTER;
         }
 
-        return TYPE_ITEM;
+        return Constants.TYPE_ITEM;
     }
 
     private boolean isPositionHeader(int position) {
@@ -66,16 +71,16 @@ public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == TYPE_ITEM) {
+        if (viewType == Constants.TYPE_ITEM) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.compet_list_item, parent, false);
-            Myviewholder mvh = new Myviewholder(v);
+            ViewHolderCompetitionAdap mvh = new ViewHolderCompetitionAdap(v);
             return mvh;
 
-        } else if (viewType == TYPE_HEADER) {
+        } else if (viewType == Constants.TYPE_HEADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_layout_competetion, parent, false);
-            return new HeaderViewHolder(view);
+            return new HeaderViewHolderCompetitionAdap(view);
 
-        } else if (viewType == TYPE_FOOTER) {
+        } else if (viewType == Constants.TYPE_FOOTER) {
 
         }
 
@@ -85,9 +90,9 @@ public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         //   imageLoader.displayImage(ks.get(position).getCompetition().getFlagUrl(), holder.im);
-        if (holder instanceof Myviewholder) {
+        if (holder instanceof ViewHolderCompetitionAdap) {
             Set<Map.Entry<Competition, String>> mapSet = ks.entrySet();
             Map.Entry<Competition, String> element = (Map.Entry<Competition, String>) mapSet.toArray()[position - 1];
 
@@ -95,25 +100,39 @@ public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             Competition c = element.getKey();
             list_compt.add(c);
             String[] str_array_nbmatch_nblive = element.getValue().split(":");
-            ((Myviewholder) holder).txtmatch.setText(str_array_nbmatch_nblive[0]);
-            ((Myviewholder) holder).txtnblive.setText(str_array_nbmatch_nblive[1]);
+            ((ViewHolderCompetitionAdap) holder).txtmatch.setText(str_array_nbmatch_nblive[0]);
+            ((ViewHolderCompetitionAdap) holder).txtnblive.setText(str_array_nbmatch_nblive[1]);
             String[] str_array_compet_country = c.getName().split(":");
-            ((Myviewholder) holder).tx.setText(str_array_compet_country[1]);
-            ((Myviewholder) holder).tcountry.setText(str_array_compet_country[0]);
-            Transformation transformation = new RoundedTransformationBuilder()
-                    .cornerRadiusDp(40)
-                    .oval(true)
-                    .build();
+            ((ViewHolderCompetitionAdap) holder).tx.setText(str_array_compet_country[1]);
+            ((ViewHolderCompetitionAdap) holder).tcountry.setText(str_array_compet_country[0]);
 
-            Picasso.with(((Myviewholder) holder).im.getContext())
+            MultiTransformation multi = new MultiTransformation(
+                    new BlurTransformation(1),
+                    new RoundedCornersTransformation(128, 0, RoundedCornersTransformation.CornerType.BOTTOM));
+            Glide
+                    .with(((ViewHolderCompetitionAdap) holder).im.getContext())
                     .load(c.getFlagUrl())
-                    .fit()
-                    .transform(transformation)
-                    .into(((Myviewholder) holder).im);
+                    .apply(bitmapTransform(multi))
+                    .into(((ViewHolderCompetitionAdap) holder).im);
 
-        } else if (holder instanceof HeaderViewHolder) {
-            ((HeaderViewHolder) holder).all.setText(nbmatch_total + "");
-            ((HeaderViewHolder) holder).alllive.setText(nbmatch_live + "");
+            ((ViewHolderCompetitionAdap) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Fragment fragment = FragmentMatchsCompet.newInstance(list_compt.get(position - 1));
+
+                    FragmentTransaction transaction = ff.getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.activity_main, fragment);
+                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    //ff.getActivity().getSupportFragmentManager().popBackStack();
+                }
+            });
+
+        } else if (holder instanceof HeaderViewHolderCompetitionAdap) {
+            ((HeaderViewHolderCompetitionAdap) holder).all.setText(nbmatch_total + "");
+            ((HeaderViewHolderCompetitionAdap) holder).alllive.setText(nbmatch_live + "");
 
         }
 
@@ -132,48 +151,6 @@ public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         notifyDataSetChanged();
     }
 
-    public class Myviewholder extends RecyclerView.ViewHolder {  //TODO les view Holder toujours dans des classe dans le package Holder
 
-        TextView tx, tcountry, txtmatch, txtnblive;
-        ImageView im;
 
-        public Myviewholder(View itemView) {
-            super(itemView);
-            txtmatch = (TextView) itemView.findViewById(R.id.nbmatch);
-            txtnblive = (TextView) itemView.findViewById(R.id.nbmatchlive);
-            tcountry = (TextView) itemView.findViewById(R.id.txtcardcountry);
-            tx = (TextView) itemView.findViewById(R.id.txtcardcompt);
-            im = (ImageView) itemView.findViewById(R.id.imgcard);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Fragment fragment = FragmentMatchsCompet.newInstance(list_compt.get(getAdapterPosition() - 1));
-
-                    FragmentTransaction transaction = ff.getActivity().getSupportFragmentManager().beginTransaction();
-                     transaction.replace(R.id.activity_main, fragment);
-                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                    //ff.getActivity().getSupportFragmentManager().popBackStack();
-                }
-            });
-        }
-    }
-
-    public class HeaderViewHolder extends RecyclerView.ViewHolder { //TODO les view Holder toujours dans des classe
-        public View View;
-        TextView all, alllive;
-
-        public HeaderViewHolder(View itemView) {
-            super(itemView);
-            View = itemView;
-            all = (TextView) itemView.findViewById(R.id.allnb);
-            alllive = (TextView) itemView.findViewById(R.id.allnblive);
-
-            // add your ui components here like this below
-            //txtName = (TextView) View.findViewById(R.id.txt_name);
-
-        }
-    }
 }

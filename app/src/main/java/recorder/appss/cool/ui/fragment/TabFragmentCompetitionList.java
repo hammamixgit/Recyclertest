@@ -31,6 +31,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import recorder.appss.cool.base.BaseFragment;
 import recorder.appss.cool.recyclertest.R;
 import recorder.appss.cool.ui.adapter.CompetitionAdapter;
 import recorder.appss.cool.ui.adapter.ItemOffsetDecoration;
@@ -43,7 +44,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TabFragmentCompetitionList extends Fragment {
+public class TabFragmentCompetitionList extends BaseFragment {
 
     //Declaration var
     List<Integer> match_states = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
@@ -58,15 +59,11 @@ public class TabFragmentCompetitionList extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-      /* Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
-        appCompatActivity.setSupportActionBar(toolbar);
-        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);*/
-
-        return inflater.inflate(R.layout.compet_list, container, false);
+    public int getFragmentId() {
+        return R.layout.compet_list;
     }
+
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

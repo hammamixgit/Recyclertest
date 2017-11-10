@@ -22,6 +22,7 @@ public class DeviceUtils {
         this.mContext = mContext;
     }
 
+
     //TODO exemple de methode dan deviceUtils
     //TODO Snack est l'equivalent de toast
     public void showSnackMessage(CoordinatorLayout mRootLayout, String message) {

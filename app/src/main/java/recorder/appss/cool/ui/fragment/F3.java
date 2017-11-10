@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import recorder.appss.cool.base.BaseFragment;
 import recorder.appss.cool.recyclertest.R;
 
 
@@ -19,7 +20,7 @@ import recorder.appss.cool.recyclertest.R;
  * Use the {@link F3#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class F3 extends Fragment {
+public class F3 extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,7 +31,10 @@ public class F3 extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
+    @Override
+    public int getFragmentId() {
+        return R.layout.fragment_f3;
+    }
     public F3() {
         // Required empty public constructor
     }
@@ -62,12 +66,6 @@ public class F3 extends Fragment {
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_f3, container, false);
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

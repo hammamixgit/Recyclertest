@@ -23,6 +23,7 @@ import org.joda.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import recorder.appss.cool.base.BaseFragment;
 import recorder.appss.cool.recyclertest.R;
 import recorder.appss.cool.ui.adapter.ItemOffsetDecoration;
 import recorder.appss.cool.ui.adapter.MatchCompetitionAdapter;
@@ -44,7 +45,7 @@ import retrofit2.Response;
  * Use the {@link FragmentMatchsCompet#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentMatchsCompet extends Fragment {
+public class FragmentMatchsCompet extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -57,7 +58,10 @@ public class FragmentMatchsCompet extends Fragment {
     Toolbar toolbar;
     AppCompatActivity appCompatActivity;
     private OnFragmentInteractionListener mListener;
-
+    @Override
+    public int getFragmentId() {
+        return R.layout.fragment_matchs_compet_list;
+    }
     public FragmentMatchsCompet() {
         // Required empty public constructor
     }
@@ -98,31 +102,12 @@ public class FragmentMatchsCompet extends Fragment {
         final LinearLayoutManager l = new LinearLayoutManager(view.getContext());
         rv.setLayoutManager(l);
         list_match_compet = new ArrayList<>();
-        m_comp_adap = new MatchCompetitionAdapter(list_match_compet, mParam1,getContext());
+        m_comp_adap = new MatchCompetitionAdapter(list_match_compet, mParam1);
         rv.setAdapter(m_comp_adap);
         getmatch(mParam1.getDbid() + "");
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        if (container != null) {
-            container.removeAllViews();
-        }
-      /*  toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        appCompatActivity = (AppCompatActivity) getActivity();
-        appCompatActivity.setSupportActionBar(toolbar);
-        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationIcon(R.mipmap.ic_flash_on_white_24dp);
-    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                back();
-            }
-        });*/
-        return inflater.inflate(R.layout.fragment_matchs_compet_list, container, false);
-    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

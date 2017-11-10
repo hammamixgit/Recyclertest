@@ -11,7 +11,7 @@ import recorder.appss.cool.utils.FileUtils;
  * Created by yassin baccour on 07/11/2017.
  */
 
-public class ScoreApplication extends MultiDexApplication {  //TODO l'application supporte le multidex
+public class ScoreApplication extends MultiDexApplication {  //TODO l'application supporte le multidex //ok
 
     @Override
     public void onCreate() {

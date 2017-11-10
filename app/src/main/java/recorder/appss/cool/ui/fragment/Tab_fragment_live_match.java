@@ -25,9 +25,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import recorder.appss.cool.base.BaseFragment;
+import recorder.appss.cool.model.ViewModel;
 import recorder.appss.cool.recyclertest.R;
 import recorder.appss.cool.ui.adapter.ItemOffsetDecoration;
-import recorder.appss.cool.ui.adapter.MatchCompetitionAdapter;
 import recorder.appss.cool.ui.adapter.MatchFavoriAdapter;
 import recorder.appss.cool.ui.adapter.MatchLiveAdapter;
 import recorder.appss.cool.model.Competition;
@@ -35,7 +36,6 @@ import recorder.appss.cool.model.Match;
 import recorder.appss.cool.remote.ApiUtils;
 import recorder.appss.cool.remote.RetrofitClient;
 import recorder.appss.cool.remote.Sportservice;
-import recorder.appss.cool.utils.PreferenceUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,7 +49,7 @@ import retrofit2.Response;
  * Use the {@link Tab_fragment_live_match#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Tab_fragment_live_match extends Fragment {
+public class Tab_fragment_live_match extends BaseFragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,7 +65,10 @@ public class Tab_fragment_live_match extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
+    @Override
+    public int getFragmentId() {
+        return R.layout.fragment_live_match;
+    }
     public Tab_fragment_live_match() {
         // Required empty public constructor
     }
@@ -98,7 +101,7 @@ public class Tab_fragment_live_match extends Fragment {
         final LinearLayoutManager l = new LinearLayoutManager(view.getContext());
         rv_live.setLayoutManager(l);
         list_match_live = new ArrayList<>();
-        match_live_adap = new MatchLiveAdapter(list_match_live,getContext());
+        match_live_adap = new MatchLiveAdapter(list_match_live);
         rv_live.setAdapter(match_live_adap);
       //  getlivematchs();
     }
@@ -113,12 +116,7 @@ public class Tab_fragment_live_match extends Fragment {
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_live_match, container, false);
-    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -297,7 +295,7 @@ return  cc;
         public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
             mService = ApiUtils.getSOService();
-            list_fav_prefs_id.addAll(PreferenceUtils.getfavPref(view.getContext()));
+            list_fav_prefs_id.addAll(ViewModel.Current.dataUtils.getfavPref());
 
             rv_fav = (RecyclerView) view.findViewById(R.id.rv_list_fav);
             rv_fav.setHasFixedSize(true);
@@ -305,7 +303,7 @@ return  cc;
             final LinearLayoutManager l = new LinearLayoutManager(view.getContext());
             rv_fav.setLayoutManager(l);
             list_match_fav = new ArrayList<>();
-            match_fav_adap = new MatchFavoriAdapter(list_match_fav,getContext());
+            match_fav_adap = new MatchFavoriAdapter(list_match_fav);
             rv_fav.setAdapter(match_fav_adap);
             getlivematchs();
         }

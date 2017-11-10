@@ -19,7 +19,7 @@ public class FragmentPagerAdap extends FragmentPagerAdapter {
     public FragmentPagerAdap(FragmentManager fm) {
         super(fm);
     }
-    private String[] titles= new String[]{"First Fragment", "Second Fragment","Third Fragment","4 Fragment"};
+    private String[] titles= new String[]{"Competitions", "Live","My Games","Info Teams"};
 
     @Override
     public Fragment getItem(int position) {

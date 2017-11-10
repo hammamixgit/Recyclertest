@@ -6,8 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 
+import recorder.appss.cool.base.BaseActivity;
 import recorder.appss.cool.ui.adapter.FragmentPagerAdap;
 
 
@@ -18,68 +22,59 @@ import recorder.appss.cool.ui.fragment.Tab_fragment_fav_match;
 import recorder.appss.cool.ui.fragment.Tab_fragment_live_match;
 
 //TODO Template T majuscule tjr
-public class MainActivitytemplete extends AppCompatActivity implements Tab_fragment_live_match.OnFragmentInteractionListener, Tab_fragment_fav_match.OnFragmentInteractionListener, F3.OnFragmentInteractionListener, FragmentMatchsCompet.OnFragmentInteractionListener {
+public class MainActivityTemplete extends BaseActivity implements Tab_fragment_live_match.OnFragmentInteractionListener, Tab_fragment_fav_match.OnFragmentInteractionListener, F3.OnFragmentInteractionListener, FragmentMatchsCompet.OnFragmentInteractionListener {
 
-    private static final String KEY_DEMO = "main";
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_templete);
+    protected int getLayout() {
+        return R.layout.activity_main_templete;
+    }
+
+    @Override
+    protected void initData() {
         final ViewPager viewPager = (ViewPager) findViewById(R.id.vpPager);
-     //   Window window = this.getWindow();
+         Window window = this.getWindow();
 // clear FLAG_TRANSLUCENT_STATUS flag:
-       // window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
 // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-        //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
 // finally change the color
         //window.setStatusBarColor(ContextCompat.getColor(this, R.color.primary_dark));
         /////////////////////////////////////////////////////
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarx);
+           toolbar.setTitle("LiveScore");
+         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        ////////////////////////////////////////////////
-   //     Configtemplete configtemplete = getDemo();
-//
-  //      Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    //    toolbar.setTitle(configtemplete.titleResId);
-      //  setSupportActionBar(toolbar);
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
-        //ViewGroup tab = (ViewGroup) findViewById(R.id.tab);
-        //tab.addView(LayoutInflater.from(this).inflate(configtemplete.layoutResId, tab, false));
-
-
-        //SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
-        //configtemplete.setup(viewPagerTab);
-
-
-
-
-        FragmentPagerAdap   adapter = new FragmentPagerAdap(
+      FragmentPagerAdap   adapter = new FragmentPagerAdap(
                 getSupportFragmentManager());
 
         viewPager.setAdapter(adapter);
-       // viewPagerTab.setViewPager(viewPager);
-      viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-          @Override
-          public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        // viewPagerTab.setViewPager(viewPager);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-          }
+            }
 
-          @Override
-          public void onPageSelected(int position) {
+            @Override
+            public void onPageSelected(int position) {
 
 
-          }
+            }
 
-          @Override
-          public void onPageScrollStateChanged(int state) {
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
-          }
-      });
+            }
+        });
     }
+
+
 
 
 
@@ -87,17 +82,17 @@ public class MainActivitytemplete extends AppCompatActivity implements Tab_fragm
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-     /*
+
      Intent a = new Intent(Intent.ACTION_MAIN);
 a.addCategory(Intent.CATEGORY_HOME);
 a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 startActivity(a);
-      */
+
 
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-        Log.d("adress freaag", uri.toString());
+
     }
 }

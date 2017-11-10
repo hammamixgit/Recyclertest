@@ -3,6 +3,11 @@ package recorder.appss.cool.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import recorder.appss.cool.model.Constants;
 
 
@@ -17,6 +22,33 @@ public class DataUtils {
                 Context.MODE_PRIVATE);
         prefsEditor = mPref.edit();
     }
+
+
+    public  List<String> getfavPref() {
+        Set<String> tasksSet =mPref.getStringSet(Constants.FAV_PREF, new HashSet<String>());
+        List<String> tasksList = new ArrayList<String>(tasksSet);
+        return tasksList;
+    }
+
+
+    public  void addfavPref(String id) {
+        List<String> tasksList = new ArrayList<String>();
+        tasksList=getfavPref();
+        if(!tasksList.contains(id))tasksList.add(id);
+        Set<String> tasksSet = new HashSet<String>(tasksList);
+        prefsEditor.putStringSet(Constants.FAV_PREF, tasksSet).commit();
+    }
+
+    public  void removefavPref(String id) {
+        List<String> tasksList = new ArrayList<String>();
+        tasksList=getfavPref();
+        if(tasksList.contains(id))tasksList.remove(id);
+        Set<String> tasksSet = new HashSet<String>(tasksList);
+        prefsEditor.putStringSet(Constants.FAV_PREF, tasksSet).commit();
+    }
+
+
+
 
     public void SetSetting(String key, String value) {
         prefsEditor.putString(key, value);

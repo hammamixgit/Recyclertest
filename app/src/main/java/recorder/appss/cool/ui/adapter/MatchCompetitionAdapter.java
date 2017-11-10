@@ -9,11 +9,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.MultiTransformation;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
-import com.makeramen.roundedimageview.RoundedTransformationBuilder;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -21,10 +20,16 @@ import org.joda.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import recorder.appss.cool.Holder.HeaderViewHolderMatchCompetAdap;
+import recorder.appss.cool.Holder.ViewHolderMatchCompetAdap;
 import recorder.appss.cool.model.Competition;
 import recorder.appss.cool.model.Match;
+import recorder.appss.cool.model.ViewModel;
 import recorder.appss.cool.recyclertest.R;
-import recorder.appss.cool.utils.PreferenceUtils;
+
+import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
 /**
  * Created by work on 29/09/2017.
@@ -38,12 +43,12 @@ public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.V
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_FOOTER = 2;
     private int nbmatch_total, nbmatch_live;
-Context contxt;
-    public MatchCompetitionAdapter(List<Match> list_match, Competition c,Context ctx) {
-contxt=ctx;
+
+    public MatchCompetitionAdapter(List<Match> list_match, Competition c) {
+
         list_of_matchs.addAll(list_match);
         competition = c;
-        list_fav.addAll(PreferenceUtils.getfavPref(ctx));
+        list_fav.addAll( ViewModel.Current.dataUtils.getfavPref());
     }
 
     @Override
@@ -73,12 +78,12 @@ contxt=ctx;
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_matchs_compet_item, parent, false);
-            Myviewholder mvh = new Myviewholder(v);
+            ViewHolderMatchCompetAdap mvh = new ViewHolderMatchCompetAdap(v);
             return mvh;
 
         } else if (viewType == TYPE_HEADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_matchs_competetion, parent, false);
-            return new HeaderViewHolder(view);
+            return new HeaderViewHolderMatchCompetAdap(view);
 
         } else if (viewType == TYPE_FOOTER) {
 
@@ -93,30 +98,30 @@ contxt=ctx;
         //   imageLoader.displayImage(ks.get(position).getCompetition().getFlagUrl(), holder.im);
    //  final    Context ctx=((Myviewholder) holder).btn_like.getContext();
         int x=position;
-        if (holder instanceof Myviewholder) {
+        if (holder instanceof ViewHolderMatchCompetAdap) {
 
 
             if (list_fav.contains(list_of_matchs.get(position-1).getDbid().toString()))
-               ((Myviewholder) holder).btn_like.setLiked(true);
-            else{ ((Myviewholder) holder).btn_like.setLiked(false);
+               ((ViewHolderMatchCompetAdap) holder).btn_like.setLiked(true);
+            else{ ((ViewHolderMatchCompetAdap) holder).btn_like.setLiked(false);
                 //Log.d("favori",position+"rebind"+list_of_matchs.get(position-1).getAwayTeam().getName()+"-"+list_of_matchs.get(position-1).getDbid());
                 }
-            ((Myviewholder) holder).btn_like.setOnLikeListener(new OnLikeListener() {
+            ((ViewHolderMatchCompetAdap) holder).btn_like.setOnLikeListener(new OnLikeListener() {
 
                 @Override
                 public void liked(LikeButton likeButton) {
-                    PreferenceUtils.addfavPref( contxt,list_of_matchs.get(position-1).getDbid().toString());
+                    ViewModel.Current.dataUtils.addfavPref( list_of_matchs.get(position-1).getDbid().toString());
                     list_fav.clear();
-                    list_fav.addAll(PreferenceUtils.getfavPref(contxt));
+                    list_fav.addAll( ViewModel.Current.dataUtils.getfavPref());
                     notifyItemChanged(position);
                   //  Log.d("favori",list_of_matchs.get(position-1).getAwayTeam().getName()+"-"+list_of_matchs.get(position-1).getDbid()+"- liked!!");
                 }
 
                 @Override
                 public void unLiked(LikeButton likeButton) {
-                    PreferenceUtils.removefavPref( contxt,list_of_matchs.get(position-1).getDbid().toString());
+                    ViewModel.Current.dataUtils.removefavPref( list_of_matchs.get(position-1).getDbid().toString());
                     list_fav.clear();
-                    list_fav.addAll(PreferenceUtils.getfavPref(contxt));
+                    list_fav.addAll( ViewModel.Current.dataUtils.getfavPref());
                   //  likeButton.setLiked(false);
 
                    notifyItemChanged(position);
@@ -124,9 +129,9 @@ contxt=ctx;
 
                 }
             });
-            ((Myviewholder) holder).team1txt.setText(list_of_matchs.get(position - 1).getHomeTeam().getShortName());
-            ((Myviewholder) holder).team2txt.setText(list_of_matchs.get(position - 1).getAwayTeam().getShortName());
-            ((Myviewholder) holder).score.setText(list_of_matchs.get(position - 1).getHomeGoals() + "-" + list_of_matchs.get(position - 1).getAwayGoals());
+            ((ViewHolderMatchCompetAdap) holder).team1txt.setText(list_of_matchs.get(position - 1).getHomeTeam().getShortName());
+            ((ViewHolderMatchCompetAdap) holder).team2txt.setText(list_of_matchs.get(position - 1).getAwayTeam().getShortName());
+            ((ViewHolderMatchCompetAdap) holder).score.setText(list_of_matchs.get(position - 1).getHomeGoals() + "-" + list_of_matchs.get(position - 1).getAwayGoals());
 
             long timestamp_start = (long) list_of_matchs.get(position - 1).getStart();
             DateTime dt = new DateTime(timestamp_start);
@@ -143,7 +148,7 @@ contxt=ctx;
             }
             String time = hour + ":" + minutes;
             // String time = dt.getYear()+"."+dt.getMonthOfYear()+"."+dt.getDayOfMonth()+"\n"+"     "+hour+":"+minutes;
-            ((Myviewholder) holder).timestart.setText(time);
+            ((ViewHolderMatchCompetAdap) holder).timestart.setText(time);
             String Live_time;
             if (list_of_matchs.get(position - 1).getCurrentState() == 0)
                 Live_time = instant_time(list_of_matchs.get(position - 1).getCurrentState(), 0);
@@ -153,20 +158,19 @@ contxt=ctx;
             String[] live_data = Live_time.split(":");
 
 
-            ((Myviewholder) holder).time.setText(live_data[1]);
-        } else if (holder instanceof HeaderViewHolder) {
-            ((HeaderViewHolder) holder).txt_header.setText(competition.getName());
-            Transformation transformation = new RoundedTransformationBuilder()
-                    .cornerRadiusDp(40)
-                    .oval(true)
-                    .build();
+            ((ViewHolderMatchCompetAdap) holder).time.setText(live_data[1]);
+        } else if (holder instanceof HeaderViewHolderMatchCompetAdap) {
+            ((HeaderViewHolderMatchCompetAdap) holder).txt_header.setText(competition.getName());
 
-            Picasso.with(((HeaderViewHolder) holder).im_header.getContext())
+
+            MultiTransformation multi = new MultiTransformation(
+                    new BlurTransformation(1),
+                    new RoundedCornersTransformation(128, 0, RoundedCornersTransformation.CornerType.BOTTOM));
+            Glide
+                    .with(((HeaderViewHolderMatchCompetAdap) holder).im_header.getContext())
                     .load(competition.getFlagUrl())
-                    .fit()
-                    .transform(transformation)
-                    .into(((HeaderViewHolder) holder).im_header);
-
+                    .apply(bitmapTransform(multi))
+                    .into(((HeaderViewHolderMatchCompetAdap) holder).im_header);
         }
 
     }
@@ -231,42 +235,7 @@ contxt=ctx;
         return result;
     }
 
-    public class Myviewholder extends RecyclerView.ViewHolder {
 
-        TextView team1txt, team2txt, score, time, timestart;
-        ImageView im1, im2;
-        LinearLayout layout_live;
-        LikeButton btn_like;
 
-        public Myviewholder(View itemView) {
-            super(itemView);
-            btn_like=(LikeButton)itemView.findViewById(R.id.star_button);
-            layout_live = (LinearLayout) itemView.findViewById(R.id.lllive);
-            team1txt = (TextView) itemView.findViewById(R.id.team1);
-            team2txt = (TextView) itemView.findViewById(R.id.team2);
-            score = (TextView) itemView.findViewById(R.id.score);
-            time = (TextView) itemView.findViewById(R.id.time);
-            im1 = (ImageView) itemView.findViewById(R.id.imgteam1);
-            im2 = (ImageView) itemView.findViewById(R.id.imgteam2);
-            timestart = (TextView) itemView.findViewById(R.id.match_start);
 
-        }
-    }
-
-    public class HeaderViewHolder extends RecyclerView.ViewHolder {
-        public View View;
-        TextView txt_header;
-        ImageView im_header;
-
-        public HeaderViewHolder(View itemView) {
-            super(itemView);
-            View = itemView;
-            im_header = (ImageView) itemView.findViewById(R.id.compet_flag_h);
-            txt_header = (TextView) itemView.findViewById(R.id.compet_name_h);
-
-            // add your ui components here like this below
-            //txtName = (TextView) View.findViewById(R.id.txt_name);
-
-        }
-    }
 }
