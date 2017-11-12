@@ -18,7 +18,7 @@ public class ScoreApplication extends MultiDexApplication {  //TODO l'applicatio
         super.onCreate();
 
         //TODO nouvelle instance de viewmodel crée au lancement de l'application
-        // par exemple pour acceder au sharedpref depuis n'importe ou tu fais ViewModel.Current.dataUtils.GetSetting("", "");
+        //par exemple pour acceder au sharedpref depuis n'importe ou tu fais ViewModel.Current.dataUtils.GetSetting("", "");
         //tu fais  ViewModel.Current.device  pour acceder au methode sur le device par exemple affichage des message
         //ViewModel.Current.fileUtils  les methode qui traite les fichier ect
 

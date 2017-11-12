@@ -10,19 +10,14 @@ import recorder.appss.cool.recyclertest.R;
  * Created by work on 10/11/2017.
  */
 
-public class HeaderViewHolderCompetitionAdap extends RecyclerView.ViewHolder{
+public class HeaderViewHolderCompetitionAdap extends RecyclerView.ViewHolder {
 
+    //TODO add butterknife library
+    public TextView all, alllive;
 
-     public    TextView all, alllive;
-
-        public HeaderViewHolderCompetitionAdap(View itemView) {
-            super(itemView);
-            //  View = itemView;
-            all = (TextView) itemView.findViewById(R.id.allnb);
-            alllive = (TextView) itemView.findViewById(R.id.allnblive);
-
-
+    public HeaderViewHolderCompetitionAdap(View itemView) {
+        super(itemView);
+        all = (TextView) itemView.findViewById(R.id.allnb);
+        alllive = (TextView) itemView.findViewById(R.id.allnblive);
     }
-
-
 }

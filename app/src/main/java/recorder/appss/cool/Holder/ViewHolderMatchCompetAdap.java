@@ -16,6 +16,7 @@ import recorder.appss.cool.recyclertest.R;
 
 public class ViewHolderMatchCompetAdap extends RecyclerView.ViewHolder {
 
+    //TODO add butterknife library
     public TextView team1txt, team2txt, score, time, timestart;
     public ImageView im1, im2;
     public LinearLayout layout_live;

@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 
 public abstract class BaseActivity extends AppCompatActivity { // tu dois etendre tout tes activiter de BaseActivity
 
+    //TODO quand tu ajoutera butterknife library oublie pas la Base
     protected Activity mContext;
     protected abstract int getLayout();
     protected abstract void initData();

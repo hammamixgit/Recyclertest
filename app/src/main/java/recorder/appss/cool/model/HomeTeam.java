@@ -3,14 +3,14 @@ package recorder.appss.cool.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class HomeTeam {
+public class HomeTeam {  //TODO extend genericElement a crée tu me par exemple name et dbid
 
     @SerializedName("shirtUrl")
     @Expose
     private String shirtUrl;
     @SerializedName("name")
     @Expose
-    private String name;
+    private String name;    //TODO name et dbid duplication de code
     @SerializedName("dbid")
     @Expose
     private Integer dbid;

@@ -36,14 +36,12 @@ import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
  */
 
 public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    List<Competition> list_compt = new ArrayList<>();
-    LinkedHashMap<Competition, String> ks = new LinkedHashMap<Competition, String>();
+    List<Competition> list_compt = new ArrayList<>();  //TODO private or public toujours
+    LinkedHashMap<Competition, String> ks = new LinkedHashMap<Competition, String>(); //TODO private or public toujours
+    TabFragmentCompetitionList ff; //TODO private or public toujours
+    private int nbmatch_total, nbmatch_live; //TODO private or public toujours
 
-    TabFragmentCompetitionList ff;
-
-    private int nbmatch_total, nbmatch_live;
-
-    public CompetitionAdapter(LinkedHashMap<Competition, String> k, TabFragmentCompetitionList f) {
+    public CompetitionAdapter(LinkedHashMap<Competition, String> k, TabFragmentCompetitionList f) {  //TODO rename
         ks.putAll(k);
 
         ff = f;
@@ -95,7 +93,6 @@ public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (holder instanceof ViewHolderCompetitionAdap) {
             Set<Map.Entry<Competition, String>> mapSet = ks.entrySet();
             Map.Entry<Competition, String> element = (Map.Entry<Competition, String>) mapSet.toArray()[position - 1];
-
 
             Competition c = element.getKey();
             list_compt.add(c);

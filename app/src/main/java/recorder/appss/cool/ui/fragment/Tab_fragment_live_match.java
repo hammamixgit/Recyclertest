@@ -350,10 +350,7 @@ return  cc;
 
                     if (response.isSuccessful()) {
                         list_match_fav = response.body();
-
                         match_fav_adap.updateAnswers(sort_compet(list_match_fav));
-
-
                     } else {
                         int statusCode = response.code();
                         // handle request errors depending on status code

@@ -12,9 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -53,7 +51,7 @@ public class FragmentMatchsCompet extends BaseFragment {
     private Sportservice mService;
     // TODO: Rename and change types of parameters
     private Competition mParam1;
-    RecyclerView rv;
+    RecyclerView rv;  //TODO mRecylcerView
     MatchCompetitionAdapter m_comp_adap;
     Toolbar toolbar;
     AppCompatActivity appCompatActivity;
@@ -199,7 +197,7 @@ public class FragmentMatchsCompet extends BaseFragment {
 
                 if (response.isSuccessful()) {
                     list_match_compet = response.body();
-                    m_comp_adap.updateAnswers(list_match_compet, 0, 0);
+                    m_comp_adap.updateAnswers(list_match_compet);
 
 
                 } else {

@@ -1,14 +1,10 @@
 package recorder.appss.cool.ui.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.MultiTransformation;
@@ -37,65 +33,54 @@ import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
  */
 
 public class MatchFavoriAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    List<String> list_fav = new ArrayList<>();
-    List<Match> list_of_matchs_live = new ArrayList<>();
-    List<Match> list_of_matchs_live2 = new ArrayList<>();
+    List<String> list_fav = new ArrayList<>(); //TODO private
+    List<Match> list_of_matchs_live = new ArrayList<>(); //TODO private
+    List<Match> list_of_matchs_live2 = new ArrayList<>(); //TODO private
+    private int pos = 0; //TODO private
+    int current_compet = 0; //TODO private
 
+    public MatchFavoriAdapter(List<Match> list_match) {
 
-
-    private int pos=0;
-int current_compet=0;
-
-    public MatchFavoriAdapter(List<Match> list_match ) {
-
-        list_fav.addAll( ViewModel.Current.dataUtils.getfavPref());
+        list_fav.addAll(ViewModel.Current.dataUtils.getfavPref());
         list_of_matchs_live.addAll(list_match);
-     for(Match m : list_of_matchs_live)
-         if(list_fav.contains(m.getDbid()+"")) {
-             if (pos == 0) {
-                 Match e = new Match();
-                 e.setCompetition(m.getCompetition());
-                 e.setDbid(-1);
-                 list_of_matchs_live2.add(e);
-                 list_of_matchs_live2.add(m);
-                 current_compet = m.getCompetition().getDbid();
-                 pos++;
-             } else {
-                 if (current_compet == m.getCompetition().getDbid()) {
-                     list_of_matchs_live2.add(m);
-                 } else {
-                     Match e = null;
-                     e.setCompetition(m.getCompetition());
-                     e.setDbid(-1);
-                     list_of_matchs_live2.add(e);
-                     current_compet = m.getCompetition().getDbid();
-                 }
-
-             }
-         }
+        for (Match m : list_of_matchs_live)
+            if (list_fav.contains(m.getDbid() + "")) {
+                if (pos == 0) {
+                    Match e = new Match();
+                    e.setCompetition(m.getCompetition());
+                    e.setDbid(-1);
+                    list_of_matchs_live2.add(e);
+                    list_of_matchs_live2.add(m);
+                    current_compet = m.getCompetition().getDbid();
+                    pos++;
+                } else {
+                    if (current_compet == m.getCompetition().getDbid()) {
+                        list_of_matchs_live2.add(m);
+                    } else {
+                        Match e = null;
+                        e.setCompetition(m.getCompetition());
+                        e.setDbid(-1);
+                        list_of_matchs_live2.add(e);
+                        current_compet = m.getCompetition().getDbid();
+                    }
+                }
+            }
     }
 
     @Override
     public int getItemViewType(int position) {
-
-        if( list_of_matchs_live2.get(position).getDbid()<0)
-        {return Constants.TYPE_HEADER;}
-
-       else
-        return  Constants.TYPE_ITEM;
-
-
-
-
+        if (list_of_matchs_live2.get(position).getDbid() < 0) {
+            return Constants.TYPE_HEADER;
+        } else
+            return Constants.TYPE_ITEM;
     }
-
 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == Constants.TYPE_ITEM) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_matchs_compet_item, parent, false);
-            ViewHolderMatchFavoriAdap mvh = new ViewHolderMatchFavoriAdap(v);
+            ViewHolderMatchFavoriAdap mvh = new ViewHolderMatchFavoriAdap(v);  //TODO rename viewHolderMatchFavoriAdap
             return mvh;
 
         } else if (viewType == Constants.TYPE_HEADER) {
@@ -109,38 +94,43 @@ int current_compet=0;
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder,final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
         if (holder instanceof ViewHolderMatchFavoriAdap) {
-            if (list_fav.contains(list_of_matchs_live2.get(position).getDbid().toString()))((ViewHolderMatchFavoriAdap) holder).btn_like.setLiked(true);else ((ViewHolderMatchFavoriAdap) holder).btn_like.setLiked(false);
+            if (list_fav.contains(list_of_matchs_live2.get(position).getDbid().toString()))
+                ((ViewHolderMatchFavoriAdap) holder).btn_like.setLiked(true);
+            else ((ViewHolderMatchFavoriAdap) holder).btn_like.setLiked(false);
 
             ((ViewHolderMatchFavoriAdap) holder).btn_like.setOnLikeListener(new OnLikeListener() {
 
                 @Override
                 public void liked(LikeButton likeButton) {
-                    ViewModel.Current.dataUtils.addfavPref( list_of_matchs_live2.get(position).getDbid().toString());
+                    ViewModel.Current.dataUtils.addfavPref(list_of_matchs_live2.get(position).getDbid().toString());
                     list_fav.clear();
-                    list_fav.addAll( ViewModel.Current.dataUtils.getfavPref());
+                    list_fav.addAll(ViewModel.Current.dataUtils.getfavPref());
                     notifyItemChanged(position);
-                     // Log.d("favori",list_of_matchs_live2.get(position).getAwayTeam().getName()+"-"+list_of_matchs_live2.get(position).getHomeTeam().getName()+"- liked!!");
+                    // Log.d("favori",list_of_matchs_live2.get(position).getAwayTeam().getName()+"-"+list_of_matchs_live2.get(position).getHomeTeam().getName()+"- liked!!");
                 }
 
                 @Override
                 public void unLiked(LikeButton likeButton) {
                     ViewModel.Current.dataUtils.removefavPref(list_of_matchs_live2.get(position).getDbid().toString());
                     list_fav.clear();
-                    list_fav.addAll( ViewModel.Current.dataUtils.getfavPref());
-                    int resultat= verif_match_for_compet(list_of_matchs_live2.get(position).getCompetition().getDbid());
+                    list_fav.addAll(ViewModel.Current.dataUtils.getfavPref());
+                    int resultat = verif_match_for_compet(list_of_matchs_live2.get(position).getCompetition().getDbid());
                     list_of_matchs_live2.remove(position);
-                    if(resultat==1){list_of_matchs_live2.remove(position-1); notifyDataSetChanged();}else {
-                         notifyItemRemoved(position);
+                    if (resultat == 1) {
+                        list_of_matchs_live2.remove(position - 1);
+                        notifyDataSetChanged();
+                    } else {
+                        notifyItemRemoved(position);
 
                         // if((resultat==1))list_of_matchs_live2.remove(position);
-                          notifyItemRangeChanged(position,list_of_matchs_live2.size());//delete from live 2
+                        notifyItemRangeChanged(position, list_of_matchs_live2.size());//delete from live 2
 
                     }
 
-                   // Log.d("favori",list_of_matchs_live2.get(position).getAwayTeam().getName()+"-"+list_of_matchs_live2.get(position).getHomeTeam().getName()+"- unnliked!!");
+                    // Log.d("favori",list_of_matchs_live2.get(position).getAwayTeam().getName()+"-"+list_of_matchs_live2.get(position).getHomeTeam().getName()+"- unnliked!!");
 
                 }
             });
@@ -149,7 +139,7 @@ int current_compet=0;
             ((ViewHolderMatchFavoriAdap) holder).team2txt.setText(list_of_matchs_live2.get(position).getAwayTeam().getShortName());
             ((ViewHolderMatchFavoriAdap) holder).score.setText(list_of_matchs_live2.get(position).getHomeGoals() + "-" + list_of_matchs_live2.get(position).getAwayGoals());
 
-            long timestamp_start = (long) list_of_matchs_live2.get(position).getStart();
+            long timestamp_start = (long) list_of_matchs_live2.get(position).getStart();  //TODO refactor getTime()
             DateTime dt = new DateTime(timestamp_start);
             String hour, minutes;
             if (dt.getHourOfDay() > 9) {
@@ -192,58 +182,61 @@ int current_compet=0;
 
     }
 
-private int verif_match_for_compet(Integer id_comp)
+    private int verif_match_for_compet(Integer id_comp)  //TODO rename jamais utiliser "_" dans les nom des methodes
 
-{
-int result =0;
-    for(Match m : list_of_matchs_live2)
     {
-        if(m.getDbid()>-1 && m.getCompetition().getDbid().equals(id_comp )){result++;}
+        int result = 0;
+        for (Match m : list_of_matchs_live2) {  //TODO Anwar anwar : ect toujours suivre ca
+            if (m.getDbid() > -1 && m.getCompetition().getDbid().equals(id_comp)) {
+                result++;
+            }
+        }
+
+        return result;
     }
 
-    return  result;
-}
     @Override
     public int getItemCount() {
-        return list_of_matchs_live2.size() ;
+        return list_of_matchs_live2.size();
     }
 
     public void updateAnswers(List<Match> items) {
-        pos=0;
-        list_of_matchs_live.clear(); list_of_matchs_live2.clear();
-        list_of_matchs_live .addAll(items) ;
-        for(Match m : list_of_matchs_live) {
+        pos = 0;
+        list_of_matchs_live.clear();
+        list_of_matchs_live2.clear();
+        list_of_matchs_live.addAll(items);
+        for (Match m : list_of_matchs_live) {   //TODO (Match match : litOfMatchLive)
             Log.d("matchdetails", m.getCompetition().getName() + "-" + m.getAwayTeam().getName());
-            if(list_fav.contains(m.getDbid()+"")) {
-            if (pos == 0) {
-                Match e = new Match();
-                e.setCompetition(m.getCompetition());
-                e.setDbid(-1);
-                list_of_matchs_live2.add(e);
-                list_of_matchs_live2.add(m);
-                current_compet = m.getCompetition().getDbid();
-                pos++;
-            } else {
-                if (current_compet == m.getCompetition().getDbid()) {
-                    list_of_matchs_live2.add(m);
-                } else {
+            if (list_fav.contains(m.getDbid() + "")) {
+                if (pos == 0) {
                     Match e = new Match();
                     e.setCompetition(m.getCompetition());
                     e.setDbid(-1);
                     list_of_matchs_live2.add(e);
                     list_of_matchs_live2.add(m);
                     current_compet = m.getCompetition().getDbid();
+                    pos++;
+                } else {
+                    if (current_compet == m.getCompetition().getDbid()) {
+                        list_of_matchs_live2.add(m);
+                    } else {
+                        Match e = new Match();
+                        e.setCompetition(m.getCompetition());
+                        e.setDbid(-1);
+                        list_of_matchs_live2.add(e);
+                        list_of_matchs_live2.add(m);
+                        current_compet = m.getCompetition().getDbid();
+                    }
                 }
             }
         }
-            }
         notifyDataSetChanged();
-        Log.d("matchssize", list_of_matchs_live2.size()+"");
+        Log.d("matchssize", list_of_matchs_live2.size() + "");
     }
 
-    public String instant_time(int state, long current_state_start) {
+    private String instant_time(int state, long current_state_start) {  //TODO sur android rename to instantTime(......
         String result = "";
-        if (state == 0) {
+        if (state == 0) {  //TODO change if else to switch case default
             result = "1:FX";
         } else if (state == 1) {
             DateTime d1 = new DateTime();

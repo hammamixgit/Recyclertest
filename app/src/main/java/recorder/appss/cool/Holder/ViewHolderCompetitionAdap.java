@@ -16,9 +16,8 @@ import recorder.appss.cool.ui.fragment.FragmentMatchsCompet;
 
 public class ViewHolderCompetitionAdap extends RecyclerView.ViewHolder  {
 
-
-
-     public    TextView tx, tcountry, txtmatch, txtnblive;
+    //TODO add butterknife library
+    public    TextView tx, tcountry, txtmatch, txtnblive;  //TODO une pour chaque ligne pour les view et regade tout les classe
      public    ImageView im;
 
         public ViewHolderCompetitionAdap(View itemView) {

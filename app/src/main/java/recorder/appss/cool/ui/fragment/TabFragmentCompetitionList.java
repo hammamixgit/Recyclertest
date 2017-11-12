@@ -47,23 +47,20 @@ import retrofit2.Response;
 public class TabFragmentCompetitionList extends BaseFragment {
 
     //Declaration var
-    List<Integer> match_states = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
+    List<Integer> match_states = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8)); //mMatchState
     private Sportservice mService;
-    private RecyclerView rv;
-    List<Match> list_match;
+    private RecyclerView rv; //mRecycleView ect
+    List<Match> list_match; //mListMatch  ect
     List<Competition> list_competition;
     LinkedHashMap<Competition, String> comp_occur;
     //  List <Integer> live_match_per_comp = new ArrayList<>();
     CompetitionAdapter adap;
     private int matchs_live;
 
-
     @Override
     public int getFragmentId() {
         return R.layout.compet_list;
     }
-
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -72,7 +69,7 @@ public class TabFragmentCompetitionList extends BaseFragment {
         list_match = new ArrayList<>();
         list_competition = new ArrayList<>();
         comp_occur = new LinkedHashMap<>();
-     //   int position = FragmentPagerItem.getPosition(getArguments());
+        //int position = FragmentPagerItem.getPosition(getArguments());
         JodaTimeAndroid.init(view.getContext());
         //   ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(view.getContext()).build();
         //  ImageLoader.getInstance().init(config);
@@ -85,7 +82,6 @@ public class TabFragmentCompetitionList extends BaseFragment {
         rv.setLayoutManager(l);
         adap = new CompetitionAdapter(comp_occur, this);
         rv.setAdapter(adap);
-
         loadAnswers();
     }
 
@@ -95,30 +91,24 @@ public class TabFragmentCompetitionList extends BaseFragment {
         DateTimeFormatter fmt = DateTimeFormat.forPattern("YYYY-MM-dd");
         //  Log.d("DDDate", "loadAnswers: "+fmt.print(today)+"     "+tomorrow);
         mService.getMatch(fmt.print(today) + "T00:00:00+" + today.getEra(), fmt.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
-
             @Override
             public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
 
                 if (response.isSuccessful()) {
                     list_match = response.body();
-
                     sort_compet(list_match, list_competition);
-
                     adap.updateAnswers(count_compet(list_competition), list_match.size(), matchs_live);
 
                 } else {
                     int statusCode = response.code();
                     // handle request errors depending on status code
                 }
-
-
             }
 
             @Override
             public void onFailure(Call<List<Match>> call, Throwable t) {
                 // showErrorMessage();
-                Log.d("MainActivity", "error loading from API" + t.toString());
-
+                Log.d("MainActivity", "error loading from API" + t.toString()); //TODO mettre dans un snack barre un message d'eurreur déja dans device class
             }
         });
 

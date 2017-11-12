@@ -16,8 +16,9 @@ import recorder.appss.cool.recyclertest.R;
 
 public class ViewHolderMatchLiveAdap extends RecyclerView.ViewHolder {
 
-    public   TextView team1txt, team2txt, score, time, timestart;
-    public   ImageView im1, im2;
+    //TODO add butterknife library
+    public   TextView team1txt, team2txt, score, time, timestart;  //TODO rename to android naming (mTeamTxt, mScore, mTime, mTimeStart
+    public   ImageView im1, im2;  //TODO renaming (fee koll societe famma robot ichouf pour chaque dev si le naming et la qualité est respecter chaque jours, esmou "SONAR" oublie pas sont nom
     public   LinearLayout layout_live;
     public LikeButton btn_like;
 
@@ -32,7 +33,5 @@ public class ViewHolderMatchLiveAdap extends RecyclerView.ViewHolder {
         im2 = (ImageView) itemView.findViewById(R.id.imgteam2);
         timestart = (TextView) itemView.findViewById(R.id.match_start);
         btn_like = (LikeButton) itemView.findViewById(R.id.star_button);
-
     }
-
 }

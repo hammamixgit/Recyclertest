@@ -13,6 +13,7 @@ import recorder.appss.cool.recyclertest.R;
 
 public class HeaderViewHolderMatchFavoriAdap extends RecyclerView.ViewHolder{
 
+    //TODO add butterknife library
     public TextView txt_header;
     public  ImageView im_header;
 

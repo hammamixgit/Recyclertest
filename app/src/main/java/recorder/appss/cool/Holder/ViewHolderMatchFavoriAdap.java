@@ -16,10 +16,12 @@ import recorder.appss.cool.recyclertest.R;
 
 public class ViewHolderMatchFavoriAdap extends RecyclerView.ViewHolder {
 
+    //TODO add butterknife library
     public TextView team1txt, team2txt, score, time, timestart;
     public  ImageView im1, im2;
     public  LinearLayout layout_live;
     public  LikeButton btn_like;
+
     public ViewHolderMatchFavoriAdap(View itemView) {
         super(itemView);
         layout_live = (LinearLayout) itemView.findViewById(R.id.lllive);

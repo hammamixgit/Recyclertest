@@ -1,13 +1,9 @@
 package recorder.appss.cool.ui.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.MultiTransformation;
@@ -36,16 +32,14 @@ import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
  */
 
 public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    List<Match> list_of_matchs = new ArrayList<>();
-    Competition competition;
-    List<String> list_fav = new ArrayList<>();
+    private List<Match> list_of_matchs = new ArrayList<>();
+    private Competition competition;
+    private List<String> list_fav = new ArrayList<>();
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_FOOTER = 2;
-    private int nbmatch_total, nbmatch_live;
 
     public MatchCompetitionAdapter(List<Match> list_match, Competition c) {
-
         list_of_matchs.addAll(list_match);
         competition = c;
         list_fav.addAll( ViewModel.Current.dataUtils.getfavPref());
@@ -133,7 +127,7 @@ public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.V
             ((ViewHolderMatchCompetAdap) holder).team2txt.setText(list_of_matchs.get(position - 1).getAwayTeam().getShortName());
             ((ViewHolderMatchCompetAdap) holder).score.setText(list_of_matchs.get(position - 1).getHomeGoals() + "-" + list_of_matchs.get(position - 1).getAwayGoals());
 
-            long timestamp_start = (long) list_of_matchs.get(position - 1).getStart();
+            long timestamp_start = (long) list_of_matchs.get(position - 1).getStart();  //todo refactor getTime()
             DateTime dt = new DateTime(timestamp_start);
             String hour, minutes;
             if (dt.getHourOfDay() > 9) {
@@ -163,7 +157,7 @@ public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.V
             ((HeaderViewHolderMatchCompetAdap) holder).txt_header.setText(competition.getName());
 
 
-            MultiTransformation multi = new MultiTransformation(
+            MultiTransformation multi = new MultiTransformation(  //TODO refactor
                     new BlurTransformation(1),
                     new RoundedCornersTransformation(128, 0, RoundedCornersTransformation.CornerType.BOTTOM));
             Glide
@@ -181,15 +175,13 @@ public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.V
         return list_of_matchs.size() + 1;
     }
 
-    public void updateAnswers(List<Match> items, int nbmatch, int nblive) {
-        nbmatch_total = nbmatch;
-        nbmatch_live = nblive;
+    public void updateAnswers(List<Match> items) {
         list_of_matchs = items;
         notifyDataSetChanged();
     }
 
     public String instant_time(int state, long current_state_start) {
-        String result = "";
+        String result = ""; //TODO use case
         if (state == 0) {
             result = "1:FX";
         } else if (state == 1) {

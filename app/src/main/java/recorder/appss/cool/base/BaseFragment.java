@@ -16,7 +16,7 @@ import recorder.appss.cool.recyclertest.R;
  */
 
 public abstract class BaseFragment extends Fragment {
-
+    //TODO quand tu ajoutera butterknife library oublie pas la Base
     public abstract int getFragmentId();
     protected View rootView;
     protected Activity mActivity;

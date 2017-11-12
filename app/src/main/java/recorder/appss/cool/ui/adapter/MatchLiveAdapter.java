@@ -1,14 +1,10 @@
 package recorder.appss.cool.ui.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.MultiTransformation;
@@ -37,14 +33,11 @@ import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
  */
 
 public class MatchLiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    List<String> list_fav = new ArrayList<>();
-    List<Match> list_of_matchs_live = new ArrayList<>();
-    List<Match> list_of_matchs_live2 = new ArrayList<>();
-
-
-    private int pos = 0;
-    int current_compet = 0;
-
+    List<String> list_fav = new ArrayList<>(); //TODO private
+    List<Match> list_of_matchs_live = new ArrayList<>(); //TODO private
+    List<Match> list_of_matchs_live2 = new ArrayList<>(); //TODO private
+    private int pos = 0; //TODO private
+    int current_compet = 0; //TODO private
 
     public MatchLiveAdapter(List<Match> list_match) {
 
@@ -80,14 +73,14 @@ public class MatchLiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             return Constants.TYPE_HEADER;
         } else
             return Constants.TYPE_ITEM;
-
-
+        //TODO remove all space
+        //TODO crtl + alt + L toujours toujours quand tu code lin twalli reflex
     }
 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType ==Constants.TYPE_ITEM) {
+        if (viewType == Constants.TYPE_ITEM) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_matchs_compet_item, parent, false);
             ViewHolderMatchLiveAdap mvh = new ViewHolderMatchLiveAdap(v);
             return mvh;
@@ -106,6 +99,7 @@ public class MatchLiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
         if (holder instanceof ViewHolderMatchLiveAdap) {
+            //TODO Refactor setMatchLiveAdapHolderData()
             if (list_fav.contains(list_of_matchs_live2.get(position).getDbid().toString()))
                 ((ViewHolderMatchLiveAdap) holder).btn_like.setLiked(true);
             else ((ViewHolderMatchLiveAdap) holder).btn_like.setLiked(false);
@@ -114,9 +108,9 @@ public class MatchLiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                 @Override
                 public void liked(LikeButton likeButton) {
-                    ViewModel.Current.dataUtils.addfavPref( list_of_matchs_live2.get(position).getDbid().toString());
+                    ViewModel.Current.dataUtils.addfavPref(list_of_matchs_live2.get(position).getDbid().toString());
                     list_fav.clear();
-                    list_fav.addAll( ViewModel.Current.dataUtils.getfavPref());
+                    list_fav.addAll(ViewModel.Current.dataUtils.getfavPref());
                     notifyItemChanged(position);
                     // Log.d("favori",list_of_matchs_live2.get(position).getAwayTeam().getName()+"-"+list_of_matchs_live2.get(position).getHomeTeam().getName()+"- liked!!");
                 }
@@ -125,7 +119,7 @@ public class MatchLiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 public void unLiked(LikeButton likeButton) {
                     ViewModel.Current.dataUtils.removefavPref(list_of_matchs_live2.get(position).getDbid().toString());
                     list_fav.clear();
-                    list_fav.addAll( ViewModel.Current.dataUtils.getfavPref());
+                    list_fav.addAll(ViewModel.Current.dataUtils.getfavPref());
 
                     notifyItemChanged(position);
                     // Log.d("favori",list_of_matchs_live2.get(position).getAwayTeam().getName()+"-"+list_of_matchs_live2.get(position).getHomeTeam().getName()+"- unnliked!!");
@@ -137,7 +131,7 @@ public class MatchLiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ((ViewHolderMatchLiveAdap) holder).team2txt.setText(list_of_matchs_live2.get(position).getAwayTeam().getShortName());
             ((ViewHolderMatchLiveAdap) holder).score.setText(list_of_matchs_live2.get(position).getHomeGoals() + "-" + list_of_matchs_live2.get(position).getAwayGoals());
 
-            long timestamp_start = (long) list_of_matchs_live2.get(position).getStart();
+            long timestamp_start = (long) list_of_matchs_live2.get(position).getStart();  //TODO refactor getTime()
             DateTime dt = new DateTime(timestamp_start);
             String hour, minutes;
             if (dt.getHourOfDay() > 9) {
@@ -165,6 +159,7 @@ public class MatchLiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ((ViewHolderMatchLiveAdap) holder).time.setText(live_data[1]);
 
         } else if (holder instanceof HeaderViewHolderMatchLiveAdap) {
+            //TODO Refactor setMatchLiveAdapHolderData()
             ((HeaderViewHolderMatchLiveAdap) holder).txt_header.setText(list_of_matchs_live2.get(position).getCompetition().getName());
 
 
@@ -219,7 +214,7 @@ public class MatchLiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public String instant_time(int state, long current_state_start) {
-        String result = "";
+        String result = "";  //TODO Case
         if (state == 0) {
             result = "1:FX";
         } else if (state == 1) {
@@ -264,7 +259,6 @@ public class MatchLiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         return result;
     }
-
 
 
 }
