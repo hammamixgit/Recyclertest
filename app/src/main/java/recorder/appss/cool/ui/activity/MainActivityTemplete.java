@@ -3,22 +3,23 @@ package recorder.appss.cool.ui.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
-import android.view.Window;
-import android.view.WindowManager;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import recorder.appss.cool.base.BaseActivity;
 import recorder.appss.cool.recyclertest.R;
 import recorder.appss.cool.ui.adapter.FragmentPagerAdap;
 import recorder.appss.cool.ui.fragment.F3;
 import recorder.appss.cool.ui.fragment.FragmentMatchsCompet;
-import recorder.appss.cool.ui.fragment.Tab_fragment_fav_match;
-import recorder.appss.cool.ui.fragment.Tab_fragment_live_match;
+import recorder.appss.cool.ui.fragment.TabFragmentFavMatch;
+import recorder.appss.cool.ui.fragment.TabFragmentLiveMatch;
 
-//TODO Template T majuscule tjr
-public class MainActivityTemplete extends BaseActivity implements Tab_fragment_live_match.OnFragmentInteractionListener, Tab_fragment_fav_match.OnFragmentInteractionListener, F3.OnFragmentInteractionListener, FragmentMatchsCompet.OnFragmentInteractionListener {
 
-    //TODO dans activity_main_templete.xml add CoordinatorLayout the root layout toujours pour afficher le snack message par exemple
+public class MainActivityTemplete extends BaseActivity implements TabFragmentLiveMatch.OnFragmentInteractionListener, TabFragmentFavMatch.OnFragmentInteractionListener, F3.OnFragmentInteractionListener, FragmentMatchsCompet.OnFragmentInteractionListener {
+
+
+
+    @BindView(R.id.vpPager) ViewPager viewPager;
     @Override
     protected int getLayout() {
         return R.layout.activity_main_templete;
@@ -26,16 +27,15 @@ public class MainActivityTemplete extends BaseActivity implements Tab_fragment_l
 
     @Override
     protected void initData() {
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.vpPager);
-        Window window = this.getWindow();
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarx); //TODO rename les variabel android commence toujours par mToolbar
-        toolbar.setTitle("LiveScore");  //TODO mettre dans le string toujours getString(R.id.votreVariable)
-        setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
+     //   final ViewPager viewPager = (ViewPager) findViewById(R.id.vpPager);
+     //   Window window = this.getWindow();
+       // window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+       // window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        FragmentPagerAdap adapter = new FragmentPagerAdap(
-                getSupportFragmentManager());
+        getSupportActionBar().setTitle(R.string.toolbartitle);
+        FragmentPagerAdap adapter = new FragmentPagerAdap(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -55,10 +55,10 @@ public class MainActivityTemplete extends BaseActivity implements Tab_fragment_l
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent a = new Intent(Intent.ACTION_MAIN);
-        a.addCategory(Intent.CATEGORY_HOME);
-        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(a);
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     @Override

@@ -13,4 +13,5 @@ public class Constants {
     public static final int TYPE_HEADER = 0;
     public static final int TYPE_ITEM = 1;
     public static final int TYPE_FOOTER = 2;
+    public static final String ARG_PARAM1 = "datacompetition";
 }

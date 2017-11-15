@@ -21,6 +21,7 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import recorder.appss.cool.Holder.HeaderViewHolderMatchCompetAdap;
 import recorder.appss.cool.Holder.ViewHolderMatchCompetAdap;
 import recorder.appss.cool.model.Competition;
+import recorder.appss.cool.model.Constants;
 import recorder.appss.cool.model.Match;
 import recorder.appss.cool.model.ViewModel;
 import recorder.appss.cool.recyclertest.R;
@@ -32,202 +33,194 @@ import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
  */
 
 public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<Match> list_of_matchs = new ArrayList<>();
-    private Competition competition;
-    private List<String> list_fav = new ArrayList<>();
-    private static final int TYPE_HEADER = 0;
-    private static final int TYPE_ITEM = 1;
-    private static final int TYPE_FOOTER = 2;
+    private List<Match> mListMatchs = new ArrayList<>();
+    private Competition mCompetition;
+    private List<String> mListFavori = new ArrayList<>();
 
-    public MatchCompetitionAdapter(List<Match> list_match, Competition c) {
-        list_of_matchs.addAll(list_match);
-        competition = c;
-        list_fav.addAll( ViewModel.Current.dataUtils.getfavPref());
+
+    public MatchCompetitionAdapter(List<Match> list_match, Competition competition) {
+        mListMatchs.addAll(list_match);
+        mCompetition = competition;
+        mListFavori.addAll(ViewModel.Current.dataUtils.getfavPref());
     }
 
     @Override
     public int getItemViewType(int position) {
         if (isPositionHeader(position)) {
-            return TYPE_HEADER;
-
+            return Constants.TYPE_HEADER;
         } else if (isPositionFooter(position)) {
-            return TYPE_FOOTER;
+            return Constants.TYPE_FOOTER;
         }
-
-        return TYPE_ITEM;
+        return Constants.TYPE_ITEM;
     }
+
     @Override
     public long getItemId(int position) {
         return position;
     }
+
     private boolean isPositionHeader(int position) {
         return position == 0;
     }
 
     private boolean isPositionFooter(int position) {
-        return position > list_of_matchs.size();
+        return position > mListMatchs.size();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == TYPE_ITEM) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_matchs_compet_item, parent, false);
-            ViewHolderMatchCompetAdap mvh = new ViewHolderMatchCompetAdap(v);
-            return mvh;
-
-        } else if (viewType == TYPE_HEADER) {
+        if (viewType == Constants.TYPE_ITEM) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_matchs_compet_item, parent, false);
+            ViewHolderMatchCompetAdap mViewHolderMatchCompetAdap = new ViewHolderMatchCompetAdap(view);
+            return mViewHolderMatchCompetAdap;
+        } else if (viewType == Constants.TYPE_HEADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_matchs_competetion, parent, false);
             return new HeaderViewHolderMatchCompetAdap(view);
-
-        } else if (viewType == TYPE_FOOTER) {
-
+        } else if (viewType == Constants.TYPE_FOOTER) {
         }
-
         throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
-
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        //   imageLoader.displayImage(ks.get(position).getCompetition().getFlagUrl(), holder.im);
-   //  final    Context ctx=((Myviewholder) holder).btn_like.getContext();
-        int x=position;
         if (holder instanceof ViewHolderMatchCompetAdap) {
-
-
-            if (list_fav.contains(list_of_matchs.get(position-1).getDbid().toString()))
-               ((ViewHolderMatchCompetAdap) holder).btn_like.setLiked(true);
-            else{ ((ViewHolderMatchCompetAdap) holder).btn_like.setLiked(false);
-                //Log.d("favori",position+"rebind"+list_of_matchs.get(position-1).getAwayTeam().getName()+"-"+list_of_matchs.get(position-1).getDbid());
-                }
-            ((ViewHolderMatchCompetAdap) holder).btn_like.setOnLikeListener(new OnLikeListener() {
-
+            if (mListFavori.contains(mListMatchs.get(position - 1).getDbid().toString()))
+                ((ViewHolderMatchCompetAdap) holder).mBtnLike.setLiked(true);
+            else {
+                ((ViewHolderMatchCompetAdap) holder).mBtnLike.setLiked(false);
+              }
+            ((ViewHolderMatchCompetAdap) holder).mBtnLike.setOnLikeListener(new OnLikeListener() {
                 @Override
                 public void liked(LikeButton likeButton) {
-                    ViewModel.Current.dataUtils.addfavPref( list_of_matchs.get(position-1).getDbid().toString());
-                    list_fav.clear();
-                    list_fav.addAll( ViewModel.Current.dataUtils.getfavPref());
+                    ViewModel.Current.dataUtils.addfavPref(mListMatchs.get(position - 1).getDbid().toString());
+                    mListFavori.clear();
+                    mListFavori.addAll(ViewModel.Current.dataUtils.getfavPref());
                     notifyItemChanged(position);
-                  //  Log.d("favori",list_of_matchs.get(position-1).getAwayTeam().getName()+"-"+list_of_matchs.get(position-1).getDbid()+"- liked!!");
                 }
 
                 @Override
                 public void unLiked(LikeButton likeButton) {
-                    ViewModel.Current.dataUtils.removefavPref( list_of_matchs.get(position-1).getDbid().toString());
-                    list_fav.clear();
-                    list_fav.addAll( ViewModel.Current.dataUtils.getfavPref());
-                  //  likeButton.setLiked(false);
-
-                   notifyItemChanged(position);
-                  //  Log.d("unfavori",list_of_matchs.get(position-1).getAwayTeam().getName()+"-"+list_of_matchs.get(position-1).getDbid()+"- unliked!!");
-
+                    ViewModel.Current.dataUtils.removefavPref(mListMatchs.get(position - 1).getDbid().toString());
+                    mListFavori.clear();
+                    mListFavori.addAll(ViewModel.Current.dataUtils.getfavPref());
+                    notifyItemChanged(position);
                 }
             });
-            ((ViewHolderMatchCompetAdap) holder).team1txt.setText(list_of_matchs.get(position - 1).getHomeTeam().getShortName());
-            ((ViewHolderMatchCompetAdap) holder).team2txt.setText(list_of_matchs.get(position - 1).getAwayTeam().getShortName());
-            ((ViewHolderMatchCompetAdap) holder).score.setText(list_of_matchs.get(position - 1).getHomeGoals() + "-" + list_of_matchs.get(position - 1).getAwayGoals());
-
-            long timestamp_start = (long) list_of_matchs.get(position - 1).getStart();  //todo refactor getTime()
-            DateTime dt = new DateTime(timestamp_start);
-            String hour, minutes;
-            if (dt.getHourOfDay() > 9) {
-                hour = dt.getHourOfDay() + "";
-            } else {
-                hour = "0" + dt.getHourOfDay();
-            }
-            if (dt.getMinuteOfHour() > 9) {
-                minutes = dt.getMinuteOfHour() + "";
-            } else {
-                minutes = "0" + dt.getMinuteOfHour();
-            }
-            String time = hour + ":" + minutes;
-            // String time = dt.getYear()+"."+dt.getMonthOfYear()+"."+dt.getDayOfMonth()+"\n"+"     "+hour+":"+minutes;
-            ((ViewHolderMatchCompetAdap) holder).timestart.setText(time);
-            String Live_time;
-            if (list_of_matchs.get(position - 1).getCurrentState() == 0)
-                Live_time = instant_time(list_of_matchs.get(position - 1).getCurrentState(), 0);
+            ((ViewHolderMatchCompetAdap) holder).mTeam1.setText(mListMatchs.get(position - 1).getHomeTeam().getShortName());
+            ((ViewHolderMatchCompetAdap) holder).mTeam2.setText(mListMatchs.get(position - 1).getAwayTeam().getShortName());
+            ((ViewHolderMatchCompetAdap) holder).mScore.setText(mListMatchs.get(position - 1).getHomeGoals() + "-" + mListMatchs.get(position - 1).getAwayGoals());
+            long mTimeStartLongFormat = (long) mListMatchs.get(position - 1).getStart();
+            ((ViewHolderMatchCompetAdap) holder).mTimeStart.setText(getTimeStart(mTimeStartLongFormat));
+            String mLiveTime;
+            if (mListMatchs.get(position - 1).getCurrentState() == 0)
+                mLiveTime = getInstantTime(mListMatchs.get(position - 1).getCurrentState(), 0);
             else
-                Live_time = instant_time(list_of_matchs.get(position - 1).getCurrentState(), (long) list_of_matchs.get(position - 1).getCurrentStateStart());
-
-            String[] live_data = Live_time.split(":");
-
-
-            ((ViewHolderMatchCompetAdap) holder).time.setText(live_data[1]);
+                mLiveTime = getInstantTime(mListMatchs.get(position - 1).getCurrentState(), (long) mListMatchs.get(position - 1).getCurrentStateStart());
+            String[] live_data = mLiveTime.split(":");
+            ((ViewHolderMatchCompetAdap) holder).mTime.setText(live_data[1]);
         } else if (holder instanceof HeaderViewHolderMatchCompetAdap) {
-            ((HeaderViewHolderMatchCompetAdap) holder).txt_header.setText(competition.getName());
-
-
-            MultiTransformation multi = new MultiTransformation(  //TODO refactor
-                    new BlurTransformation(1),
-                    new RoundedCornersTransformation(128, 0, RoundedCornersTransformation.CornerType.BOTTOM));
-            Glide
-                    .with(((HeaderViewHolderMatchCompetAdap) holder).im_header.getContext())
-                    .load(competition.getFlagUrl())
-                    .apply(bitmapTransform(multi))
-                    .into(((HeaderViewHolderMatchCompetAdap) holder).im_header);
+            ((HeaderViewHolderMatchCompetAdap) holder).mCompetitionTitle.setText(mCompetition.getName());
+            setImage((HeaderViewHolderMatchCompetAdap) holder);
         }
+    }
 
+    private void setImage(HeaderViewHolderMatchCompetAdap holder) {
+        MultiTransformation mtransform = new MultiTransformation(
+                new BlurTransformation(1),
+                new RoundedCornersTransformation(128, 0, RoundedCornersTransformation.CornerType.BOTTOM));
+        Glide
+                .with(holder.mFlagCountry.getContext())
+                .load(mCompetition.getFlagUrl())
+                .apply(bitmapTransform(mtransform))
+                .into(holder.mFlagCountry);
     }
 
 
     @Override
     public int getItemCount() {
-        return list_of_matchs.size() + 1;
+        return mListMatchs.size() + 1;
     }
 
     public void updateAnswers(List<Match> items) {
-        list_of_matchs = items;
+        mListMatchs = items;
         notifyDataSetChanged();
     }
 
-    public String instant_time(int state, long current_state_start) {
-        String result = ""; //TODO use case
-        if (state == 0) {
-            result = "1:FX";
-        } else if (state == 1) {
-            DateTime d1 = new DateTime();
-            DateTime d2 = new DateTime(current_state_start);
-            Duration duration = new Duration(d2, d1);
-            result = "2:" + duration.getStandardMinutes();
-        }//2:0+now-start
-        else if (state == 2) {
-            result = "2:HT";
-        } else if (state == 3) {
-            DateTime d1 = new DateTime();
-            DateTime d2 = new DateTime(current_state_start);
-            Duration duration = new Duration(d2, d1);
-            result = "2:" + (45 + duration.getStandardMinutes());
-        }//2:45+now-start
-        else if (state == 4) {
-            result = "2:ET";
-        } else if (state == 5) {
-            DateTime d1 = new DateTime();
-            DateTime d2 = new DateTime(current_state_start);
-            Duration duration = new Duration(d2, d1);
-            result = "2:" + (90 + duration.getStandardMinutes());
-        }//2:90+now-start
-        else if (state == 6) {
-            result = "2:ET HT";
-        } else if (state == 7) {
-            DateTime d1 = new DateTime();
-            DateTime d2 = new DateTime(current_state_start);
-            Duration duration = new Duration(d2, d1);
-            result = "2:" + (105 + duration.getStandardMinutes());
-        }//2:105+nowstart
-        else if (state == 8) {
-            result = "2:PEN";
-        } else if (state == 9) {
-            result = "3:FT";
-        } else if (state == 101) {
-            result = "3:ABD";
-        } else if (state == 102) {
-            result = "1:P-P";
+    private String getInstantTime(int state, long current_state_start) {
+        String result = "";
+        DateTime date1 ;
+        DateTime date2 ;
+        Duration duration ;
+        switch (state) {
+            case 0:
+                result = "1:FX";
+                break;
+            case 1:
+                date1 = new DateTime();
+                date2 = new DateTime(current_state_start);
+                duration = new Duration(date2, date1);
+                result = "2:" + duration.getStandardMinutes();
+                break;
+            case 2:
+                result = "2:HT";
+                break;
+            case 3:
+                date1 = new DateTime();
+                date2 = new DateTime(current_state_start);
+                duration = new Duration(date2, date1);
+                result = "2:" + (45 + duration.getStandardMinutes());
+                break;
+            case 4:
+                result = "2:ET";
+                break;
+            case 5:
+                date1 = new DateTime();
+                date2 = new DateTime(current_state_start);
+                duration = new Duration(date2, date1);
+                result = "2:" + (90 + duration.getStandardMinutes());
+                break;
+            case 6:
+                result = "2:ET HT";
+                break;
+            case 7:
+                date1 = new DateTime();
+                date2 = new DateTime(current_state_start);
+                duration = new Duration(date2, date1);
+                result = "2:" + (105 + duration.getStandardMinutes());
+                break;
+            case 8:
+                result = "2:PEN";
+                break;
+            case 9:
+                result = "3:FT";
+                break;
+            case 101:
+                result = "3:ABD";
+                break;
+            case 102:
+                result = "1:P-P";
+                break;
         }
+
 
         return result;
     }
 
-
-
+    private String getTimeStart(long mTimeLong) {
+        DateTime dateTimeStart = new DateTime(mTimeLong);
+        String hour, minutes;
+        if (dateTimeStart.getHourOfDay() > 9) {
+            hour = dateTimeStart.getHourOfDay() + "";
+        } else {
+            hour = "0" + dateTimeStart.getHourOfDay();
+        }
+        if (dateTimeStart.getMinuteOfHour() > 9) {
+            minutes = dateTimeStart.getMinuteOfHour() + "";
+        } else {
+            minutes = "0" + dateTimeStart.getMinuteOfHour();
+        }
+        String timeStartFinal = hour + ":" + minutes;
+        return timeStartFinal;
+    }
 
 }

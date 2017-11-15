@@ -13,11 +13,12 @@ import recorder.appss.cool.recyclertest.R;
 public class HeaderViewHolderCompetitionAdap extends RecyclerView.ViewHolder {
 
     //TODO add butterknife library
-    public TextView all, alllive;
+    public TextView mSumMatch;
+    public TextView mSumLive;
 
     public HeaderViewHolderCompetitionAdap(View itemView) {
         super(itemView);
-        all = (TextView) itemView.findViewById(R.id.allnb);
-        alllive = (TextView) itemView.findViewById(R.id.allnblive);
+        mSumMatch = (TextView) itemView.findViewById(R.id.allnb);
+        mSumLive = (TextView) itemView.findViewById(R.id.allnblive);
     }
 }

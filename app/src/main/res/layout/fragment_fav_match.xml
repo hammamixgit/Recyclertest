@@ -1,8 +1,8 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context="recorder.appss.cool.recyclertest.Tab_fragment_fav_match">
+tools:context="recorder.appss.cool.ui.fragment.TabFragmentFavMatch">
 
 <android.support.v7.widget.RecyclerView
     android:id="@+id/rv_list_fav"
@@ -11,4 +11,4 @@ tools:context="recorder.appss.cool.recyclertest.Tab_fragment_fav_match">
 
 </android.support.v7.widget.RecyclerView>
 
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

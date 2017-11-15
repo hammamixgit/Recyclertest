@@ -4,11 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import recorder.appss.cool.model.ViewModel;
 import recorder.appss.cool.ui.fragment.F3;
 import recorder.appss.cool.ui.fragment.TabFragmentCompetitionList;
-import recorder.appss.cool.ui.fragment.Tab_fragment_fav_match;
-import recorder.appss.cool.ui.fragment.Tab_fragment_live_match;
+import recorder.appss.cool.ui.fragment.TabFragmentFavMatch;
+import recorder.appss.cool.ui.fragment.TabFragmentLiveMatch;
 
 
 /**
@@ -29,11 +28,11 @@ public class FragmentPagerAdap extends FragmentPagerAdapter {
                 fragment = new TabFragmentCompetitionList();
                 break;
             case 1:
-                fragment = new Tab_fragment_live_match();
+                fragment = new TabFragmentLiveMatch();
                 //fragment = new RaggaeMusicFragment();
                 break;
             case 2:
-                fragment = new Tab_fragment_fav_match();
+                fragment = new TabFragmentFavMatch();
                 //fragment = new RapMusicFragment();
                 break;
             case 3:

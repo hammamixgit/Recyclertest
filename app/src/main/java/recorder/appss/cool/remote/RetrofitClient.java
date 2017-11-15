@@ -12,11 +12,6 @@ public class RetrofitClient {
 
     public static Retrofit getClient(String baseUrl) {
         if (retrofit == null) {
-         /*   Gson gson = new GsonBuilder()
-                    .setDateFormat("yyyy-MM-dd")
-                    .create();
-*/
-
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();

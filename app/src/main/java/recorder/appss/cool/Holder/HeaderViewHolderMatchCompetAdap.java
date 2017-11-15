@@ -11,17 +11,16 @@ import recorder.appss.cool.recyclertest.R;
  * Created by work on 10/11/2017.
  */
 
-public class HeaderViewHolderMatchCompetAdap extends RecyclerView.ViewHolder{
+public class HeaderViewHolderMatchCompetAdap extends RecyclerView.ViewHolder {
 
     //TODO add butterknife library
-    public    TextView txt_header;
-    public ImageView im_header;
+    public TextView mCompetitionTitle;
+    public ImageView mFlagCountry;
 
     public HeaderViewHolderMatchCompetAdap(View itemView) {
         super(itemView);
-
-        im_header = (ImageView) itemView.findViewById(R.id.compet_flag_h);
-        txt_header = (TextView) itemView.findViewById(R.id.compet_name_h);
+        mFlagCountry = (ImageView) itemView.findViewById(R.id.compet_flag_h);
+        mCompetitionTitle = (TextView) itemView.findViewById(R.id.compet_name_h);
 
     }
 

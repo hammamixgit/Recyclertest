@@ -14,13 +14,14 @@ import recorder.appss.cool.recyclertest.R;
 public class HeaderViewHolderMatchLiveAdap extends RecyclerView.ViewHolder{
 
     //TODO add butterknife library
-    public  TextView txt_header;
-    public   ImageView im_header;
+    public TextView mCompetitionTitle;
+    public ImageView mFlagCountry;
 
     public HeaderViewHolderMatchLiveAdap(View itemView) {
         super(itemView);
-        im_header = (ImageView) itemView.findViewById(R.id.compet_flag_div);
-        txt_header = (TextView) itemView.findViewById(R.id.compet_name_div);
+        mFlagCountry = (ImageView) itemView.findViewById(R.id.compet_flag_div);
+        mCompetitionTitle = (TextView) itemView.findViewById(R.id.compet_name_div);
+
     }
 
 

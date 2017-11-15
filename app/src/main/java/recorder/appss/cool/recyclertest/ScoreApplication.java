@@ -11,16 +11,12 @@ import recorder.appss.cool.utils.FileUtils;
  * Created by yassin baccour on 07/11/2017.
  */
 
-public class ScoreApplication extends MultiDexApplication {  //TODO l'application supporte le multidex //ok
+public class ScoreApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        //TODO nouvelle instance de viewmodel crée au lancement de l'application
-        //par exemple pour acceder au sharedpref depuis n'importe ou tu fais ViewModel.Current.dataUtils.GetSetting("", "");
-        //tu fais  ViewModel.Current.device  pour acceder au methode sur le device par exemple affichage des message
-        //ViewModel.Current.fileUtils  les methode qui traite les fichier ect
 
         ViewModel.Current = new ViewModel(new DeviceUtils(getApplicationContext()),
                 new FileUtils(getApplicationContext()),

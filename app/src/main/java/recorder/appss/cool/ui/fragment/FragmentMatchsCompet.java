@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import recorder.appss.cool.base.BaseFragment;
+import recorder.appss.cool.model.BaseView;
+import recorder.appss.cool.model.Constants;
+import recorder.appss.cool.model.ViewModel;
 import recorder.appss.cool.recyclertest.R;
+import recorder.appss.cool.ui.activity.MainActivityTemplete;
 import recorder.appss.cool.ui.adapter.ItemOffsetDecoration;
 import recorder.appss.cool.ui.adapter.MatchCompetitionAdapter;
 import recorder.appss.cool.model.Competition;
@@ -43,18 +48,15 @@ import retrofit2.Response;
  * Use the {@link FragmentMatchsCompet#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentMatchsCompet extends BaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    List<Match> list_match_compet;
+
+public class FragmentMatchsCompet extends BaseFragment  implements BaseView {
+
+
+    List<Match> mListMatchCompetition;
     private Sportservice mService;
-    // TODO: Rename and change types of parameters
-    private Competition mParam1;
-    RecyclerView rv;  //TODO mRecylcerView
-    MatchCompetitionAdapter m_comp_adap;
-    Toolbar toolbar;
-    AppCompatActivity appCompatActivity;
+    private Competition mCompetition;
+    RecyclerView mRecylcerView;
+    MatchCompetitionAdapter mMatchCompetitionAdapter;
     private OnFragmentInteractionListener mListener;
     @Override
     public int getFragmentId() {
@@ -75,7 +77,7 @@ public class FragmentMatchsCompet extends BaseFragment {
     public static FragmentMatchsCompet newInstance(Competition param1) {
         FragmentMatchsCompet fragment = new FragmentMatchsCompet();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_PARAM1, param1);
+        args.putParcelable(Constants.ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -84,8 +86,8 @@ public class FragmentMatchsCompet extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getParcelable(ARG_PARAM1);
-            Log.d("compid", mParam1 + "");
+            mCompetition = getArguments().getParcelable(Constants.ARG_PARAM1);
+
         }
 
     }
@@ -93,16 +95,18 @@ public class FragmentMatchsCompet extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
         mService = ApiUtils.getSOService();
-        rv = (RecyclerView) view.findViewById(R.id.rv_match_compr);
-        rv.setHasFixedSize(true);
-        rv.addItemDecoration(new ItemOffsetDecoration(25));
-        final LinearLayoutManager l = new LinearLayoutManager(view.getContext());
-        rv.setLayoutManager(l);
-        list_match_compet = new ArrayList<>();
-        m_comp_adap = new MatchCompetitionAdapter(list_match_compet, mParam1);
-        rv.setAdapter(m_comp_adap);
-        getmatch(mParam1.getDbid() + "");
+        mRecylcerView = (RecyclerView) view.findViewById(R.id.rv_match_compr);
+        mRecylcerView.setHasFixedSize(true);
+        mRecylcerView.addItemDecoration(new ItemOffsetDecoration(25));
+        final LinearLayoutManager lLinearLayoutManager = new LinearLayoutManager(view.getContext());
+        mRecylcerView.setLayoutManager(lLinearLayoutManager);
+        mListMatchCompetition = new ArrayList<>();
+        mMatchCompetitionAdapter = new MatchCompetitionAdapter(mListMatchCompetition, mCompetition);
+        mRecylcerView.setAdapter(mMatchCompetitionAdapter);
+        GetMatch(mCompetition.getDbid() + "");
     }
 
 
@@ -129,6 +133,21 @@ public class FragmentMatchsCompet extends BaseFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void showSnackMsg(String msg) {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
     }
 
     /**
@@ -159,7 +178,7 @@ public class FragmentMatchsCompet extends BaseFragment {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    back();
+                    Back();
 
                     return true;
 
@@ -170,7 +189,7 @@ public class FragmentMatchsCompet extends BaseFragment {
         });
     }
 
-    private void back() {
+    private void Back() {
         // appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         Fragment fragment = new TabFragmentCompetitionList();
         Bundle args = new Bundle();
@@ -184,20 +203,20 @@ public class FragmentMatchsCompet extends BaseFragment {
 
     }
 
-    private void getmatch(String id)
+    private void GetMatch(String id)
 
     {
         DateTime today = new DateTime().withTimeAtStartOfDay().toDateTimeISO();
         DateTime tomorrow = today.plusDays(1).withTimeAtStartOfDay().toDateTimeISO();
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("YYYY-MM-dd");
-        mService.getMatchCompet(id, fmt.print(today) + "T00:00:00+" + today.getEra(), fmt.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
+        DateTimeFormatter mDateTimeFormatter = DateTimeFormat.forPattern("YYYY-MM-dd");
+        mService.getMatchCompet(id, mDateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), mDateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
 
             @Override
             public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
 
                 if (response.isSuccessful()) {
-                    list_match_compet = response.body();
-                    m_comp_adap.updateAnswers(list_match_compet);
+                    mListMatchCompetition = response.body();
+                    mMatchCompetitionAdapter.updateAnswers(mListMatchCompetition);
 
 
                 } else {
@@ -210,8 +229,7 @@ public class FragmentMatchsCompet extends BaseFragment {
 
             @Override
             public void onFailure(Call<List<Match>> call, Throwable t) {
-                // showErrorMessage();
-                Log.d("MainActivity", "error loading from API" + t.toString());
+                ViewModel.Current.device.showSnackMessage((CoordinatorLayout) getView(),getResources().getString(R.string.Error));
 
             }
         });

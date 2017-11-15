@@ -8,6 +8,6 @@ import static recorder.appss.cool.model.Constants.BASE_URL;
 public class ApiUtils {
 
     public static Sportservice getSOService() {
-        return RetrofitClient.getClient( BASE_URL).create(Sportservice.class);
+        return RetrofitClient.getClient(BASE_URL).create(Sportservice.class);
     }
 }

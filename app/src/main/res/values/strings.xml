@@ -3,7 +3,9 @@
     <string name="title_activity_main0">Main0Activity</string>
     <string name="demo_title_custom_tab_icons2">flashscore</string>
     <string name="demo_tab_no_title">no</string>
-
+    <string name="toolbartitle">LiveScore</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Error"> Error loading from API</string>
+    error loading from API
 </resources>
