@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import recorder.appss.cool.recyclertest.R;
 
 /**
@@ -16,11 +18,13 @@ import recorder.appss.cool.recyclertest.R;
  */
 
 public abstract class BaseFragment extends Fragment {
-    //TODO quand tu ajoutera butterknife library oublie pas la Base
+
     public abstract int getFragmentId();
+
     protected View rootView;
     protected Activity mActivity;
     protected Context mContext;
+    private Unbinder unbinder;
 
     @Override
     public void onAttach(Context context) {
@@ -33,20 +37,22 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        if (getFragmentId()== R.layout.fragment_matchs_compet_list && container != null) {
+        if (getFragmentId() == R.layout.fragment_matchs_compet_list && container != null) {
             container.removeAllViews();
         }
         rootView = inflater.inflate(getFragmentId(), null);
+        unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-     }
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        unbinder.unbind();
     }
 }

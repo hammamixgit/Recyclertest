@@ -88,7 +88,7 @@ public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.V
                 ((ViewHolderMatchCompetAdap) holder).mBtnLike.setLiked(true);
             else {
                 ((ViewHolderMatchCompetAdap) holder).mBtnLike.setLiked(false);
-              }
+            }
             ((ViewHolderMatchCompetAdap) holder).mBtnLike.setOnLikeListener(new OnLikeListener() {
                 @Override
                 public void liked(LikeButton likeButton) {
@@ -148,9 +148,9 @@ public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private String getInstantTime(int state, long current_state_start) {
         String result = "";
-        DateTime date1 ;
-        DateTime date2 ;
-        Duration duration ;
+        DateTime date1;
+        DateTime date2;
+        Duration duration;
         switch (state) {
             case 0:
                 result = "1:FX";

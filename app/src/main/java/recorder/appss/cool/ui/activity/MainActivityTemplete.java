@@ -27,13 +27,8 @@ public class MainActivityTemplete extends BaseActivity implements TabFragmentLiv
 
     @Override
     protected void initData() {
-        ButterKnife.bind(this);
-     //   final ViewPager viewPager = (ViewPager) findViewById(R.id.vpPager);
-     //   Window window = this.getWindow();
-       // window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-       // window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle(R.string.toolbartitle);
         FragmentPagerAdap adapter = new FragmentPagerAdap(getSupportFragmentManager());
         viewPager.setAdapter(adapter);

@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import recorder.appss.cool.recyclertest.R;
 
 /**
@@ -12,15 +14,15 @@ import recorder.appss.cool.recyclertest.R;
  */
 
 public class HeaderViewHolderMatchFavoriAdap extends RecyclerView.ViewHolder {
-
+    public @BindView(R.id.compet_name_div) TextView mCompetitionTitle;
+    public @BindView(R.id.compet_flag_div) ImageView mFlagCountry;
     //TODO add butterknife library
-    public TextView mCompetitionTitle;
-    public ImageView mFlagCountry;
+
 
     public HeaderViewHolderMatchFavoriAdap(View itemView) {
         super(itemView);
-        mFlagCountry = (ImageView) itemView.findViewById(R.id.compet_flag_div);
-        mCompetitionTitle = (TextView) itemView.findViewById(R.id.compet_name_div);
+        ButterKnife.bind(this, itemView);
+
 
     }
 

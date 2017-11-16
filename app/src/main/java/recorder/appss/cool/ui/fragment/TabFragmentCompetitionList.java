@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -26,6 +25,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import butterknife.BindView;
 import recorder.appss.cool.base.BaseFragment;
 import recorder.appss.cool.model.BaseView;
 import recorder.appss.cool.model.Competition;
@@ -42,11 +42,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TabFragmentCompetitionList extends BaseFragment implements BaseView {
-
+    @BindView(R.id.rv)
+    RecyclerView mRecycleView;
     //Declaration var
     private List<Integer> mMatchState = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
     private Sportservice mService;
-    private RecyclerView mRecycleView;
     private List<Match> mListMatch;
     private List<Competition> mListCompetition;
     private LinkedHashMap<Competition, String> mCompetitionOccur;
@@ -61,33 +61,33 @@ public class TabFragmentCompetitionList extends BaseFragment implements BaseView
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //  ButterKnife.bind(mActivity,view);
         mMatchsLive = 0;
         mListMatch = new ArrayList<>();
         mListCompetition = new ArrayList<>();
         mCompetitionOccur = new LinkedHashMap<>();
         JodaTimeAndroid.init(view.getContext());
- mService = ApiUtils.getSOService();
-        mRecycleView = (RecyclerView) view.findViewById(R.id.rv);
- mRecycleView.setHasFixedSize(false);
+        mService = ApiUtils.getSOService();
+        mRecycleView.setHasFixedSize(false);
         mRecycleView.addItemDecoration(new ItemOffsetDecoration(25));
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         mRecycleView.setLayoutManager(linearLayoutManager);
         mCompetitionAdapter = new CompetitionAdapter(mCompetitionOccur, this);
         mRecycleView.setAdapter(mCompetitionAdapter);
-        LoadAnswers();
+        loadAnswers();
     }
 
-    public void LoadAnswers() {
+    public void loadAnswers() {
         DateTime today = new DateTime().withTimeAtStartOfDay().toDateTimeISO();
         DateTime tomorrow = today.plusDays(1).withTimeAtStartOfDay().toDateTimeISO();
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("YYYY-MM-dd");
         mService.getMatch(dateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), dateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
             @Override
             public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
-  if (response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     mListMatch = response.body();
-      SortCompetition(mListMatch, mListCompetition);
-                    mCompetitionAdapter.updateAnswers(CountCompetition(mListCompetition), mListMatch.size(), mMatchsLive);
+                    sortCompetition(mListMatch, mListCompetition);
+                    mCompetitionAdapter.updateAnswers(countCompetition(mListCompetition), mListMatch.size(), mMatchsLive);
 
                 } else {
                     int statusCode = response.code();
@@ -97,17 +97,17 @@ public class TabFragmentCompetitionList extends BaseFragment implements BaseView
 
             @Override
             public void onFailure(Call<List<Match>> call, Throwable t) {
-                ViewModel.Current.device.showSnackMessage((CoordinatorLayout) getView(),getResources().getString(R.string.Error));
+                ViewModel.Current.device.showSnackMessage((CoordinatorLayout) getView(), getResources().getString(R.string.Error));
             }
         });
 
     }
 
-    private void SortCompetition(List<Match> listMatch, List<Competition> listCompetition) {
+    private void sortCompetition(List<Match> listMatch, List<Competition> listCompetition) {
         for (Match match : listMatch) {
             Competition competition = new Competition();
             competition = match.getCompetition();
-            competition.setName(GetCountryFromUrl(competition.getFlagUrl()) + " : " + competition.getName());
+            competition.setName(getCountryFromUrl(competition.getFlagUrl()) + " : " + competition.getName());
             listCompetition.add(competition);
         }
         Collections.sort(listCompetition, new Comparator<Competition>() {
@@ -119,7 +119,7 @@ public class TabFragmentCompetitionList extends BaseFragment implements BaseView
 
     }
 
-    private String GetCountryFromUrl(String url) {
+    private String getCountryFromUrl(String url) {
         String result = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
         if (result.equals("fifa") || result.equals("uefa") || result.equals("afc"))
             result = "world";
@@ -127,7 +127,7 @@ public class TabFragmentCompetitionList extends BaseFragment implements BaseView
     }
 
 
-    private LinkedHashMap CountCompetition(List<Competition> listCompetitions) {
+    private LinkedHashMap countCompetition(List<Competition> listCompetitions) {
         int live = 0;
         List<Integer> idCompetition = new ArrayList<>();
         for (Competition competition : listCompetitions)
@@ -136,15 +136,15 @@ public class TabFragmentCompetitionList extends BaseFragment implements BaseView
         Set<Integer> listIdCompetition = new LinkedHashSet<>(idCompetition);
         for (Integer id : listIdCompetition) {
             int occurrences = Collections.frequency(idCompetition, id);
-            live = GetLiveByComp(mListMatch, id);
-            livePerCompetiton.put(GetCompetitionById(listCompetitions, id), occurrences + ":" + live);
+            live = getLiveByComp(mListMatch, id);
+            livePerCompetiton.put(getCompetitionById(listCompetitions, id), occurrences + ":" + live);
             mMatchsLive = mMatchsLive + live;
         }
         return livePerCompetiton;
     }
 
 
-    private Competition GetCompetitionById(List<Competition> listCompetition, Integer id) {
+    private Competition getCompetitionById(List<Competition> listCompetition, Integer id) {
         Competition competition = new Competition();
         for (int i = 0; i < listCompetition.size(); i++)
             if (listCompetition.get(i).getDbid() == id) {
@@ -155,14 +155,14 @@ public class TabFragmentCompetitionList extends BaseFragment implements BaseView
         return competition;
     }
 
-    private Integer GetLiveByComp(List<Match> matchs, Integer idComp) {
+    private Integer getLiveByComp(List<Match> matchs, Integer idComp) {
         DateTime date1 = new DateTime();
- int countLive = 0;
+        int countLive = 0;
         for (int count = 0; count < matchs.size(); count++) {
             DateTime date2 = new DateTime((long) matchs.get(count).getCurrentStateStart());
             Duration duration = new Duration(date2, date1);
             long minute = duration.getStandardMinutes();
-             if (minute < 60 && (matchs.get(count).getCompetition().getDbid().equals(idComp)) && (mMatchState.contains(matchs.get(count).getCurrentState()))) {
+            if (minute < 60 && (matchs.get(count).getCompetition().getDbid().equals(idComp)) && (mMatchState.contains(matchs.get(count).getCurrentState()))) {
                 countLive++;
             }
         }

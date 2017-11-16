@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import recorder.appss.cool.recyclertest.R;
 
 /**
@@ -12,21 +14,17 @@ import recorder.appss.cool.recyclertest.R;
  */
 
 public class ViewHolderCompetitionAdap extends RecyclerView.ViewHolder {
-
+    public  @BindView(R.id.txtcardcompt) TextView mCompetitionName;
+    public  @BindView(R.id.txtcardcountry) TextView mCountryName;
+    public  @BindView(R.id.nbmatch) TextView mSumMatch;
+    public  @BindView(R.id.nbmatchlive) TextView mSumLive;
+    public @BindView(R.id.imgcard) ImageView mFlag;
     //TODO add butterknife library
-    public TextView mCompetitionName;
-    public TextView mCountryName;
-    public TextView mSumMatch;
-    public TextView mSumLive;
-    public ImageView mFlag;
 
     public ViewHolderCompetitionAdap(View itemView) {
         super(itemView);
-        mSumMatch = (TextView) itemView.findViewById(R.id.nbmatch);
-        mSumLive = (TextView) itemView.findViewById(R.id.nbmatchlive);
-        mCountryName = (TextView) itemView.findViewById(R.id.txtcardcountry);
-        mCompetitionName = (TextView) itemView.findViewById(R.id.txtcardcompt);
-        mFlag = (ImageView) itemView.findViewById(R.id.imgcard);
+        ButterKnife.bind(this, itemView);
+
 
     }
 }

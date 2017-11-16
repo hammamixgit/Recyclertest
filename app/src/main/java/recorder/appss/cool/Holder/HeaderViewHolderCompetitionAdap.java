@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import recorder.appss.cool.recyclertest.R;
 
 /**
@@ -11,14 +13,12 @@ import recorder.appss.cool.recyclertest.R;
  */
 
 public class HeaderViewHolderCompetitionAdap extends RecyclerView.ViewHolder {
+   public  @BindView(R.id.allnb) TextView mSumMatch;
+    public @BindView(R.id.allnblive) TextView mSumLive;
 
-    //TODO add butterknife library
-    public TextView mSumMatch;
-    public TextView mSumLive;
 
     public HeaderViewHolderCompetitionAdap(View itemView) {
         super(itemView);
-        mSumMatch = (TextView) itemView.findViewById(R.id.allnb);
-        mSumLive = (TextView) itemView.findViewById(R.id.allnblive);
+        ButterKnife.bind(this, itemView);
     }
 }

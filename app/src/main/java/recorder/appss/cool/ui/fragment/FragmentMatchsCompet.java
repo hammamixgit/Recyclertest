@@ -7,11 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -22,19 +19,19 @@ import org.joda.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import recorder.appss.cool.base.BaseFragment;
 import recorder.appss.cool.model.BaseView;
+import recorder.appss.cool.model.Competition;
 import recorder.appss.cool.model.Constants;
+import recorder.appss.cool.model.Match;
 import recorder.appss.cool.model.ViewModel;
 import recorder.appss.cool.recyclertest.R;
-import recorder.appss.cool.ui.activity.MainActivityTemplete;
-import recorder.appss.cool.ui.adapter.ItemOffsetDecoration;
-import recorder.appss.cool.ui.adapter.MatchCompetitionAdapter;
-import recorder.appss.cool.model.Competition;
-import recorder.appss.cool.model.Match;
 import recorder.appss.cool.remote.ApiUtils;
 import recorder.appss.cool.remote.RetrofitClient;
 import recorder.appss.cool.remote.Sportservice;
+import recorder.appss.cool.ui.adapter.ItemOffsetDecoration;
+import recorder.appss.cool.ui.adapter.MatchCompetitionAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,31 +46,28 @@ import retrofit2.Response;
  * create an instance of this fragment.
  */
 
-public class FragmentMatchsCompet extends BaseFragment  implements BaseView {
+public class FragmentMatchsCompet extends BaseFragment implements BaseView {
 
-
+    @BindView(R.id.rv_match_compr)
+    RecyclerView mRecylcerView;
     List<Match> mListMatchCompetition;
     private Sportservice mService;
     private Competition mCompetition;
-    RecyclerView mRecylcerView;
-    MatchCompetitionAdapter mMatchCompetitionAdapter;
+
+
+    private MatchCompetitionAdapter mMatchCompetitionAdapter;
     private OnFragmentInteractionListener mListener;
+
     @Override
     public int getFragmentId() {
         return R.layout.fragment_matchs_compet_list;
     }
+
     public FragmentMatchsCompet() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @return A new instance of fragment FragmentMatchsCompet.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static FragmentMatchsCompet newInstance(Competition param1) {
         FragmentMatchsCompet fragment = new FragmentMatchsCompet();
         Bundle args = new Bundle();
@@ -96,9 +90,9 @@ public class FragmentMatchsCompet extends BaseFragment  implements BaseView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
+        // ButterKnife.bind(getActivity());
         mService = ApiUtils.getSOService();
-        mRecylcerView = (RecyclerView) view.findViewById(R.id.rv_match_compr);
+
         mRecylcerView.setHasFixedSize(true);
         mRecylcerView.addItemDecoration(new ItemOffsetDecoration(25));
         final LinearLayoutManager lLinearLayoutManager = new LinearLayoutManager(view.getContext());
@@ -106,9 +100,8 @@ public class FragmentMatchsCompet extends BaseFragment  implements BaseView {
         mListMatchCompetition = new ArrayList<>();
         mMatchCompetitionAdapter = new MatchCompetitionAdapter(mListMatchCompetition, mCompetition);
         mRecylcerView.setAdapter(mMatchCompetitionAdapter);
-        GetMatch(mCompetition.getDbid() + "");
+        getMatch(mCompetition.getDbid() + "");
     }
-
 
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -178,7 +171,7 @@ public class FragmentMatchsCompet extends BaseFragment  implements BaseView {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    Back();
+                    back();
 
                     return true;
 
@@ -189,7 +182,7 @@ public class FragmentMatchsCompet extends BaseFragment  implements BaseView {
         });
     }
 
-    private void Back() {
+    private void back() {
         // appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         Fragment fragment = new TabFragmentCompetitionList();
         Bundle args = new Bundle();
@@ -203,7 +196,7 @@ public class FragmentMatchsCompet extends BaseFragment  implements BaseView {
 
     }
 
-    private void GetMatch(String id)
+    private void getMatch(String id)
 
     {
         DateTime today = new DateTime().withTimeAtStartOfDay().toDateTimeISO();
@@ -229,7 +222,7 @@ public class FragmentMatchsCompet extends BaseFragment  implements BaseView {
 
             @Override
             public void onFailure(Call<List<Match>> call, Throwable t) {
-                ViewModel.Current.device.showSnackMessage((CoordinatorLayout) getView(),getResources().getString(R.string.Error));
+                ViewModel.Current.device.showSnackMessage((CoordinatorLayout) getView(), getResources().getString(R.string.Error));
 
             }
         });

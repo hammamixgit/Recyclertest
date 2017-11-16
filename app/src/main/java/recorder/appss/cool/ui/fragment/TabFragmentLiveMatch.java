@@ -8,7 +8,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import org.joda.time.DateTime;
@@ -22,18 +21,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import butterknife.BindView;
 import recorder.appss.cool.base.BaseFragment;
 import recorder.appss.cool.model.BaseView;
-import recorder.appss.cool.model.ViewModel;
-import recorder.appss.cool.recyclertest.R;
-import recorder.appss.cool.ui.adapter.ItemOffsetDecoration;
-import recorder.appss.cool.ui.adapter.MatchLiveAdapter;
 import recorder.appss.cool.model.Competition;
 import recorder.appss.cool.model.Match;
+import recorder.appss.cool.model.ViewModel;
+import recorder.appss.cool.recyclertest.R;
 import recorder.appss.cool.remote.ApiUtils;
 import recorder.appss.cool.remote.RetrofitClient;
 import recorder.appss.cool.remote.Sportservice;
-import recorder.appss.cool.utils.DeviceUtils;
+import recorder.appss.cool.ui.adapter.ItemOffsetDecoration;
+import recorder.appss.cool.ui.adapter.MatchLiveAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,25 +46,27 @@ import retrofit2.Response;
  * Use the {@link TabFragmentLiveMatch#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TabFragmentLiveMatch extends BaseFragment  implements BaseView {
-
+public class TabFragmentLiveMatch extends BaseFragment implements BaseView {
+    @BindView(R.id.rv_list_live)
+    RecyclerView mRecyclerView;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     List<Integer> mMatchStates = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
     List<Match> mListMatchLive;
     private Sportservice mService;
-    RecyclerView mRecyclerView;
     MatchLiveAdapter mMatchLiveAdap;
 
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
     @Override
     public int getFragmentId() {
         return R.layout.fragment_live_match;
     }
+
     public TabFragmentLiveMatch() {
         // Required empty public constructor
     }
@@ -91,8 +92,8 @@ public class TabFragmentLiveMatch extends BaseFragment  implements BaseView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //   ButterKnife.bind(getActivity());
         mService = ApiUtils.getSOService();
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list_live);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(new ItemOffsetDecoration(25));
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
@@ -112,7 +113,6 @@ public class TabFragmentLiveMatch extends BaseFragment  implements BaseView {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
 
 
     public void onButtonPressed(Uri uri) {
@@ -137,47 +137,48 @@ public class TabFragmentLiveMatch extends BaseFragment  implements BaseView {
         super.onDetach();
         mListener = null;
     }
-private void GetLiveMatchs()
-{
-    DateTime today = new DateTime().withTimeAtStartOfDay().toDateTimeISO();
-    DateTime tomorrow = today.plusDays(1).withTimeAtStartOfDay().toDateTimeISO();
-    DateTimeFormatter mDateTimeFormatter = DateTimeFormat.forPattern("YYYY-MM-dd");
-    mService.getMatch( mDateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), mDateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
 
-        @Override
-        public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
+    private void getLiveMatchs() {
+        DateTime today = new DateTime().withTimeAtStartOfDay().toDateTimeISO();
+        DateTime tomorrow = today.plusDays(1).withTimeAtStartOfDay().toDateTimeISO();
+        DateTimeFormatter mDateTimeFormatter = DateTimeFormat.forPattern("YYYY-MM-dd");
+        mService.getMatch(mDateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), mDateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
 
-            if (response.isSuccessful()) {
-                mListMatchLive = response.body();
- mMatchLiveAdap.updateAnswers(SortCompetition(mListMatchLive));
- } else {
-                int statusCode = response.code();
+            @Override
+            public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
 
+                if (response.isSuccessful()) {
+                    mListMatchLive = response.body();
+                    mMatchLiveAdap.updateAnswers(sortCompetition(mListMatchLive));
+                } else {
+                    int statusCode = response.code();
+
+                }
             }
-}
 
-        @Override
-        public void onFailure(Call<List<Match>> call, Throwable t) {
-            ViewModel.Current.device.showSnackMessage((CoordinatorLayout) getView(),getResources().getString(R.string.Error));
-        }
-    });
+            @Override
+            public void onFailure(Call<List<Match>> call, Throwable t) {
+                ViewModel.Current.device.showSnackMessage((CoordinatorLayout) getView(), getResources().getString(R.string.Error));
+            }
+        });
 
-}
-    private List<Match>  SortCompetition(List<Match> listMatch) {
+    }
+
+    private List<Match> sortCompetition(List<Match> listMatch) {
         List<Match> matchArrayList = new ArrayList<>();
         DateTime date1 = new DateTime();
 
         for (Match match : listMatch) {
-            DateTime date2 =new DateTime((long)match.getCurrentStateStart());
+            DateTime date2 = new DateTime((long) match.getCurrentStateStart());
             Duration duration = new Duration(date2, date1);
-            long minutes= duration.getStandardMinutes();
-            if(mMatchStates.contains(match.getCurrentState())&& (minutes<60))
-            {
-            Competition competition = new Competition();
+            long minutes = duration.getStandardMinutes();
+            if (mMatchStates.contains(match.getCurrentState()) && (minutes < 60)) {
+                Competition competition = new Competition();
                 competition = match.getCompetition();
-                competition.setName(GetCountryFromUrl(competition.getFlagUrl()) + " : " + competition.getName());
+                competition.setName(getCountryFromUrl(competition.getFlagUrl()) + " : " + competition.getName());
                 match.setCompetition(competition);
-                matchArrayList.add(match);}
+                matchArrayList.add(match);
+            }
         }
         Collections.sort(matchArrayList, new Comparator<Match>() {
             @Override
@@ -186,9 +187,10 @@ private void GetLiveMatchs()
             }
         });
 
-return  matchArrayList;
+        return matchArrayList;
     }
-    private String GetCountryFromUrl(String url) {
+
+    private String getCountryFromUrl(String url) {
         String result = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
         if (result.equals("fifa") || result.equals("uefa") || result.equals("afc"))
             result = "world";
@@ -235,9 +237,8 @@ return  matchArrayList;
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isResumed()) {
-            GetLiveMatchs();
-        }
-        else {
+            getLiveMatchs();
+        } else {
         }
     }
 

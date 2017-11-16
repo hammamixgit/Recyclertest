@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import recorder.appss.cool.recyclertest.R;
 
 /**
@@ -12,15 +14,15 @@ import recorder.appss.cool.recyclertest.R;
  */
 
 public class HeaderViewHolderMatchCompetAdap extends RecyclerView.ViewHolder {
-
+    public  @BindView(R.id.compet_name_h) TextView mCompetitionTitle;
+    public  @BindView(R.id.compet_flag_h) ImageView mFlagCountry;
     //TODO add butterknife library
-    public TextView mCompetitionTitle;
-    public ImageView mFlagCountry;
+
 
     public HeaderViewHolderMatchCompetAdap(View itemView) {
         super(itemView);
-        mFlagCountry = (ImageView) itemView.findViewById(R.id.compet_flag_h);
-        mCompetitionTitle = (TextView) itemView.findViewById(R.id.compet_name_h);
+        ButterKnife.bind(this, itemView);
+
 
     }
 

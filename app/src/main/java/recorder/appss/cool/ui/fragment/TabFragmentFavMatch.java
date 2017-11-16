@@ -9,7 +9,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -22,6 +21,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import butterknife.BindView;
 import recorder.appss.cool.base.BaseFragment;
 import recorder.appss.cool.model.BaseView;
 import recorder.appss.cool.model.Competition;
@@ -46,7 +46,11 @@ import retrofit2.Response;
  * Use the {@link TabFragmentFavMatch#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TabFragmentFavMatch extends BaseFragment  implements BaseView {
+public class TabFragmentFavMatch extends BaseFragment implements BaseView {
+
+    @BindView(R.id.rv_list_fav)
+    RecyclerView mRecyclerView;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -55,17 +59,19 @@ public class TabFragmentFavMatch extends BaseFragment  implements BaseView {
     List<String> mListFavPrefsId = new ArrayList<>();
     List<Match> mListMatchFav;
     private Sportservice mService;
-    RecyclerView mRecyclerView;
+
     MatchFavoriAdapter mMatchFavAdapter;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
     @Override
     public int getFragmentId() {
         return R.layout.fragment_fav_match;
     }
+
     public TabFragmentFavMatch() {
         // Required empty public constructor
     }
@@ -100,10 +106,9 @@ public class TabFragmentFavMatch extends BaseFragment  implements BaseView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //   ButterKnife.bind(getActivity());
         mService = ApiUtils.getSOService();
         mListFavPrefsId.addAll(ViewModel.Current.dataUtils.getfavPref());
-
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list_fav);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(new ItemOffsetDecoration(25));
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
@@ -111,9 +116,8 @@ public class TabFragmentFavMatch extends BaseFragment  implements BaseView {
         mListMatchFav = new ArrayList<>();
         mMatchFavAdapter = new MatchFavoriAdapter(mListMatchFav);
         mRecyclerView.setAdapter(mMatchFavAdapter);
-        GetLiveMatchs();
+        getLiveMatchs();
     }
-
 
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -139,20 +143,20 @@ public class TabFragmentFavMatch extends BaseFragment  implements BaseView {
         super.onDetach();
         mListener = null;
     }
-    private void GetLiveMatchs()
-    {
+
+    private void getLiveMatchs() {
         DateTime today = new DateTime().withTimeAtStartOfDay().toDateTimeISO();
         DateTime tomorrow = today.plusDays(1).withTimeAtStartOfDay().toDateTimeISO();
         DateTimeFormatter mDateTimeFormatter = DateTimeFormat.forPattern("YYYY-MM-dd");
-        mService.getMatch( mDateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), mDateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
+        mService.getMatch(mDateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), mDateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
 
             @Override
             public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
 
                 if (response.isSuccessful()) {
                     mListMatchFav = response.body();
-mMatchFavAdapter.updateAnswers(SortCompetition(mListMatchFav));
- } else {
+                    mMatchFavAdapter.updateAnswers(sortCompetition(mListMatchFav));
+                } else {
                     int statusCode = response.code();
                     // handle request errors depending on status code
                 }
@@ -162,26 +166,27 @@ mMatchFavAdapter.updateAnswers(SortCompetition(mListMatchFav));
 
             @Override
             public void onFailure(Call<List<Match>> call, Throwable t) {
-                ViewModel.Current.device.showSnackMessage((CoordinatorLayout) getView(),getResources().getString(R.string.Error));
+                ViewModel.Current.device.showSnackMessage((CoordinatorLayout) getView(), getResources().getString(R.string.Error));
 
 
             }
         });
 
     }
-    private List<Match>  SortCompetition(List<Match> listmatch) {
+
+    private List<Match> sortCompetition(List<Match> listmatch) {
         List<Match> matchArrayList = new ArrayList<>();
 
 
         for (Match match : listmatch) {
 
-            if(mListFavPrefsId.contains(match.getDbid()+""))
-            {
+            if (mListFavPrefsId.contains(match.getDbid() + "")) {
                 Competition mCompetition = new Competition();
                 mCompetition = match.getCompetition();
-                mCompetition.setName(GetCountryFromUrl(mCompetition.getFlagUrl()) + " : " + mCompetition.getName());
+                mCompetition.setName(getCountryFromUrl(mCompetition.getFlagUrl()) + " : " + mCompetition.getName());
                 match.setCompetition(mCompetition);
-                matchArrayList.add(match);}
+                matchArrayList.add(match);
+            }
         }
         Collections.sort(matchArrayList, new Comparator<Match>() {
             @Override
@@ -189,17 +194,18 @@ mMatchFavAdapter.updateAnswers(SortCompetition(mListMatchFav));
                 return o1.getCompetition().getName().compareTo(o2.getCompetition().getName());
             }
         });
-        return  matchArrayList;
+        return matchArrayList;
     }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isResumed()) {
-            GetLiveMatchs();
-        }
-        else {
+            getLiveMatchs();
+        } else {
         }
     }
+
     @Override
     public void onResume() {
 
@@ -226,7 +232,7 @@ mMatchFavAdapter.updateAnswers(SortCompetition(mListMatchFav));
         });
     }
 
-    private String GetCountryFromUrl(String url) {
+    private String getCountryFromUrl(String url) {
         String result = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
         if (result.equals("fifa") || result.equals("uefa") || result.equals("afc"))
             result = "world";
