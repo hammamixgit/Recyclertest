@@ -51,10 +51,7 @@ public class FragmentMatchsCompet extends BaseFragment implements BaseView {
     @BindView(R.id.rv_match_compr)
     RecyclerView mRecylcerView;
     List<Match> mListMatchCompetition;
-    private Sportservice mService;
     private Competition mCompetition;
-
-
     private MatchCompetitionAdapter mMatchCompetitionAdapter;
     private OnFragmentInteractionListener mListener;
 
@@ -89,10 +86,7 @@ public class FragmentMatchsCompet extends BaseFragment implements BaseView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         // ButterKnife.bind(getActivity());
-        mService = ApiUtils.getSOService();
-
         mRecylcerView.setHasFixedSize(true);
         mRecylcerView.addItemDecoration(new ItemOffsetDecoration(25));
         final LinearLayoutManager lLinearLayoutManager = new LinearLayoutManager(view.getContext());
@@ -161,22 +155,16 @@ public class FragmentMatchsCompet extends BaseFragment implements BaseView {
 
     @Override
     public void onResume() {
-
         super.onResume();
-
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
                     back();
-
                     return true;
-
                 }
-
                 return false;
             }
         });
@@ -193,42 +181,31 @@ public class FragmentMatchsCompet extends BaseFragment implements BaseView {
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.addToBackStack(null);
         transaction.commit();
-
     }
 
     private void getMatch(String id)
-
     {
         DateTime today = new DateTime().withTimeAtStartOfDay().toDateTimeISO();
         DateTime tomorrow = today.plusDays(1).withTimeAtStartOfDay().toDateTimeISO();
         DateTimeFormatter mDateTimeFormatter = DateTimeFormat.forPattern("YYYY-MM-dd");
-        mService.getMatchCompet(id, mDateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), mDateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
-
+        ViewModel.Current.mApiUtils.getSOService().getMatchCompet(id, mDateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), mDateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
             @Override
             public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
 
                 if (response.isSuccessful()) {
                     mListMatchCompetition = response.body();
                     mMatchCompetitionAdapter.updateAnswers(mListMatchCompetition);
-
-
                 } else {
                     int statusCode = response.code();
                     // handle request errors depending on status code
                 }
-
-
             }
 
             @Override
             public void onFailure(Call<List<Match>> call, Throwable t) {
                 ViewModel.Current.device.showSnackMessage((CoordinatorLayout) getView(), getResources().getString(R.string.Error));
-
             }
         });
-
     }
-
-
 }
 

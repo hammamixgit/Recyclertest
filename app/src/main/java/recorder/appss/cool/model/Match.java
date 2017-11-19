@@ -3,7 +3,7 @@ package recorder.appss.cool.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Match {
+public class Match extends GenericModel {
 
     @SerializedName("awayGoals")
     @Expose
@@ -53,9 +53,6 @@ public class Match {
     @SerializedName("extraTimeHasHappened")
     @Expose
     private Boolean extraTimeHasHappened;
-    @SerializedName("dbid")
-    @Expose
-    private Integer dbid;
     @SerializedName("isResult")
     @Expose
     private Boolean isResult;
@@ -195,14 +192,6 @@ public class Match {
 
     public void setExtraTimeHasHappened(Boolean extraTimeHasHappened) {
         this.extraTimeHasHappened = extraTimeHasHappened;
-    }
-
-    public Integer getDbid() {
-        return dbid;
-    }
-
-    public void setDbid(Integer dbid) {
-        this.dbid = dbid;
     }
 
     public Boolean getIsResult() {

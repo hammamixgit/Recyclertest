@@ -7,7 +7,7 @@ import static recorder.appss.cool.model.Constants.BASE_URL;
  */
 public class ApiUtils {
 
-    public static Sportservice getSOService() {
+    public Sportservice getSOService() {
         return RetrofitClient.getClient(BASE_URL).create(Sportservice.class);
     }
 }

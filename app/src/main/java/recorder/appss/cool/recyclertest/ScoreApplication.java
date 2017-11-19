@@ -3,6 +3,7 @@ package recorder.appss.cool.recyclertest;
 import android.support.multidex.MultiDexApplication;
 
 import recorder.appss.cool.model.ViewModel;
+import recorder.appss.cool.remote.ApiUtils;
 import recorder.appss.cool.utils.DataUtils;
 import recorder.appss.cool.utils.DeviceUtils;
 import recorder.appss.cool.utils.FileUtils;
@@ -20,6 +21,7 @@ public class ScoreApplication extends MultiDexApplication {
 
         ViewModel.Current = new ViewModel(new DeviceUtils(getApplicationContext()),
                 new FileUtils(getApplicationContext()),
-                new DataUtils(getApplicationContext()));
+                new DataUtils(getApplicationContext()),
+                new ApiUtils());
     }
 }

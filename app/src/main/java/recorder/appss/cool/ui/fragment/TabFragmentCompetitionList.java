@@ -46,7 +46,6 @@ public class TabFragmentCompetitionList extends BaseFragment implements BaseView
     RecyclerView mRecycleView;
     //Declaration var
     private List<Integer> mMatchState = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
-    private Sportservice mService;
     private List<Match> mListMatch;
     private List<Competition> mListCompetition;
     private LinkedHashMap<Competition, String> mCompetitionOccur;
@@ -67,7 +66,6 @@ public class TabFragmentCompetitionList extends BaseFragment implements BaseView
         mListCompetition = new ArrayList<>();
         mCompetitionOccur = new LinkedHashMap<>();
         JodaTimeAndroid.init(view.getContext());
-        mService = ApiUtils.getSOService();
         mRecycleView.setHasFixedSize(false);
         mRecycleView.addItemDecoration(new ItemOffsetDecoration(25));
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
@@ -81,7 +79,7 @@ public class TabFragmentCompetitionList extends BaseFragment implements BaseView
         DateTime today = new DateTime().withTimeAtStartOfDay().toDateTimeISO();
         DateTime tomorrow = today.plusDays(1).withTimeAtStartOfDay().toDateTimeISO();
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("YYYY-MM-dd");
-        mService.getMatch(dateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), dateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
+        ViewModel.Current.mApiUtils.getSOService().getMatch(dateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), dateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
             @Override
             public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
                 if (response.isSuccessful()) {

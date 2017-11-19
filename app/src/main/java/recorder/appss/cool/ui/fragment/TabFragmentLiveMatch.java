@@ -25,6 +25,8 @@ import butterknife.BindView;
 import recorder.appss.cool.base.BaseFragment;
 import recorder.appss.cool.model.BaseView;
 import recorder.appss.cool.model.Competition;
+import recorder.appss.cool.model.DataLoadingState;
+import recorder.appss.cool.model.GenericModel;
 import recorder.appss.cool.model.Match;
 import recorder.appss.cool.model.ViewModel;
 import recorder.appss.cool.recyclertest.R;
@@ -46,15 +48,13 @@ import retrofit2.Response;
  * Use the {@link TabFragmentLiveMatch#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TabFragmentLiveMatch extends BaseFragment implements BaseView {
+public class TabFragmentLiveMatch extends BaseFragment implements DataLoadingState<Match> {  //TODO le T devient Match
     @BindView(R.id.rv_list_live)
     RecyclerView mRecyclerView;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    List<Integer> mMatchStates = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
     List<Match> mListMatchLive;
-    private Sportservice mService;
     MatchLiveAdapter mMatchLiveAdap;
 
     private String mParam1;
@@ -93,7 +93,7 @@ public class TabFragmentLiveMatch extends BaseFragment implements BaseView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //   ButterKnife.bind(getActivity());
-        mService = ApiUtils.getSOService();
+        ViewModel.Current.setDataLoadingtate(this); //On enregistre le lisnter
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(new ItemOffsetDecoration(25));
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
@@ -101,7 +101,13 @@ public class TabFragmentLiveMatch extends BaseFragment implements BaseView {
         mListMatchLive = new ArrayList<>();
         mMatchLiveAdap = new MatchLiveAdapter(mListMatchLive);
         mRecyclerView.setAdapter(mMatchLiveAdap);
+    }
 
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ViewModel.Current.setDataLoadingtate(null); //On desabonne le listner
     }
 
     @Override
@@ -138,78 +144,22 @@ public class TabFragmentLiveMatch extends BaseFragment implements BaseView {
         mListener = null;
     }
 
-    private void getLiveMatchs() {
-        DateTime today = new DateTime().withTimeAtStartOfDay().toDateTimeISO();
-        DateTime tomorrow = today.plusDays(1).withTimeAtStartOfDay().toDateTimeISO();
-        DateTimeFormatter mDateTimeFormatter = DateTimeFormat.forPattern("YYYY-MM-dd");
-        mService.getMatch(mDateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), mDateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
-
-            @Override
-            public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
-
-                if (response.isSuccessful()) {
-                    mListMatchLive = response.body();
-                    mMatchLiveAdap.updateAnswers(sortCompetition(mListMatchLive));
-                } else {
-                    int statusCode = response.code();
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Match>> call, Throwable t) {
-                ViewModel.Current.device.showSnackMessage((CoordinatorLayout) getView(), getResources().getString(R.string.Error));
-            }
-        });
-
-    }
-
-    private List<Match> sortCompetition(List<Match> listMatch) {
-        List<Match> matchArrayList = new ArrayList<>();
-        DateTime date1 = new DateTime();
-
-        for (Match match : listMatch) {
-            DateTime date2 = new DateTime((long) match.getCurrentStateStart());
-            Duration duration = new Duration(date2, date1);
-            long minutes = duration.getStandardMinutes();
-            if (mMatchStates.contains(match.getCurrentState()) && (minutes < 60)) {
-                Competition competition = new Competition();
-                competition = match.getCompetition();
-                competition.setName(getCountryFromUrl(competition.getFlagUrl()) + " : " + competition.getName());
-                match.setCompetition(competition);
-                matchArrayList.add(match);
-            }
-        }
-        Collections.sort(matchArrayList, new Comparator<Match>() {
-            @Override
-            public int compare(Match o1, Match o2) {
-                return o1.getCompetition().getName().compareTo(o2.getCompetition().getName());
-            }
-        });
-
-        return matchArrayList;
-    }
-
-    private String getCountryFromUrl(String url) {
-        String result = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
-        if (result.equals("fifa") || result.equals("uefa") || result.equals("afc"))
-            result = "world";
-        return result;
-    }
-
     @Override
     public void showSnackMsg(String msg) {
-
+        ViewModel.Current.device.showSnackMessage((CoordinatorLayout) getView(), getResources().getString(R.string.Error));
     }
 
     @Override
     public void showLoading() {
-
     }
 
     @Override
     public void hideLoading() {
+    }
 
+    @Override
+    public void loadData(List<Match> listeMatch) {
+        mMatchLiveAdap.updateAnswers(ViewModel.Current.sortCompetition(listeMatch));
     }
 
     /**
@@ -223,7 +173,6 @@ public class TabFragmentLiveMatch extends BaseFragment implements BaseView {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-
         void onFragmentInteraction(Uri uri);
     }
 
@@ -237,7 +186,7 @@ public class TabFragmentLiveMatch extends BaseFragment implements BaseView {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isResumed()) {
-            getLiveMatchs();
+           ViewModel.Current.getLiveMatchs(); //TODO on loade depuis le viewModel toujours puis le view model Call mes methode qui sont implementer dans cette classe
         } else {
         }
     }

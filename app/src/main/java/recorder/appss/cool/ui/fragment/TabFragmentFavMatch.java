@@ -58,7 +58,6 @@ public class TabFragmentFavMatch extends BaseFragment implements BaseView {
 
     List<String> mListFavPrefsId = new ArrayList<>();
     List<Match> mListMatchFav;
-    private Sportservice mService;
 
     MatchFavoriAdapter mMatchFavAdapter;
     // TODO: Rename and change types of parameters
@@ -107,7 +106,6 @@ public class TabFragmentFavMatch extends BaseFragment implements BaseView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //   ButterKnife.bind(getActivity());
-        mService = ApiUtils.getSOService();
         mListFavPrefsId.addAll(ViewModel.Current.dataUtils.getfavPref());
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(new ItemOffsetDecoration(25));
@@ -148,7 +146,7 @@ public class TabFragmentFavMatch extends BaseFragment implements BaseView {
         DateTime today = new DateTime().withTimeAtStartOfDay().toDateTimeISO();
         DateTime tomorrow = today.plusDays(1).withTimeAtStartOfDay().toDateTimeISO();
         DateTimeFormatter mDateTimeFormatter = DateTimeFormat.forPattern("YYYY-MM-dd");
-        mService.getMatch(mDateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), mDateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
+        ViewModel.Current.mApiUtils.getSOService().getMatch(mDateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), mDateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
 
             @Override
             public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
