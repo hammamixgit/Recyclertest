@@ -27,9 +27,7 @@ import recorder.appss.cool.model.Constants;
 import recorder.appss.cool.model.Match;
 import recorder.appss.cool.model.ViewModel;
 import recorder.appss.cool.recyclertest.R;
-import recorder.appss.cool.remote.ApiUtils;
 import recorder.appss.cool.remote.RetrofitClient;
-import recorder.appss.cool.remote.Sportservice;
 import recorder.appss.cool.ui.adapter.ItemOffsetDecoration;
 import recorder.appss.cool.ui.adapter.MatchCompetitionAdapter;
 import retrofit2.Call;
@@ -183,8 +181,7 @@ public class FragmentMatchsCompet extends BaseFragment implements BaseView {
         transaction.commit();
     }
 
-    private void getMatch(String id)
-    {
+    private void getMatch(String id) {
         DateTime today = new DateTime().withTimeAtStartOfDay().toDateTimeISO();
         DateTime tomorrow = today.plusDays(1).withTimeAtStartOfDay().toDateTimeISO();
         DateTimeFormatter mDateTimeFormatter = DateTimeFormat.forPattern("YYYY-MM-dd");

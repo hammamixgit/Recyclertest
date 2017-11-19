@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.support.v4.view.ViewPager;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import recorder.appss.cool.base.BaseActivity;
 import recorder.appss.cool.recyclertest.R;
 import recorder.appss.cool.ui.adapter.FragmentPagerAdap;

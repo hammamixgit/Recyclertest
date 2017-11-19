@@ -14,11 +14,16 @@ import recorder.appss.cool.recyclertest.R;
  */
 
 public class ViewHolderCompetitionAdap extends RecyclerView.ViewHolder {
-    public  @BindView(R.id.txtcardcompt) TextView mCompetitionName;
-    public  @BindView(R.id.txtcardcountry) TextView mCountryName;
-    public  @BindView(R.id.nbmatch) TextView mSumMatch;
-    public  @BindView(R.id.nbmatchlive) TextView mSumLive;
-    public @BindView(R.id.imgcard) ImageView mFlag;
+    public @BindView(R.id.txtcardcompt)
+    TextView mCompetitionName;
+    public @BindView(R.id.txtcardcountry)
+    TextView mCountryName;
+    public @BindView(R.id.nbmatch)
+    TextView mSumMatch;
+    public @BindView(R.id.nbmatchlive)
+    TextView mSumLive;
+    public @BindView(R.id.imgcard)
+    ImageView mFlag;
     //TODO add butterknife library
 
     public ViewHolderCompetitionAdap(View itemView) {

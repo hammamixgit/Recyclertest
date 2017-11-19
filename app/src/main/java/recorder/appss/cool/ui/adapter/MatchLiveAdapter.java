@@ -3,18 +3,18 @@ package recorder.appss.cool.ui.adapter;
 import android.support.v7.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.MultiTransformation;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
+
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
+
 import java.util.List;
-import jp.wasabeef.glide.transformations.BlurTransformation;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
 import recorder.appss.cool.Holder.HeaderViewHolderMatchLiveAdap;
 import recorder.appss.cool.Holder.ViewHolderMatchLiveAdap;
 import recorder.appss.cool.base.BaseMatchAdapter;
- import recorder.appss.cool.model.Match;
+import recorder.appss.cool.model.Match;
 import recorder.appss.cool.model.ViewModel;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;

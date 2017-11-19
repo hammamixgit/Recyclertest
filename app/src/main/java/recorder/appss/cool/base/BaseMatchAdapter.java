@@ -2,10 +2,11 @@ package recorder.appss.cool.base;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import recorder.appss.cool.Holder.HeaderViewHolderMatchFavoriAdap;
 import recorder.appss.cool.Holder.ViewHolderMatchFavoriAdap;
 import recorder.appss.cool.model.Constants;
@@ -25,8 +26,7 @@ public abstract class BaseMatchAdapter extends RecyclerView.Adapter<RecyclerView
     protected int mPosition = 0;
     protected int mCurrentCompetition = 0;
 
-    public BaseMatchAdapter(List<Match> list_match)
-    {
+    public BaseMatchAdapter(List<Match> list_match) {
         mListFav.addAll(ViewModel.Current.dataUtils.getfavPref());
         mListMatchsLive.addAll(list_match);
         for (Match match : mListMatchsLive)

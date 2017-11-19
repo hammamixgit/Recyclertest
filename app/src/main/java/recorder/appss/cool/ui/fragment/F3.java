@@ -4,9 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import recorder.appss.cool.base.BaseFragment;
 import recorder.appss.cool.model.BaseView;
@@ -32,10 +29,12 @@ public class F3 extends BaseFragment implements BaseView {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
     @Override
     public int getFragmentId() {
         return R.layout.fragment_f3;
     }
+
     public F3() {
         // Required empty public constructor
     }

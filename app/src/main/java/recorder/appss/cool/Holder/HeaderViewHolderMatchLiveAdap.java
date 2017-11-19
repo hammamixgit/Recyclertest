@@ -13,9 +13,11 @@ import recorder.appss.cool.recyclertest.R;
  * Created by work on 10/11/2017.
  */
 
-public class HeaderViewHolderMatchLiveAdap extends RecyclerView.ViewHolder{
-    public  @BindView(R.id.compet_name_div) TextView mCompetitionTitle;
-    public  @BindView(R.id.compet_flag_div) ImageView mFlagCountry;
+public class HeaderViewHolderMatchLiveAdap extends RecyclerView.ViewHolder {
+    public @BindView(R.id.compet_name_div)
+    TextView mCompetitionTitle;
+    public @BindView(R.id.compet_flag_div)
+    ImageView mFlagCountry;
     //TODO add butterknife library
 
 

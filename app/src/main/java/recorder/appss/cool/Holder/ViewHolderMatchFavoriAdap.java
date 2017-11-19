@@ -18,15 +18,24 @@ import recorder.appss.cool.recyclertest.R;
 
 public class ViewHolderMatchFavoriAdap extends RecyclerView.ViewHolder {  //TODO les meme donc extend BaseMatchHolder que tu crée avec les meme
 
-    public @BindView(R.id.team1) TextView mTeam1;
-    public @BindView(R.id.team2) TextView mTeam2;
-    public  @BindView(R.id.score) TextView mScore;
-    public   @BindView(R.id.time) TextView mTime;
-    public  @BindView(R.id.match_start) TextView mTimeStart;
-    public  @BindView(R.id.imgteam1) ImageView mTeam1Logo;
-    public  @BindView(R.id.imgteam2) ImageView mTeam2Logo;
-    public  @BindView(R.id.lllive) LinearLayout mLayoutLive;
-    public   @BindView(R.id.star_button) LikeButton mBtnLike;
+    public @BindView(R.id.team1)
+    TextView mTeam1;
+    public @BindView(R.id.team2)
+    TextView mTeam2;
+    public @BindView(R.id.score)
+    TextView mScore;
+    public @BindView(R.id.time)
+    TextView mTime;
+    public @BindView(R.id.match_start)
+    TextView mTimeStart;
+    public @BindView(R.id.imgteam1)
+    ImageView mTeam1Logo;
+    public @BindView(R.id.imgteam2)
+    ImageView mTeam2Logo;
+    public @BindView(R.id.lllive)
+    LinearLayout mLayoutLive;
+    public @BindView(R.id.star_button)
+    LikeButton mBtnLike;
 
     public ViewHolderMatchFavoriAdap(View itemView) {
         super(itemView);

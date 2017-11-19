@@ -18,7 +18,6 @@ public class ScoreApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
 
-
         ViewModel.Current = new ViewModel(new DeviceUtils(getApplicationContext()),
                 new FileUtils(getApplicationContext()),
                 new DataUtils(getApplicationContext()),

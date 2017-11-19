@@ -14,8 +14,10 @@ import recorder.appss.cool.recyclertest.R;
  */
 
 public class HeaderViewHolderMatchFavoriAdap extends RecyclerView.ViewHolder {
-    public @BindView(R.id.compet_name_div) TextView mCompetitionTitle;
-    public @BindView(R.id.compet_flag_div) ImageView mFlagCountry;
+    public @BindView(R.id.compet_name_div)
+    TextView mCompetitionTitle;
+    public @BindView(R.id.compet_flag_div)
+    ImageView mFlagCountry;
     //TODO add butterknife library
 
 

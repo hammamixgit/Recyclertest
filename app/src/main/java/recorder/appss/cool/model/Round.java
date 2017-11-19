@@ -10,7 +10,6 @@ public class Round extends GenericModel {
     @Expose
     private Boolean hasLeagueTable;
 
-
     public Boolean getHasLeagueTable() {
         return hasLeagueTable;
     }
@@ -18,6 +17,4 @@ public class Round extends GenericModel {
     public void setHasLeagueTable(Boolean hasLeagueTable) {
         this.hasLeagueTable = hasLeagueTable;
     }
-
-
 }

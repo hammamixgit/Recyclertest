@@ -24,30 +24,28 @@ public class DataUtils {
     }
 
 
-    public  List<String> getfavPref() {
-        Set<String> tasksSet =mPref.getStringSet(Constants.FAV_PREF, new HashSet<String>());
+    public List<String> getfavPref() {
+        Set<String> tasksSet = mPref.getStringSet(Constants.FAV_PREF, new HashSet<String>());
         List<String> tasksList = new ArrayList<String>(tasksSet);
         return tasksList;
     }
 
 
-    public  void addfavPref(String id) {
+    public void addfavPref(String id) {
         List<String> tasksList = new ArrayList<String>();
-        tasksList=getfavPref();
-        if(!tasksList.contains(id))tasksList.add(id);
+        tasksList = getfavPref();
+        if (!tasksList.contains(id)) tasksList.add(id);
         Set<String> tasksSet = new HashSet<String>(tasksList);
         prefsEditor.putStringSet(Constants.FAV_PREF, tasksSet).commit();
     }
 
-    public  void removefavPref(String id) {
+    public void removefavPref(String id) {
         List<String> tasksList = new ArrayList<String>();
-        tasksList=getfavPref();
-        if(tasksList.contains(id))tasksList.remove(id);
+        tasksList = getfavPref();
+        if (tasksList.contains(id)) tasksList.remove(id);
         Set<String> tasksSet = new HashSet<String>(tasksList);
         prefsEditor.putStringSet(Constants.FAV_PREF, tasksSet).commit();
     }
-
-
 
 
     public void SetSetting(String key, String value) {

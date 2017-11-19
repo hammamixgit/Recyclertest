@@ -13,8 +13,6 @@ public class GenericModel {
     @Expose
     private Integer dbid;
 
-
-
     public String getName() {
         return name;
     }
@@ -30,7 +28,5 @@ public class GenericModel {
     public void setDbid(Integer dbid) {
         this.dbid = dbid;
     }
-
-
 
 }

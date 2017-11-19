@@ -13,8 +13,10 @@ import recorder.appss.cool.recyclertest.R;
  */
 
 public class HeaderViewHolderCompetitionAdap extends RecyclerView.ViewHolder {
-   public  @BindView(R.id.allnb) TextView mSumMatch;
-    public @BindView(R.id.allnblive) TextView mSumLive;
+    public @BindView(R.id.allnb)
+    TextView mSumMatch;
+    public @BindView(R.id.allnblive)
+    TextView mSumLive;
 
 
     public HeaderViewHolderCompetitionAdap(View itemView) {

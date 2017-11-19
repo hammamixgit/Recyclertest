@@ -13,7 +13,6 @@ import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-
     protected Activity mContext;
 
     protected abstract int getLayout();

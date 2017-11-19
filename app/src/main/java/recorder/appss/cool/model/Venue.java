@@ -3,8 +3,7 @@ package recorder.appss.cool.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Venue extends GenericModel{
-
+public class Venue extends GenericModel {
 
     @SerializedName("capacity")
     @Expose
@@ -13,8 +12,6 @@ public class Venue extends GenericModel{
     @SerializedName("geolocation")
     @Expose
     private Geolocation geolocation;
-
-
 
     public Integer getCapacity() {
         return capacity;

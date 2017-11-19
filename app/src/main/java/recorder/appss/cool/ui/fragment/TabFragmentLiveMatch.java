@@ -10,34 +10,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
 import recorder.appss.cool.base.BaseFragment;
-import recorder.appss.cool.model.BaseView;
-import recorder.appss.cool.model.Competition;
 import recorder.appss.cool.model.DataLoadingState;
-import recorder.appss.cool.model.GenericModel;
 import recorder.appss.cool.model.Match;
 import recorder.appss.cool.model.ViewModel;
 import recorder.appss.cool.recyclertest.R;
-import recorder.appss.cool.remote.ApiUtils;
-import recorder.appss.cool.remote.RetrofitClient;
-import recorder.appss.cool.remote.Sportservice;
 import recorder.appss.cool.ui.adapter.ItemOffsetDecoration;
 import recorder.appss.cool.ui.adapter.MatchLiveAdapter;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 /**
@@ -173,7 +156,7 @@ public class TabFragmentLiveMatch extends BaseFragment implements DataLoadingSta
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isResumed()) {
-           ViewModel.Current.getLiveMatchs(); //TODO on loade depuis le viewModel toujours puis le view model Call mes methode qui sont implementer dans cette classe
+            ViewModel.Current.getLiveMatchs(); //TODO on loade depuis le viewModel toujours puis le view model Call mes methode qui sont implementer dans cette classe
         } else {
         }
     }

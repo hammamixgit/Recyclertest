@@ -1,7 +1,5 @@
 package recorder.appss.cool.model;
 
-import android.support.design.widget.CoordinatorLayout;
-
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.format.DateTimeFormat;
@@ -13,7 +11,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import recorder.appss.cool.recyclertest.R;
 import recorder.appss.cool.remote.ApiUtils;
 import recorder.appss.cool.remote.RetrofitClient;
 import recorder.appss.cool.utils.DataUtils;
@@ -51,8 +48,7 @@ public class ViewModel {
         super();
     }
 
-    public void setDataLoadingtate(DataLoadingState mDataLoadingtate)
-    {
+    public void setDataLoadingtate(DataLoadingState mDataLoadingtate) {
         this.mDataLoadingtate = mDataLoadingtate;
     }
 
@@ -103,7 +99,7 @@ public class ViewModel {
                     mDataLoadingtate.loadData(listeMatch); //TODO chaque classe en cour qui implemente DataLoadingtate on Call LoadData de cette classe
                 } else {
                     mDataLoadingtate.showSnackMsg(""); //TODO on call la methode dans chaque classe qui implemente ShowSnackMsg
-                 }
+                }
             }
 
             @Override
