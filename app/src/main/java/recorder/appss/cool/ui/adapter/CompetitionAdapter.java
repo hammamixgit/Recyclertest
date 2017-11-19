@@ -22,6 +22,7 @@ import recorder.appss.cool.Holder.HeaderViewHolderCompetitionAdap;
 import recorder.appss.cool.Holder.ViewHolderCompetitionAdap;
 import recorder.appss.cool.model.Competition;
 import recorder.appss.cool.model.Constants;
+import recorder.appss.cool.model.ViewModel;
 import recorder.appss.cool.recyclertest.R;
 import recorder.appss.cool.ui.fragment.FragmentMatchsCompet;
 import recorder.appss.cool.ui.fragment.TabFragmentCompetitionList;
@@ -91,13 +92,10 @@ public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             String[] mListCompetitionInfo = mCompetition.getName().split(":");
             ((ViewHolderCompetitionAdap) holder).mCompetitionName.setText(mListCompetitionInfo[1]);
             ((ViewHolderCompetitionAdap) holder).mCountryName.setText(mListCompetitionInfo[0]);
-            MultiTransformation mTranform = new MultiTransformation(
-                    new BlurTransformation(1),
-                    new RoundedCornersTransformation(128, 0, RoundedCornersTransformation.CornerType.BOTTOM));
-            Glide
+                Glide
                     .with(((ViewHolderCompetitionAdap) holder).mFlag.getContext())
                     .load(mCompetition.getFlagUrl())
-                    .apply(bitmapTransform(mTranform))
+                    .apply(bitmapTransform(ViewModel.Current.fileUtils.getMultiTransformation()))
                     .into(((ViewHolderCompetitionAdap) holder).mFlag);
 
             ((ViewHolderCompetitionAdap) holder).itemView.setOnClickListener(new View.OnClickListener() {

@@ -208,8 +208,7 @@ public class MatchFavoriAdapter extends BaseMatchAdapter {
         } else {
             minutes = "0" + dateTimeStart.getMinuteOfHour();
         }
-        String timeStartFinal = hour + ":" + minutes;
-        return timeStartFinal;
+        return hour + ":" + minutes;
     }
 
 }

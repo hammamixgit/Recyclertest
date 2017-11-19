@@ -89,7 +89,7 @@ public class ViewModel {
         DateTime today = new DateTime().withTimeAtStartOfDay().toDateTimeISO();
         DateTime tomorrow = today.plusDays(1).withTimeAtStartOfDay().toDateTimeISO();
         DateTimeFormatter mDateTimeFormatter = DateTimeFormat.forPattern("YYYY-MM-dd");
-        ViewModel.Current.mApiUtils.getSOService().getMatch(mDateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), mDateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
+        ViewModel.Current.mApiUtils.getSportService().getMatch(mDateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), mDateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
 
             @Override
             public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {

@@ -14,10 +14,8 @@ public class ItemOffsetDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view,
                                RecyclerView parent, RecyclerView.State state) {
-
         // Add padding only to the zeroth item
         if (parent.getChildAdapterPosition(view) == 0) {
-
             outRect.right = offset;
             outRect.left = offset;
             outRect.top = offset;

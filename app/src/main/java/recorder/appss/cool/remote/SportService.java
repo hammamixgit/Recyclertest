@@ -12,7 +12,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface Sportservice {
+public interface SportService {
 
     @GET("matches?")
     Call<List<Match>> getMatch(@Query("from") String from, @Query("to") String to, @Query("api_key") String key);

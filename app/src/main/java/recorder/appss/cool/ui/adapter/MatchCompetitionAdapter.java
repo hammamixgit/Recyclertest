@@ -3,6 +3,7 @@ package recorder.appss.cool.ui.adapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.like.LikeButton;
@@ -112,16 +113,16 @@ public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.V
             ((ViewHolderMatchCompetAdap) holder).mTime.setText(live_data[1]);
         } else if (holder instanceof HeaderViewHolderMatchCompetHolder) {
             ((HeaderViewHolderMatchCompetHolder) holder).mCompetitionTitle.setText(mCompetition.getName());
-            setImage((HeaderViewHolderMatchCompetHolder) holder);
+            setImage(((HeaderViewHolderMatchCompetHolder) holder).mFlagCountry);
         }
     }
 
-    private void setImage(HeaderViewHolderMatchCompetHolder holder) {
+    private void setImage(ImageView mFlagCountry) {
         Glide
-                .with(holder.mFlagCountry.getContext())
+                .with(mFlagCountry.getContext())
                 .load(mCompetition.getFlagUrl())
                 .apply(bitmapTransform(ViewModel.Current.fileUtils.getMultiTransformation()))
-                .into(holder.mFlagCountry);
+                .into(mFlagCountry);
     }
 
 
