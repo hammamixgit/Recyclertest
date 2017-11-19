@@ -2,11 +2,9 @@ package recorder.appss.cool.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.MultiTransformation;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 
@@ -16,9 +14,7 @@ import org.joda.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.wasabeef.glide.transformations.BlurTransformation;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
-import recorder.appss.cool.Holder.HeaderViewHolderMatchCompetAdap;
+import recorder.appss.cool.Holder.HeaderViewHolderMatchCompetHolder;
 import recorder.appss.cool.Holder.ViewHolderMatchCompetAdap;
 import recorder.appss.cool.model.Competition;
 import recorder.appss.cool.model.Constants;
@@ -36,7 +32,6 @@ public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.V
     private List<Match> mListMatchs = new ArrayList<>();
     private Competition mCompetition;
     private List<String> mListFavori = new ArrayList<>();
-
 
     public MatchCompetitionAdapter(List<Match> list_match, Competition competition) {
         mListMatchs.addAll(list_match);
@@ -70,15 +65,12 @@ public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == Constants.TYPE_ITEM) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_matchs_compet_item, parent, false);
-            ViewHolderMatchCompetAdap mViewHolderMatchCompetAdap = new ViewHolderMatchCompetAdap(view);
-            return mViewHolderMatchCompetAdap;
+            return new ViewHolderMatchCompetAdap(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_matchs_compet_item, parent, false));
         } else if (viewType == Constants.TYPE_HEADER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_matchs_competetion, parent, false);
-            return new HeaderViewHolderMatchCompetAdap(view);
+            return new HeaderViewHolderMatchCompetHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.header_matchs_competetion, parent, false));
         } else if (viewType == Constants.TYPE_FOOTER) {
         }
-        throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
+        throw new RuntimeException();
     }
 
     @Override
@@ -118,20 +110,17 @@ public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.V
                 mLiveTime = getInstantTime(mListMatchs.get(position - 1).getCurrentState(), (long) mListMatchs.get(position - 1).getCurrentStateStart());
             String[] live_data = mLiveTime.split(":");
             ((ViewHolderMatchCompetAdap) holder).mTime.setText(live_data[1]);
-        } else if (holder instanceof HeaderViewHolderMatchCompetAdap) {
-            ((HeaderViewHolderMatchCompetAdap) holder).mCompetitionTitle.setText(mCompetition.getName());
-            setImage((HeaderViewHolderMatchCompetAdap) holder);
+        } else if (holder instanceof HeaderViewHolderMatchCompetHolder) {
+            ((HeaderViewHolderMatchCompetHolder) holder).mCompetitionTitle.setText(mCompetition.getName());
+            setImage((HeaderViewHolderMatchCompetHolder) holder);
         }
     }
 
-    private void setImage(HeaderViewHolderMatchCompetAdap holder) {
-        MultiTransformation mtransform = new MultiTransformation(
-                new BlurTransformation(1),
-                new RoundedCornersTransformation(128, 0, RoundedCornersTransformation.CornerType.BOTTOM));
+    private void setImage(HeaderViewHolderMatchCompetHolder holder) {
         Glide
                 .with(holder.mFlagCountry.getContext())
                 .load(mCompetition.getFlagUrl())
-                .apply(bitmapTransform(mtransform))
+                .apply(bitmapTransform(ViewModel.Current.fileUtils.getMultiTransformation()))
                 .into(holder.mFlagCountry);
     }
 
@@ -146,7 +135,7 @@ public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.V
         notifyDataSetChanged();
     }
 
-    private String getInstantTime(int state, long current_state_start) {
+    private String getInstantTime(int state, long current_state_start) {  //TODO ver le viewmodel ou une classe timeUtil
         String result = "";
         DateTime date1;
         DateTime date2;
@@ -206,7 +195,7 @@ public class MatchCompetitionAdapter extends RecyclerView.Adapter<RecyclerView.V
         return result;
     }
 
-    private String getTimeStart(long mTimeLong) {
+    private String getTimeStart(long mTimeLong) {  //TODO ver le viewmodel ou une classe timeUtil
         DateTime dateTimeStart = new DateTime(mTimeLong);
         String hour, minutes;
         if (dateTimeStart.getHourOfDay() > 9) {

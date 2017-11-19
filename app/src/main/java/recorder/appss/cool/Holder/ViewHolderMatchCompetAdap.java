@@ -16,7 +16,7 @@ import recorder.appss.cool.recyclertest.R;
  * Created by work on 10/11/2017.
  */
 
-public class ViewHolderMatchCompetAdap extends RecyclerView.ViewHolder {
+public class ViewHolderMatchCompetAdap extends RecyclerView.ViewHolder { //TODO les meme donc extend BaseMatchHolder que tu crée avec les meme
     public @BindView(R.id.team1) TextView mTeam1;
     public @BindView(R.id.team2) TextView mTeam2;
     public @BindView(R.id.score) TextView mScore;

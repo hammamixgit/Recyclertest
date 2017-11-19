@@ -1,29 +1,21 @@
 package recorder.appss.cool.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.MultiTransformation;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
-
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
-
-import java.util.ArrayList;
 import java.util.List;
-
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import recorder.appss.cool.Holder.HeaderViewHolderMatchLiveAdap;
 import recorder.appss.cool.Holder.ViewHolderMatchLiveAdap;
-import recorder.appss.cool.model.Constants;
-import recorder.appss.cool.model.Match;
+import recorder.appss.cool.base.BaseMatchAdapter;
+ import recorder.appss.cool.model.Match;
 import recorder.appss.cool.model.ViewModel;
-import recorder.appss.cool.recyclertest.R;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
@@ -31,77 +23,29 @@ import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
  * Created by work on 29/09/2017.
  */
 
-public class MatchLiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<String> mListFav = new ArrayList<>();
-    private List<Match> mListMatchsLive = new ArrayList<>();
-    private List<Match> mListMatchsLive2 = new ArrayList<>();
-    private int mposition = 0;
-    private int mCurrentCompetition = 0;
+public class MatchLiveAdapter extends BaseMatchAdapter {
+
 
     public MatchLiveAdapter(List<Match> list_match) {
-
-        mListFav.addAll(ViewModel.Current.dataUtils.getfavPref());
-        mListMatchsLive.addAll(list_match);
-        for (Match match : mListMatchsLive)
-            if (mposition == 0) {
-                Match match1 = new Match();
-                match1.setCompetition(match.getCompetition());
-                match1.setDbid(-1);
-                mListMatchsLive2.add(match1);
-                mListMatchsLive2.add(match);
-                mCurrentCompetition = match.getCompetition().getDbid();
-                mposition++;
-            } else {
-                if (mCurrentCompetition == match.getCompetition().getDbid()) {
-                    mListMatchsLive2.add(match);
-                } else {
-                    Match e = null;
-                    e.setCompetition(match.getCompetition());
-                    e.setDbid(-1);
-                    mListMatchsLive2.add(e);
-                    mCurrentCompetition = match.getCompetition().getDbid();
-                }
-
-            }
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (mListMatchsLive2.get(position).getDbid() < 0) {
-            return Constants.TYPE_HEADER;
-        } else
-            return Constants.TYPE_ITEM;
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == Constants.TYPE_ITEM) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_matchs_compet_item, parent, false);
-            ViewHolderMatchLiveAdap viewHolderMatchLiveAdap = new ViewHolderMatchLiveAdap(view);
-            return viewHolderMatchLiveAdap;
-
-        } else if (viewType == Constants.TYPE_HEADER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_divider_matchs_live, parent, false);
-            return new HeaderViewHolderMatchLiveAdap(view);
-
-        }
-
-        throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
-
+        super(list_match);
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
         if (holder instanceof ViewHolderMatchLiveAdap) {
-            setLiveMatchHolder(holder, position);
+            BindHolderData1(holder, position);
         } else if (holder instanceof HeaderViewHolderMatchLiveAdap) {
-            setHeaderViewHolderMatchLiveAdap((HeaderViewHolderMatchLiveAdap) holder, position);
+            BindHolderData2((HeaderViewHolderMatchLiveAdap) holder, position);
         }
-
     }
 
-    private void setLiveMatchHolder(RecyclerView.ViewHolder holder, final int position) {
+    @Override
+    public int getItemCount() {
+        return mListMatchsLive2.size();
+    }
+
+    private void BindHolderData1(RecyclerView.ViewHolder holder, final int position) {
         if (mListFav.contains(mListMatchsLive2.get(position).getDbid().toString()))
             ((ViewHolderMatchLiveAdap) holder).mBtnLike.setLiked(true);
         else ((ViewHolderMatchLiveAdap) holder).mBtnLike.setLiked(false);
@@ -139,38 +83,29 @@ public class MatchLiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ((ViewHolderMatchLiveAdap) holder).mTime.setText(live_data[1]);
     }
 
-    private void setHeaderViewHolderMatchLiveAdap(HeaderViewHolderMatchLiveAdap holder, int position) {
+    private void BindHolderData2(HeaderViewHolderMatchLiveAdap holder, int position) {
         holder.mCompetitionTitle.setText(mListMatchsLive2.get(position).getCompetition().getName());
-        MultiTransformation multiTransformation = new MultiTransformation(
-                new BlurTransformation(1),
-                new RoundedCornersTransformation(128, 0, RoundedCornersTransformation.CornerType.BOTTOM));
         Glide
                 .with(holder.mFlagCountry.getContext())
                 .load(mListMatchsLive2.get(position).getCompetition().getFlagUrl())
-                .apply(bitmapTransform(multiTransformation))
+                .apply(bitmapTransform(ViewModel.Current.fileUtils.getMultiTransformation()))
                 .into(holder.mFlagCountry);
     }
 
-
-    @Override
-    public int getItemCount() {
-        return mListMatchsLive2.size();
-    }
-
     public void updateAnswers(List<Match> items) {
-        mposition = 0;
+        mPosition = 0;
         mListMatchsLive.clear();
         mListMatchsLive2.clear();
         mListMatchsLive.addAll(items);
         for (Match match : mListMatchsLive) {
-            if (mposition == 0) {
+            if (mPosition == 0) {
                 Match matchCompet = new Match();
                 matchCompet.setCompetition(match.getCompetition());
                 matchCompet.setDbid(-1);
                 mListMatchsLive2.add(matchCompet);
                 mListMatchsLive2.add(match);
                 mCurrentCompetition = match.getCompetition().getDbid();
-                mposition++;
+                mPosition++;
             } else {
                 if (mCurrentCompetition == match.getCompetition().getDbid()) {
                     mListMatchsLive2.add(match);
@@ -187,7 +122,7 @@ public class MatchLiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyDataSetChanged();
     }
 
-    private String getInstantTime(int state, long current_state_start) {
+    private String getInstantTime(int state, long current_state_start) {  //TODO ver le viewmodel ou une classe timeUtil
         String result = "";
         DateTime date1;
         DateTime date2;
@@ -242,12 +177,10 @@ public class MatchLiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 result = "1:P-P";
                 break;
         }
-
-
         return result;
     }
 
-    private String getTimeStart(long mTimeLong) {
+    private String getTimeStart(long mTimeLong) { //TODO ver le viewmodel ou une classe timeUtil
         DateTime dateTimeStart = new DateTime(mTimeLong);
         String hour, minutes;
         if (dateTimeStart.getHourOfDay() > 9) {
@@ -260,9 +193,6 @@ public class MatchLiveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else {
             minutes = "0" + dateTimeStart.getMinuteOfHour();
         }
-        String timeStartFinal = hour + ":" + minutes;
-        return timeStartFinal;
+        return hour + ":" + minutes;
     }
-
-
 }

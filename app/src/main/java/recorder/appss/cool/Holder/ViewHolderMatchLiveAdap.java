@@ -16,7 +16,7 @@ import recorder.appss.cool.recyclertest.R;
  * Created by work on 10/11/2017.
  */
 
-public class ViewHolderMatchLiveAdap extends RecyclerView.ViewHolder {
+public class ViewHolderMatchLiveAdap extends RecyclerView.ViewHolder {  //TODO les meme donc extend BaseMatchHolder que tu crée avec les meme
 
     //TODO add butterknife library
     public  @BindView(R.id.team1) TextView mTeam1;

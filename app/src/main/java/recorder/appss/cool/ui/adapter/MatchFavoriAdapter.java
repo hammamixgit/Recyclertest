@@ -1,29 +1,21 @@
 package recorder.appss.cool.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.MultiTransformation;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
-
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
-
-import java.util.ArrayList;
 import java.util.List;
-
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import recorder.appss.cool.Holder.HeaderViewHolderMatchFavoriAdap;
 import recorder.appss.cool.Holder.ViewHolderMatchFavoriAdap;
-import recorder.appss.cool.model.Constants;
+import recorder.appss.cool.base.BaseMatchAdapter;
 import recorder.appss.cool.model.Match;
 import recorder.appss.cool.model.ViewModel;
-import recorder.appss.cool.recyclertest.R;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
@@ -31,139 +23,78 @@ import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
  * Created by work on 29/09/2017.
  */
 
-public class MatchFavoriAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<String> mlistFav = new ArrayList<>();
-    private List<Match> mListMatchsLive = new ArrayList<>();
-    private List<Match> mListMatchsLive2 = new ArrayList<>();
-    private int mPosistion = 0;
-    private int mCurrentCompetition = 0;
+public class MatchFavoriAdapter extends BaseMatchAdapter {
 
     public MatchFavoriAdapter(List<Match> list_match) {
-
-        mlistFav.addAll(ViewModel.Current.dataUtils.getfavPref());
-        mListMatchsLive.addAll(list_match);
-        for (Match match : mListMatchsLive)
-            if (mlistFav.contains(match.getDbid() + "")) {
-                if (mPosistion == 0) {
-                    Match matchcompetition = new Match();
-                    matchcompetition.setCompetition(match.getCompetition());
-                    matchcompetition.setDbid(-1);
-                    mListMatchsLive2.add(matchcompetition);
-                    mListMatchsLive2.add(match);
-                    mCurrentCompetition = match.getCompetition().getDbid();
-                    mPosistion++;
-                } else {
-                    if (mCurrentCompetition == match.getCompetition().getDbid()) {
-                        mListMatchsLive2.add(match);
-                    } else {
-                        Match match1 = null;
-                        match1.setCompetition(match.getCompetition());
-                        match1.setDbid(-1);
-                        mListMatchsLive2.add(match1);
-                        mCurrentCompetition = match.getCompetition().getDbid();
-                    }
-                }
-            }
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (mListMatchsLive2.get(position).getDbid() < 0) {
-            return Constants.TYPE_HEADER;
-        } else
-            return Constants.TYPE_ITEM;
-    }
-
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == Constants.TYPE_ITEM) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_matchs_compet_item, parent, false);
-            ViewHolderMatchFavoriAdap viewHolderMatchFavoriAdap = new ViewHolderMatchFavoriAdap(view);
-            return viewHolderMatchFavoriAdap;
-
-        } else if (viewType == Constants.TYPE_HEADER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_divider_matchs_live, parent, false);
-            return new HeaderViewHolderMatchFavoriAdap(view);
-
-        }
-
-        throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
-
+        super(list_match);
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
         if (holder instanceof ViewHolderMatchFavoriAdap) {
-            if (mlistFav.contains(mListMatchsLive2.get(position).getDbid().toString()))
-                ((ViewHolderMatchFavoriAdap) holder).mBtnLike.setLiked(true);
-            else ((ViewHolderMatchFavoriAdap) holder).mBtnLike.setLiked(false);
-
-            ((ViewHolderMatchFavoriAdap) holder).mBtnLike.setOnLikeListener(new OnLikeListener() {
-
-                @Override
-                public void liked(LikeButton likeButton) {
-                    ViewModel.Current.dataUtils.addfavPref(mListMatchsLive2.get(position).getDbid().toString());
-                    mlistFav.clear();
-                    mlistFav.addAll(ViewModel.Current.dataUtils.getfavPref());
-                    notifyItemChanged(position);
-                }
-
-                @Override
-                public void unLiked(LikeButton likeButton) {
-                    ViewModel.Current.dataUtils.removefavPref(mListMatchsLive2.get(position).getDbid().toString());
-                    mlistFav.clear();
-                    mlistFav.addAll(ViewModel.Current.dataUtils.getfavPref());
-                    int resultat = verifMatchForCompet(mListMatchsLive2.get(position).getCompetition().getDbid());
-                    mListMatchsLive2.remove(position);
-                    if (resultat == 1) {
-                        mListMatchsLive2.remove(position - 1);
-                        notifyDataSetChanged();
-                    } else {
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, mListMatchsLive2.size());
-                    }
-                }
-            });
-
-            ((ViewHolderMatchFavoriAdap) holder).mTeam1.setText(mListMatchsLive2.get(position).getHomeTeam().getShortName());
-            ((ViewHolderMatchFavoriAdap) holder).mTeam2.setText(mListMatchsLive2.get(position).getAwayTeam().getShortName());
-            ((ViewHolderMatchFavoriAdap) holder).mScore.setText(mListMatchsLive2.get(position).getHomeGoals() + "-" + mListMatchsLive2.get(position).getAwayGoals());
-            long mTimeStartLongFormat = (long) mListMatchsLive2.get(position).getStart();
-            ((ViewHolderMatchFavoriAdap) holder).mTimeStart.setText(getTimeStart(mTimeStartLongFormat));
-            String mLiveTime;
-            if (mListMatchsLive2.get(position).getCurrentState() == 0)
-                mLiveTime = getInstantTime(mListMatchsLive2.get(position).getCurrentState(), 0);
-            else
-                mLiveTime = getInstantTime(mListMatchsLive2.get(position).getCurrentState(), (long) mListMatchsLive2.get(position).getCurrentStateStart());
-            String[] live_data = mLiveTime.split(":");
-            ((ViewHolderMatchFavoriAdap) holder).mTime.setText(live_data[1]);
+            BindHolderData1((ViewHolderMatchFavoriAdap) holder, position);
         } else if (holder instanceof HeaderViewHolderMatchFavoriAdap) {
-            ((HeaderViewHolderMatchFavoriAdap) holder).mCompetitionTitle.setText(mListMatchsLive2.get(position).getCompetition().getName());
-            setImageFlag((HeaderViewHolderMatchFavoriAdap) holder, position);
+            BindHolderData2((HeaderViewHolderMatchFavoriAdap) holder, position);
         }
+    }
+
+    private void BindHolderData1(ViewHolderMatchFavoriAdap holder, final int position) {
+        if (mListFav.contains(mListMatchsLive2.get(position).getDbid().toString()))
+            holder.mBtnLike.setLiked(true);
+        else holder.mBtnLike.setLiked(false);
+
+        holder.mBtnLike.setOnLikeListener(new OnLikeListener() {
+
+            @Override
+            public void liked(LikeButton likeButton) {
+                ViewModel.Current.dataUtils.addfavPref(mListMatchsLive2.get(position).getDbid().toString());
+                mListFav.clear();
+                mListFav.addAll(ViewModel.Current.dataUtils.getfavPref());
+                notifyItemChanged(position);
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                ViewModel.Current.dataUtils.removefavPref(mListMatchsLive2.get(position).getDbid().toString());
+                mListFav.clear();
+                mListFav.addAll(ViewModel.Current.dataUtils.getfavPref());
+                mListMatchsLive2.remove(position);
+                if (ViewModel.Current.verifMatchForCompet(mListMatchsLive2, position) == 1) {
+                    mListMatchsLive2.remove(position - 1);
+                    notifyDataSetChanged();
+                } else {
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, mListMatchsLive2.size());
+                }
+            }
+        });
+
+        holder.mTeam1.setText(mListMatchsLive2.get(position).getHomeTeam().getShortName());
+        holder.mTeam2.setText(mListMatchsLive2.get(position).getAwayTeam().getShortName());
+        holder.mScore.setText(mListMatchsLive2.get(position).getHomeGoals() + "-" + mListMatchsLive2.get(position).getAwayGoals());
+        long mTimeStartLongFormat = (long) mListMatchsLive2.get(position).getStart();
+        holder.mTimeStart.setText(getTimeStart(mTimeStartLongFormat));
+        String mLiveTime;
+        if (mListMatchsLive2.get(position).getCurrentState() == 0)
+            mLiveTime = getInstantTime(mListMatchsLive2.get(position).getCurrentState(), 0);
+        else
+            mLiveTime = getInstantTime(mListMatchsLive2.get(position).getCurrentState(), (long) mListMatchsLive2.get(position).getCurrentStateStart());
+        String[] live_data = mLiveTime.split(":");
+        holder.mTime.setText(live_data[1]);
+    }
+
+    private void BindHolderData2(HeaderViewHolderMatchFavoriAdap holder, int position) {
+        holder.mCompetitionTitle.setText(mListMatchsLive2.get(position).getCompetition().getName());
+        setImageFlag(holder, position);
     }
 
     private void setImageFlag(HeaderViewHolderMatchFavoriAdap holder, int position) {
-        MultiTransformation multi = new MultiTransformation(
-                new BlurTransformation(1),
-                new RoundedCornersTransformation(128, 0, RoundedCornersTransformation.CornerType.BOTTOM));
         Glide
                 .with(holder.mFlagCountry.getContext())
                 .load(mListMatchsLive2.get(position).getCompetition().getFlagUrl())
-                .apply(bitmapTransform(multi))
+                .apply(bitmapTransform(ViewModel.Current.fileUtils.getMultiTransformation()))
                 .into(holder.mFlagCountry);
-    }
-
-    private int verifMatchForCompet(Integer id_comp) {
-        int result = 0;
-        for (Match match : mListMatchsLive2) {
-            if (match.getDbid() > -1 && match.getCompetition().getDbid().equals(id_comp)) {
-                result++;
-            }
-        }
-        return result;
     }
 
     @Override
@@ -172,21 +103,21 @@ public class MatchFavoriAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public void updateAnswers(List<Match> items) {
-        mPosistion = 0;
+        mPosition = 0;
         mListMatchsLive.clear();
         mListMatchsLive2.clear();
         mListMatchsLive.addAll(items);
         for (Match match : mListMatchsLive) {
 
-            if (mlistFav.contains(match.getDbid() + "")) {
-                if (mPosistion == 0) {
+            if (mListFav.contains(match.getDbid() + "")) {
+                if (mPosition == 0) {
                     Match matchFirst = new Match();
                     matchFirst.setCompetition(match.getCompetition());
                     matchFirst.setDbid(-1);
                     mListMatchsLive2.add(matchFirst);
                     mListMatchsLive2.add(match);
                     mCurrentCompetition = match.getCompetition().getDbid();
-                    mPosistion++;
+                    mPosition++;
                 } else {
                     if (mCurrentCompetition == match.getCompetition().getDbid()) {
                         mListMatchsLive2.add(match);
@@ -204,7 +135,7 @@ public class MatchFavoriAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         notifyDataSetChanged();
     }
 
-    private String getInstantTime(int state, long current_state_start) {
+    private String getInstantTime(int state, long current_state_start) {  //TODO ver le viewmodel ou une classe timeUtil
         String result = "";
         DateTime date1;
         DateTime date2;
@@ -264,7 +195,7 @@ public class MatchFavoriAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return result;
     }
 
-    private String getTimeStart(long mTimeLong) {
+    private String getTimeStart(long mTimeLong) {  //TODO ver le viewmodel ou une classe timeUtil
         DateTime dateTimeStart = new DateTime(mTimeLong);
         String hour, minutes;
         if (dateTimeStart.getHourOfDay() > 9) {

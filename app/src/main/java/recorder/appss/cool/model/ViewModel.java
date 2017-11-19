@@ -111,6 +111,16 @@ public class ViewModel {
                 mDataLoadingtate.showSnackMsg("");
             }
         });
+    }
 
+    public int verifMatchForCompet(List<Match> mListMatchsLive2, int position) {
+        int id_comp = mListMatchsLive2.get(position).getCompetition().getDbid();
+        int result = 0;
+        for (Match match : mListMatchsLive2) {
+            if (match.getDbid() > -1 && match.getCompetition().getDbid().equals(id_comp)) {
+                result++;
+            }
+        }
+        return result;
     }
 }
