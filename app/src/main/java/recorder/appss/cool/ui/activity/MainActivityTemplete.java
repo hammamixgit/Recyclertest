@@ -7,14 +7,14 @@ import android.support.v4.view.ViewPager;
 import butterknife.BindView;
 import recorder.appss.cool.base.BaseActivity;
 import recorder.appss.cool.recyclertest.R;
-import recorder.appss.cool.ui.adapter.FragmentPagerAdap;
+import recorder.appss.cool.ui.adapter.LiveScoreFragmentPagerAdapter;
 import recorder.appss.cool.ui.fragment.F3;
-import recorder.appss.cool.ui.fragment.FragmentMatchsCompet;
+import recorder.appss.cool.ui.fragment.FragmentMatchCompetition;
 import recorder.appss.cool.ui.fragment.TabFragmentFavMatch;
 import recorder.appss.cool.ui.fragment.TabFragmentLiveMatch;
 
 
-public class MainActivityTemplete extends BaseActivity implements TabFragmentLiveMatch.OnFragmentInteractionListener, TabFragmentFavMatch.OnFragmentInteractionListener, F3.OnFragmentInteractionListener, FragmentMatchsCompet.OnFragmentInteractionListener {
+public class MainActivityTemplete extends BaseActivity implements TabFragmentLiveMatch.OnFragmentInteractionListener, TabFragmentFavMatch.OnFragmentInteractionListener, F3.OnFragmentInteractionListener, FragmentMatchCompetition.OnFragmentInteractionListener {
 
 
 
@@ -29,7 +29,7 @@ public class MainActivityTemplete extends BaseActivity implements TabFragmentLiv
 
     getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle(R.string.toolbartitle);
-        FragmentPagerAdap adapter = new FragmentPagerAdap(getSupportFragmentManager());
+        LiveScoreFragmentPagerAdapter adapter = new LiveScoreFragmentPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

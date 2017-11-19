@@ -38,13 +38,13 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentMatchsCompet.OnFragmentInteractionListener} interface
+ * {@link FragmentMatchCompetition.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentMatchsCompet#newInstance} factory method to
+ * Use the {@link FragmentMatchCompetition#newInstance} factory method to
  * create an instance of this fragment.
  */
 
-public class FragmentMatchsCompet extends BaseFragment implements BaseView {
+public class FragmentMatchCompetition extends BaseFragment implements BaseView {
 
     @BindView(R.id.rv_match_compr)
     RecyclerView mRecylcerView;
@@ -58,13 +58,13 @@ public class FragmentMatchsCompet extends BaseFragment implements BaseView {
         return R.layout.fragment_matchs_compet_list;
     }
 
-    public FragmentMatchsCompet() {
+    public FragmentMatchCompetition() {
         // Required empty public constructor
     }
 
 
-    public static FragmentMatchsCompet newInstance(Competition param1) {
-        FragmentMatchsCompet fragment = new FragmentMatchsCompet();
+    public static FragmentMatchCompetition newInstance(Competition param1) {
+        FragmentMatchCompetition fragment = new FragmentMatchCompetition();
         Bundle args = new Bundle();
         args.putParcelable(Constants.ARG_PARAM1, param1);
         fragment.setArguments(args);
@@ -76,7 +76,6 @@ public class FragmentMatchsCompet extends BaseFragment implements BaseView {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mCompetition = getArguments().getParcelable(Constants.ARG_PARAM1);
-
         }
 
     }
@@ -109,8 +108,7 @@ public class FragmentMatchsCompet extends BaseFragment implements BaseView {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException();
         }
     }
 
@@ -154,18 +152,20 @@ public class FragmentMatchsCompet extends BaseFragment implements BaseView {
     @Override
     public void onResume() {
         super.onResume();
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    back();
-                    return true;
+        if (getView() != null) {
+            getView().setFocusableInTouchMode(true);
+            getView().requestFocus();
+            getView().setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                        back();
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
+        }
     }
 
     private void back() {
@@ -185,7 +185,7 @@ public class FragmentMatchsCompet extends BaseFragment implements BaseView {
         DateTime today = new DateTime().withTimeAtStartOfDay().toDateTimeISO();
         DateTime tomorrow = today.plusDays(1).withTimeAtStartOfDay().toDateTimeISO();
         DateTimeFormatter mDateTimeFormatter = DateTimeFormat.forPattern("YYYY-MM-dd");
-        ViewModel.Current.mApiUtils.getSportService().getMatchCompet(id, mDateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), mDateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
+        ViewModel.Current.mApiUtils.getSportService().getMatchCompetitionList(id, mDateTimeFormatter.print(today) + "T00:00:00+" + today.getEra(), mDateTimeFormatter.print(tomorrow) + "T00:00:00+" + today.getEra(), RetrofitClient.getkey()).enqueue(new Callback<List<Match>>() {
             @Override
             public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
 

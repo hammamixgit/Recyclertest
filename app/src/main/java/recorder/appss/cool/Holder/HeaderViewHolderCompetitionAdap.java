@@ -18,7 +18,6 @@ public class HeaderViewHolderCompetitionAdap extends RecyclerView.ViewHolder {
     public @BindView(R.id.allnblive)
     TextView mSumLive;
 
-
     public HeaderViewHolderCompetitionAdap(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);

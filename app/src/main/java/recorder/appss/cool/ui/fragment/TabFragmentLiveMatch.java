@@ -157,9 +157,6 @@ public class TabFragmentLiveMatch extends BaseFragment implements DataLoadingSta
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isResumed()) {
             ViewModel.Current.getLiveMatchs(); //TODO on loade depuis le viewModel toujours puis le view model Call mes methode qui sont implementer dans cette classe
-        } else {
         }
     }
-
-
 }

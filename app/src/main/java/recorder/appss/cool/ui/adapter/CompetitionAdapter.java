@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.MultiTransformation;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -16,15 +15,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import jp.wasabeef.glide.transformations.BlurTransformation;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import recorder.appss.cool.Holder.HeaderViewHolderCompetitionAdap;
 import recorder.appss.cool.Holder.ViewHolderCompetitionAdap;
 import recorder.appss.cool.model.Competition;
 import recorder.appss.cool.model.Constants;
 import recorder.appss.cool.model.ViewModel;
 import recorder.appss.cool.recyclertest.R;
-import recorder.appss.cool.ui.fragment.FragmentMatchsCompet;
+import recorder.appss.cool.ui.fragment.FragmentMatchCompetition;
 import recorder.appss.cool.ui.fragment.TabFragmentCompetitionList;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
@@ -101,7 +98,7 @@ public class CompetitionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((ViewHolderCompetitionAdap) holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Fragment fragment = FragmentMatchsCompet.newInstance(mListCompetition.get(position - 1));
+                    Fragment fragment = FragmentMatchCompetition.newInstance(mListCompetition.get(position - 1));
 
                     FragmentTransaction transaction = mFragmentTabList.getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.activity_main, fragment);

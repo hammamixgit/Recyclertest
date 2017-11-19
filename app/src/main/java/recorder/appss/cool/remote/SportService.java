@@ -15,9 +15,9 @@ import retrofit2.http.Query;
 public interface SportService {
 
     @GET("matches?")
-    Call<List<Match>> getMatch(@Query("from") String from, @Query("to") String to, @Query("api_key") String key);
+    Call<List<Match>> getMatchList(@Query("from") String from, @Query("to") String to, @Query("api_key") String key);
 
     @GET("matches?")
-    Call<List<Match>> getMatchCompet(@Query("competition_id") String competition, @Query("from") String from, @Query("to") String to, @Query("api_key") String key);
+    Call<List<Match>> getMatchCompetitionList(@Query("competition_id") String competition, @Query("from") String from, @Query("to") String to, @Query("api_key") String key);
 }
 

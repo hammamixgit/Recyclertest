@@ -14,8 +14,8 @@ import recorder.appss.cool.ui.fragment.TabFragmentLiveMatch;
  * Created by work on 07/11/2017.
  */
 
-public class FragmentPagerAdap extends FragmentPagerAdapter {
-    public FragmentPagerAdap(FragmentManager fm) {
+public class LiveScoreFragmentPagerAdapter extends FragmentPagerAdapter {
+    public LiveScoreFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
